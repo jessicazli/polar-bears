@@ -1,15 +1,16 @@
 
 
 body {
-	/* font-family: 'Neuton', serif; */
-	font-family: 'Comic Neue', cursive;
+	font-family: 'Poppins', sans-serif;
+	text-align: center;
 }
 
 h1 {
 	font-size: 36px;
-	color: #825a5a;
+	color: #3373b8;
 	margin-top: 40px;
-	font-family: 'Comic Neue', cursive;
+	margin-bottom: 30px;
+	font-family: 'Poppins', sans-serif;
 	font-weight: bold;
 }
 
@@ -18,7 +19,29 @@ h2 {
 	font-size: 24px;
 	margin-top: 10px;
 	margin-bottom: 30px;
-	font-family: 'Comic Neue', cursive;
+	font-family: 'Poppins', sans-serif;
+}
+
+.section {
+	margin-top: 40px;
+	margin-bottom: 40px;
+}
+
+.col-4 {
+    display: flex;
+    justify-content: center; 
+    align-items: center;    
+}
+
+img {
+	width: 60%;
+}
+
+.photo {
+	width: 200px;
+	height: 200px;
+	border: 1px solid #ccc;
+	margin-bottom: 30px;
 }
 
 /*

@@ -13,9 +13,11 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
+    <!-- fullpage.js css -->
+    <link rel="stylesheet" type="text/css" href="css/fullpage/fullpage.css"/>
 
     <!-- Include Comic Neue font link -->
-    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
 
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
@@ -27,76 +29,183 @@
 
 <body>
 
-    <div class="container">
-
-        <div class="row">
-            <div class="col-md-12">
-                <h1>A Frigid Fate: The Decline of Polar Bears in a Warming World</h1>
-            </div>
-        </div>
-
-    </div>
-
-    <div class="container">
-        <!-- three line graphs -->
-        <div class="row">
-            <div class="col-6"></div>
-            <div class="col-6">
-                <!-- line graph 1 -->
+    <div id="fullPage">
+        <div class="section" data-anchor="firstPage">
+            <div class="container">
                 <div class="row">
-                    <div id="avgtemp"></div>
+                    <div class="col-md-12">
+                        <h1>A Frigid Fate: The Decline of Polar Bears in a Warming World</h1>
+                    </div>
                 </div>
-                <!-- line graph 2 -->
+            </div>
+        </div>
+        <div class="section" data-anchor="secondPage">
+            <div class="container">
                 <div class="row">
-                    <div id="emissions"></div>
+                    <div class="col-md-12">
+                        <h1>Have you heard of pizzly bears?</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="section" data-anchor="3rdPage">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h1>Migration</h1>
+                    </div>
                 </div>
                 <div class="row">
-                    <div id="icemass"></div>
+                    <div class="col-12">
+                        <img src="images/migration.jpeg" alt="health" class="img-fluid">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="section" data-anchor="4thPage"> 
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h1>What was the cause of this?</h1>
+                    </div>
+                </div>
+                <!-- three line graphs -->
+                <div class="row">
+                    <div class="col-6"></div>
+                    <div class="col-6">
+                        <!-- line graph 1 -->
+                        <div class="row">
+                            <div id="avgtemp"></div>
+                        </div>
+                        <!-- line graph 2 -->
+                        <div class="row">
+                            <div id="emissions"></div>
+                        </div>
+                        <div class="row">
+                            <div id="icemass"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="section" data-anchor="5thPage">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h1>Subregions</h1>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <img src="images/regions.png" alt="health" class="img-fluid">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="section" data-anchor="6thPage"> 
+            <div class="container">
+                <h1 class="col-md-12">Polar Bear Diet Consumption</h1>
+            
+                  <!-- Bootstrap Dropdown -->
+            <div class="mb-3">
+                <div class="row justify-content-center">
+                    <div class="col-3">
+                        <div class="row justify-content-center full-height">
+                            <select id="dietFilter" class="form-select align-self-center" aria-label="diet filter" onchange="dietCategoryChange()">
+                                <option value="all" selected>All Diets (Total)</option>
+                                <option value="Bearded_seal">Bearded Seal</option>
+                                <option value="Ringed_seal">Ringed Seal </option>
+                                <option value="Beluga_whale">Beluga Whale </option>
+                                <option value="Seabird_nestling">Seabird Nestling </option> -->
+                          
+                                <!-- Add more options for other diets -->
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+            <!-- SVG container for the chart -->
+            <div class="container">
+                <div class="row">
+                    <div class="col-8">
+                        <div id="dietDiv" class="diet-style"></div>
+                    </div>
+                    <div class="col-4">
+                        <div id="dietAnalysis" >Analysis</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="section" data-anchor="7thPage">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h1>Health Visualization</h1>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <img src="images/health.png" alt="health" class="img-fluid">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="section" data-anchor="8thPage">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h1>Adopt a Bear</h1>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <img src="images/adopt.png" alt="health" class="img-fluid">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="section" data-anchor="9thPage">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h1>End</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="section" data-anchor="10thPage">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h1>About Us</h1>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-4">
+                        <div class="photo"></div>
+                    </div>
+                    <div class="col-4">
+                        <div class="photo"></div>
+                    </div>
+                    <div class="col-4">
+                        <div class="photo"></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-4">
+                        <div>Huiwen Chen</div>
+                    </div>
+                    <div class="col-4">
+                        <div>Jessica Li</div>
+                    </div>
+                    <div class="col-4">
+                        <div>Kathy Zhong</div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-
-
-
-    <div class="container justify-content-center">
-        <h1 class="mt-4 mb-4 text-center">Polar Bear Diet Consumption</h1>
-    
-          <!-- Bootstrap Dropdown -->
-    <div class="mb-3">
-        <div class="row justify-content-center">
-            <div class="col-3">
-                <div class="row justify-content-center full-height">
-                    <select id="dietFilter" class="form-select align-self-center" onchange="dietCategoryChange()">
-                        <option value="all" selected>All Diets (Total)</option>
-                        <option value="Bearded_seal">Bearded Seal</option>
-                        <option value="Ringed_seal">Ringed Seal </option>
-                        <option value="Beluga_whale">Beluga Whale </option>
-                        <option value="Seabird_nestling">Seabird Nestling </option>
-                  
-                        <!-- Add more options for other diets -->
-                    </select>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- SVG container for the chart -->
-    <div class="container">
-        <div class="row">
-            <div class="col-8">
-                <div id="dietDiv" class="diet-style"></div>
-            </div>
-            <div class="col-4">
-                <div id="dietAnalysis" >Analysis</div>
-            </div>
-        </div>
-    </div>
-
-
-</div>
-
-
 
     <!-- Load JS libraries -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
@@ -104,11 +213,22 @@
         crossorigin="anonymous"></script>
     <script src="https://d3js.org/d3.v7.min.js"></script>
 
+    
+    <!-- fullpage.js -->
+    <script type="text/javascript" src="js/fullpage/fullpage.js"></script>
+    
+    <!-- <script>
+        new fullpage('#fullPage', {
+            licenseKey: 'gplv3-license',
+            continuousVertical: true,
+            navigation: true,
+            css3: false,
+            anchors: ['firstPage', 'secondPage', '3rdPage', '4thPage', '5thPage', '6thPage', '7thPage', '8thPage', '9thPage', '10thPage'],
+            navigationTooltips: ['Home', 'Pizzly', 'Migration', 'Climate Change', 'Regions', 'Diet', 'Health', 'Adopt a Bear', 'End', 'About Us'],
+        });
+    </script> -->
 
-
-
-
-<!-- Load data, create visualizations -->
+    <!-- Load data, create visualizations -->
     <!-- Visualization objects -->
     <script src="js/linegraph.js"></script>
     <script src="js/dietVis.js"></script>
