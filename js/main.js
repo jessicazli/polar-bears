@@ -88,5 +88,5 @@ function dietCategoryChange() {
 
     // Update the visualization with the selected category
     // dietVis.selectedFilter = selectedDietCategory;
-    // dietVis.wrangleData(selectedDietCategory); 
+    dietVisual.wrangleData(selectedDietCategory); 
 }
