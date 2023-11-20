@@ -1,13 +1,16 @@
 
 
 body {
-	font-family: 'Neuton', serif;
+	/* font-family: 'Neuton', serif; */
+	font-family: 'Comic Neue', cursive;
 }
 
 h1 {
 	font-size: 36px;
 	color: #825a5a;
 	margin-top: 40px;
+	font-family: 'Comic Neue', cursive;
+	font-weight: bold;
 }
 
 h2 {
@@ -15,6 +18,7 @@ h2 {
 	font-size: 24px;
 	margin-top: 10px;
 	margin-bottom: 30px;
+	font-family: 'Comic Neue', cursive;
 }
 
 /*
@@ -51,4 +55,55 @@ h2 {
 
 .bar {
 	fill: #93bebf;
+}
+
+#dietFilter {
+	max-width: 200px; /* Set a maximum width */
+	margin: 0; /* Remove default margin */
+	border-radius: 8px; /* Add border radius */
+	background-color: #c4e4fb;
+}
+
+.diet-style {
+	height: 100%; 
+	width: 100%; 
+}
+
+.diet-tooltip {
+	position: absolute;
+	text-align: center;
+	font: 12px sans-serif;
+	/*  pointer-events: none;	This line needs to be removed */
+}
+.diet-tooltip h3,h4 {
+	text-align: left;
+}
+.diet-tooltip h4 {
+	font: 14px sans-serif;
+}
+
+.diet-tooltip p {
+	font: 9px;
+}
+
+.diet-axis path,
+.diet-axis line {
+  fill: none;
+  stroke: #134078; /* Color for axis lines */
+  shape-rendering: crispEdges; /* Optional: Makes the lines crisp */
+}
+
+.diet-axis text {
+  fill: #134078; /* Color for axis text */
+	font-size: 1.3em;
+}
+
+
+/* Media query for smaller screens */
+@media (max-width: 999px) {
+  #dietAnalysis {
+    display: block; /* Change display property to block to make it a block element */
+    width: 100%; /* Make it take the full width of the container */
+    margin-top: 10px; /* Adjust margin as needed */
+  }
 }
