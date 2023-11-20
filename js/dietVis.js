@@ -7,7 +7,9 @@ class DietVis {
       this.data = data;
       this.displayData = [];
 
-      this.colors=["#134078", "#add8e6"]
+      this.selectedDietCategory = 'total_consumption'
+
+      this.colors=["#134078", "#add8e6", "#134078"]
       console.log(this.data)
       // Initialize the chart
       this.initVis();
@@ -73,12 +75,15 @@ class DietVis {
           .style("text-anchor", "middle")
 
       // Update the chart
-      this.wrangleData();
+      this.wrangleData(vis.selectedDietCategory);
     }
 
-  wrangleData() {
+  wrangleData(selectedDietCategory) {
     let vis = this;
-    let filteredData = [];
+
+
+
+    vis.selectedDietCategory = selectedDietCategory;
     // Convert strings to numbers where needed
     vis.data.forEach(d => {
       d.Year = +d.Year;
@@ -115,21 +120,27 @@ class DietVis {
     vis.displayData.sort((a, b) => b[1].total_consumption - a[1].total_consumption);
 
     console.log("wrangle display data",vis.displayData)
+
+
       // filter
     vis.updateChart()
   }
 
   updateChart() {
     let vis = this;
+    console.log(vis.selectedDietCategory, "selected category update vis")
+    let dataField = vis.selectedDietCategory;
+
     console.log("update chart diet", vis.displayData)
 
     // max domain
-    vis.domainMax = d3.max(vis.displayData[1], d => d.total_consumption);
-    console.log(vis.domainMax)
+    vis.domainMax = d3.max(vis.displayData, d => d[1][dataField]);
+
+    console.log(vis.domainMax, dataField)
     // Sort by year
     vis.displayData.sort((a, b) => a[0] - b[0]);
 
-    console.log("years", vis.displayData.map(d => d[0]))
+    console.log("years", vis.displayData.map(d => d[0]), vis.displayData.map(d => d[1][dataField]))
     
     // Update scales
     vis.yScale.domain([0, vis.domainMax]);
@@ -142,16 +153,33 @@ class DietVis {
       .attr("dy", "1em")
 
 
+    vis.yGroup.call(vis.yAxis)
+      .transition()
+      .duration(800)
 
-    vis.yGroup.call(vis.yAxis);
+    function getYLabel(dataField) {
+      let labelMapping = {
+        total_consumption: 'Total Consumption',
+        avg_Bearded_seal: 'Average Bearded Seal Consumption (% of Total Diet)',
+        avg_Ringed_seal: 'Average Ringed Seal Consumption (% of Total Diet)',
+        avg_Beluga_whale: 'Average Beluga Whale Consumption (% of Total Diet)',
+        avg_Bowhead_whale: 'Average Bowhead Whale Consumption (% of Total Diet)',
+        avg_Seabird_nestling: 'Average Seabird Nestling Consumption (% of Total Diet)',
+      };
+    
+      return labelMapping[dataField];
+    }
 
-
+    
     vis.xLabel
-      .text("Years")
-      .style("fill", vis.colors[0]);
+      .text("Year")
+      .style("fill", vis.colors[0])
+
     vis.yLabel
-      .text("Total Consumption")
+      .text(getYLabel(dataField))
       .style("fill", vis.colors[0]);
+
+    console.log(getYLabel(dataField))
 
     // Create a bar chart
     vis.bar = vis.svg.selectAll('.bar')
@@ -161,30 +189,76 @@ class DietVis {
         .append('rect')
         .attr('class', 'bar')
         .attr('x', d => vis.xScale(d[0]))
-        .attr('y', d => vis.yScale(d[1].total_consumption))
-        .attr("height", d => vis.height - vis.yScale(d[1].total_consumption))
-
+        .attr('y', vis.height)
+        .attr("height", 0) 
         .attr('width', d => vis.xScale.bandwidth())
         .style("fill", vis.colors[1])
-
-        .on('mouseover', (event, d) => {
-            vis.tooltip
-                .style('opacity', 0.9)
-                .html(`
-                <div style="border: thin solid lightblue; border-radius: 5px; text-align: left; background: ${vis.colors[0]}; color: white; padding: 20px">
-                <h3>${d[0]}</h3>
-                <p> <span style="font-weight: bold;color: #dfeaf8;"> Year: </span>${d[0]} 
-                <br>
-                <span style="font-weight: bold;color: #dfeaf8;"> Total Consumption: </span> ${d[1].total_consumption}
-                <br>
-                <span style="font-weight: bold; color: #dfeaf8;"> Number of Polar Bears Captured: </span> ${d[1].num_bears} </p>
-                  </div>`)
-                .style('left', event.pageX + 10 + 'px')
-                .style('top', event.pageY - 15 + 'px');
+        .merge(vis.bar)  // Merge enter and update selections
+        .transition()
+        .duration(800)
+        .attr('y', d => vis.yScale(d[1][dataField]))
+        .attr("height", d => vis.height - vis.yScale(d[1][dataField]))
+        .on("end", function(){
+          d3.select(this)
+          .on('mouseover', function(event, d) {
+            d3.select(this)
+              .attr('stroke-width', '1px')
+              .attr('stroke', vis.colors[2])
+  
+              vis.tooltip
+                  .style('opacity', 0.9)
+                  .html(`
+                  <div style="border: thin solid lightblue; border-radius: 5px; text-align: left; background: ${vis.colors[0]}; color: white; padding: 20px">
+                  <h3>${d[0]}</h3>
+                  <p> <span style="font-weight: bold;color: #dfeaf8;"> Year: </span>${d[0]} 
+                  <br>
+                  <span style="font-weight: bold;color: #dfeaf8;"> ${getYLabel(dataField)}: </span> ${d[1][dataField]}
+                  <br>
+                  <span style="font-weight: bold; color: #dfeaf8;"> Number of Polar Bears Captured: </span> ${d[1].num_bears} </p>
+                    </div>`)
+                  .style('left', event.pageX + 10 + 'px')
+                  .style('top', event.pageY - 15 + 'px');
+          })
+          .on('mouseout', function(event, d){
+              d3.select(this)
+                .attr('stroke-width', '0px')
+  
+              vis.tooltip
+                .style('opacity', 0)
+                .style("left", 0)
+                .style("top", 0)
+                .html(``);
+          });
         })
-        .on('mouseout', () => {
-            vis.tooltip.style('opacity', 0);
-        });
+        // .on('mouseover', function(event, d) {
+        //   d3.select(this)
+        //     .attr('stroke-width', '1px')
+        //     .attr('stroke', vis.colors[2])
+
+        //     vis.tooltip
+        //         .style('opacity', 0.9)
+        //         .html(`
+        //         <div style="border: thin solid lightblue; border-radius: 5px; text-align: left; background: ${vis.colors[0]}; color: white; padding: 20px">
+        //         <h3>${d[0]}</h3>
+        //         <p> <span style="font-weight: bold;color: #dfeaf8;"> Year: </span>${d[0]} 
+        //         <br>
+        //         <span style="font-weight: bold;color: #dfeaf8;"> Total Consumption: </span> ${d[1][dataField]}
+        //         <br>
+        //         <span style="font-weight: bold; color: #dfeaf8;"> Number of Polar Bears Captured: </span> ${d[1].num_bears} </p>
+        //           </div>`)
+        //         .style('left', event.pageX + 10 + 'px')
+        //         .style('top', event.pageY - 15 + 'px');
+        // })
+        // .on('mouseout', function(event, d){
+        //     d3.select(this)
+        //       .attr('stroke-width', '0px')
+
+        //     vis.tooltip
+        //       .style('opacity', 0)
+        //       .style("left", 0)
+        //       .style("top", 0)
+        //       .html(``);
+        // });
 
     vis.bar.exit().remove();
 }
