@@ -2,6 +2,8 @@
 let dateFormatter = d3.timeFormat("%Y-%m-%d");
 let dateParser = d3.timeParse("%Y-%m-%d");
 
+//hi
+
 
 // (1) Load data with promises
 
