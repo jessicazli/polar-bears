@@ -15,12 +15,11 @@ let emissionsChart, iceExtentChart, tempChangeChart;
 
 let promises = [
 
-    d3.csv("data/polarBearDiet.csv"),
-
-
     d3.csv("data/CO2_emissions.csv"),
     d3.csv("data/september_minimum_ice_extent.csv"),
     d3.csv("data/temperature_change.csv"),
+    d3.csv("data/polarBearDiet.csv"),
+
 
 ];
 
@@ -43,14 +42,14 @@ function createVis(data) {
     console.log("Ice Extent Data:", iceExtentData);
     console.log("Temperature Change Data:", temperatureChangeData);
 
-  let polarBearDietData = data[0]
+    let polarBearDietData = data[3]
 
       // error, perDayData, metaData
       // if(error) { console.log(error); }
 
-      console.log("diet data",data[0])
+      console.log("diet data",data[3])
 
-      dietVisual = new DietVis('dietDiv', data[0])
+      dietVisual = new DietVis('dietDiv', polarBearDietData)
 
     // (2) Make our data look nicer and more useful
     // ...
