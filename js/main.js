@@ -2,16 +2,26 @@
 let dateFormatter = d3.timeFormat("%Y-%m-%d");
 let dateParser = d3.timeParse("%Y-%m-%d");
 
+
+let dietVisual;
+
+
 // Declare chart variables outside the function
 let emissionsChart, iceExtentChart, tempChangeChart;
+
 
 // main.js
 // (1) Load data with promises
 
 let promises = [
+
+    d3.csv("data/polarBearDiet.csv"),
+
+
     d3.csv("data/CO2_emissions.csv"),
     d3.csv("data/september_minimum_ice_extent.csv"),
     d3.csv("data/temperature_change.csv"),
+
 ];
 
 Promise.all(promises)
@@ -21,6 +31,7 @@ Promise.all(promises)
     .catch(function (err) {
         console.log(err);
     });
+
 
 function createVis(data) {
     let emissionsData = data[0];
@@ -32,13 +43,23 @@ function createVis(data) {
     console.log("Ice Extent Data:", iceExtentData);
     console.log("Temperature Change Data:", temperatureChangeData);
 
+  let polarBearDietData = data[0]
+
+      // error, perDayData, metaData
+      // if(error) { console.log(error); }
+
+      console.log("diet data",data[0])
+
+      dietVisual = new DietVis('dietDiv', data[0])
+
     // (2) Make our data look nicer and more useful
     // ...
 
     // (3) Create event handler
     // *** TO-DO ***
 
-    // (4) Create visualization instances
+    // (4) Create visualization instancest
+    // let countVis = new CountVis("countvis", allData);
 
     // Create a line chart for CO2 emissions with red lines and dots
     emissionsChart = new LineGraph('emissions', emissionsData, "Year", "Emissions", "CO2 Emissions Over Time", 'red', 'red');
@@ -58,4 +79,15 @@ function createVis(data) {
     // (5) Bind event handler
     // *** TO-DO ***
     // eventHandler.bind("selectionChanged", function(event){ ...
+}
+
+let selectedCategory =  document.getElementById('dietFilter').value;
+
+function dietCategoryChange() {
+    // Get the selected value
+    selectedDietCategory = document.getElementById('dietFilter').value;
+
+    // Update the visualization with the selected category
+    // dietVis.selectedFilter = selectedDietCategory;
+    // dietVis.wrangleData(selectedDietCategory); 
 }
