@@ -15,11 +15,12 @@ h1 {
 }
 
 h2 {
-	color: #94a97a;
+	color: #3373b8;
 	font-size: 24px;
 	margin-top: 10px;
 	margin-bottom: 30px;
 	font-family: 'Poppins', sans-serif;
+	font-weight: bold;
 }
 
 .section {
