@@ -13,7 +13,10 @@ class LineGraph {
         this.initGraph();
     }
 
+
+
     initGraph() {
+
         const vis = this;
 
         // Set up the SVG drawing area
@@ -60,64 +63,87 @@ class LineGraph {
 
     updateGraph() {
         const vis = this;
-    
+
         // Find the minimum and maximum values of x and y in the data
         const minX = d3.min(vis.data, d => d[vis.xLabel]);
         const maxX = d3.max(vis.data, d => d[vis.xLabel]);
         const minY = d3.min(vis.data, d => d[vis.yLabel]);
         const maxY = d3.max(vis.data, d => d[vis.yLabel]);
-    
+
         // Update scales and axes using the minimum and maximum values
         vis.xScale.domain([minX, maxX]);
-        vis.yScale.domain([minY, maxY]);
-    
+        vis.yScale.domain([minY - 0.2, maxY]);
+
+        // Update x-axis with transition
         vis.svg.select('.x-axis')
             .transition()
             .duration(500)
-            .call(vis.xAxis.tickFormat(d3.format('d'))); // Use 'd' format to remove commas
+            .call(vis.xAxis.tickFormat(d3.format('d')));
 
+        // Update y-axis with transition
         vis.svg.select('.y-axis')
             .transition()
             .duration(500)
             .call(vis.yAxis);
-    
+
         // Draw lines connecting circles
         const line = d3.line()
             .x(d => vis.xScale(d[vis.xLabel]))
             .y(d => vis.yScale(d[vis.yLabel]));
-    
-        vis.svg.selectAll('.line').remove(); // Remove existing lines
-        
-        vis.svg
+
+        // Remove existing lines
+        vis.svg.selectAll('.line')
+            .attr('opacity', 0)
+            .remove();
+
+        // Append new line with transition
+        const linePath = vis.svg
             .append('path')
             .datum(vis.data)
             .attr('class', 'line')
-            .attr('d', line)
             .attr('fill', 'none')
             .attr('stroke-width', 3)
             .attr('stroke-linejoin', 'round')
             .attr('opacity', 0.5)
-            .attr('stroke', vis.lineColor); // Set line color
-    
+            .attr('stroke', vis.lineColor)
+            .attr('d', line);  // Initial position of the line
+
+        // Get the total length of the line
+        const totalLength = linePath.node().getTotalLength();
+
+        // Set the initial position of the line to be at the starting point (offscreen to the left)
+        linePath.attr('stroke-dasharray', `${totalLength} ${totalLength}`)
+            .attr('stroke-dashoffset', totalLength)
+            .transition()
+            .duration(800)
+            .ease(d3.easeLinear)
+            .attr('stroke-dashoffset', 0);  // Final position of the line
+
         // Draw circles
-        vis.svg.selectAll('.circle').remove(); // Remove existing circles
+        vis.svg.selectAll('.circle').remove();
+
+        // Append new circles with transition
         vis.svg
             .selectAll('.circle')
             .data(vis.data)
             .enter()
             .append('circle')
             .attr('class', 'circle')
-            .attr('fill', vis.dotColor) // Set dot color
+            .attr('fill', vis.dotColor)
             .attr('cx', d => vis.xScale(d[vis.xLabel]))
             .attr('cy', d => vis.yScale(d[vis.yLabel]))
-            .attr('r', 4); // Adjust the radius as needed
+            .attr('r', 4)
+            .style('opacity', 0)  // Initial opacity of 0
+            .transition()
+            .duration(1000)
+            .style('opacity', 1);  // Final opacity of 1
     }
 
     updateData(newData) {
         this.data = newData;
         this.updateGraph();
     }
-    
+
 }
 
 // Other utility functions or constants related to the line graph can be added here
