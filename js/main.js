@@ -3,16 +3,9 @@ let dateFormatter = d3.timeFormat("%Y-%m-%d");
 let dateParser = d3.timeParse("%Y-%m-%d");
 
 
-let dietVisual;
-
-
 // Declare chart variables outside the function
-let emissionsChart, iceExtentChart, tempChangeChart;
+let emissionsChart, iceExtentChart, tempChangeChart, dietVis, healthVis;
 let slider = d3.select('#time-slider').node();
-
-
-// main.js
-// (1) Load data with promises
 
 let promises = [
 
@@ -20,6 +13,7 @@ let promises = [
     d3.csv("data/september_minimum_ice_extent.csv"),
     d3.csv("data/temperature_change.csv"),
     d3.csv("data/polarBearDiet.csv"),
+    d3.csv("data/polar_bear_health.csv"),
 
 
 ];
@@ -44,42 +38,25 @@ function createVis(data) {
     console.log("Temperature Change Data:", temperatureChangeData);
 
     let polarBearDietData = data[3]
-
-    // error, perDayData, metaData
-    // if(error) { console.log(error); }
-
     console.log("diet data", data[3])
 
-    dietVisual = new DietVis('dietDiv', polarBearDietData)
+    let healthData = data[4]
+    console.log("Health Data:", healthData)
 
-    // (2) Make our data look nicer and more useful
-    // ...
-
-    // (3) Create event handler
-    // *** TO-DO ***
-
-    // (4) Create visualization instancest
-    // let countVis = new CountVis("countvis", allData);
-
+    
     // Create a line chart for CO2 emissions with red lines and dots
     emissionsChart = new LineGraph('emissions', emissionsData, "Year", "Emissions", "CO2 Emissions Over Time", '#f7a42a', '#fc9700');
-
+    
     // Create a line chart for ice extent with blue lines and dots
     iceExtentChart = new LineGraph('icemass', iceExtentData, "Year", "Ice Extent", "Minimum Ice Extent Over Time", '#78aeeb', '#0060cf');
-
+    
     // Create a line chart for temperature change with green lines and dots
     tempChangeChart = new LineGraph('avgtemp', temperatureChangeData, "Year", "Temperature Change", "Global Temperature Change Over Time", '#fc7168', '#de1507');
-    // *** TO-DO ***
-    //  pass event handler to CountVis, at constructor of CountVis above
+    
+    dietVisual = new DietVis('dietDiv', polarBearDietData)
 
-    // *** TO-DO ***
-    // let ageVis = new AgeVis("agevis", allData);
-    // let prioVis =
-
-    // (5) Bind event handler
-    // *** TO-DO ***
-    // eventHandler.bind("selectionChanged", function(event){ ...
-
+    healthVisual = new HealthVis('healthDiv', healthData)
+   
     // Initialize slider
     noUiSlider.create(slider, {
         start: [1979, 2023],
