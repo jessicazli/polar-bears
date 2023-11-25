@@ -14,7 +14,12 @@
         integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
     <!-- fullpage.js css -->
-    <link rel="stylesheet" type="text/css" href="css/fullpage/fullpage.css"/>
+    <link rel="stylesheet" type="text/css" href="css/fullpage/fullpage.css" />
+
+    <!-- noUIslider -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.4.0/nouislider.css"
+        integrity="sha512-DGB74Gyw93qON+V0QxSRs1er6sqoPyFoy23HBL5LN7MRJBcjeCU22zega+vOEGE0XQLoVrv4ExcaesSTwZQA2w=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <!-- Include Comic Neue font link -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
@@ -46,7 +51,8 @@
                         <h2>Did you know there is a new species in the Arctic?</h2>
                         <div>PIZZLY BEARS!</div>
                         <div>What are pizzly bears?</div>
-                        <div>Pizzly bears are a hybrid between polar bears and their southern relatives, the grizzly bears.</div>
+                        <div>Pizzly bears are a hybrid between polar bears and their southern relatives, the grizzly
+                            bears.</div>
                     </div>
                 </div>
             </div>
@@ -63,18 +69,24 @@
                         <img src="images/migration.jpeg" alt="health" class="img-fluid migration">
                     </div>
                     <div class="col-6">
-                        <div>Climate change is pushing polar bears and grizzly bears closer together. As the Earth warms,
-                            grizzly bears are migrating up towards the Southern Beaufort Sea and polar bears are migrating south. 
-                            This interspecies blending, while a natural consequence of overlapping territories, is a testament to 
-                            the dynamic and often unpredictable ways in which life on Earth responds to the pressures of environmental change. 
-                            The rise of the pizzly bear symbolizes a world in transition, where the lines drawn by nature are being redrawn by humans.
-                            While a phenomenon like the pizzly bear may seem like a novelty, the realities of climate change are far from it, 
+                        <div>Climate change is pushing polar bears and grizzly bears closer together. As the Earth
+                            warms,
+                            grizzly bears are migrating up towards the Southern Beaufort Sea and polar bears are
+                            migrating south.
+                            This interspecies blending, while a natural consequence of overlapping territories, is a
+                            testament to
+                            the dynamic and often unpredictable ways in which life on Earth responds to the pressures of
+                            environmental change.
+                            The rise of the pizzly bear symbolizes a world in transition, where the lines drawn by
+                            nature are being redrawn by humans.
+                            While a phenomenon like the pizzly bear may seem like a novelty, the realities of climate
+                            change are far from it,
                             especially for the polar bears.</div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="section s4"> 
+        <div class="section s4">
             <div class="container">
                 <div class="row">
                     <div class="col-md-12">
@@ -84,8 +96,10 @@
                 <!-- three line graphs -->
                 <div class="row">
                     <div class="col-6">
-                        As CO2 emissions and the average temperature of the Earth increase, 
-                        we see a stark decrease in the mass of Arctic sea ice.
+                        <p style="margin-bottom: 80px">As CO2 emissions and the average temperature of the Earth
+                            increase,
+                            we see a stark decrease in the mass of Arctic sea ice.</p>
+                        <div id="time-slider"></div>
                     </div>
                     <div class="col-6">
                         <!-- line graph 1 -->
@@ -115,13 +129,13 @@
                         <img src="images/regions.png" alt="health" class="img-fluid">
                     </div>
                     <div class="col-4">
-                        Let's take a closer look into how the melting of the Arctic sea ice is 
+                        Let's take a closer look into how the melting of the Arctic sea ice is
                         affecting polar bears in each of the 18 different subregions.
                     </div>
                 </div>
             </div>
         </div>
-        <div class="section s6"> 
+        <div class="section s6">
             <div class="container">
                 <div class="row">
                     <div class="col-md-12">
@@ -130,16 +144,17 @@
                 </div>
                 <div class="row">
                     <div class="col-12">
-                        As sea ice melts, polar bears must adapt to changes in their environment. 
-                    Specifically, we can see how their diet has changed over time.
+                        As sea ice melts, polar bears must adapt to changes in their environment.
+                        Specifically, we can see how their diet has changed over time.
                     </div>
                 </div>
-            
+
                 <!-- Bootstrap Dropdown -->
                 <div class="row justify-content-center m-3">
                     <div class="col-3">
                         <div class="row justify-content-center full-height">
-                            <select id="dietFilter" class="form-select align-self-center" aria-label="diet-filter" onchange="dietCategoryChange()">
+                            <select id="dietFilter" class="form-select align-self-center" aria-label="diet-filter"
+                                onchange="dietCategoryChange()">
                                 <option value="total_consumption" selected>All Diets (Total)</option>
                                 <option value="avg_Bearded_seal">Bearded Seal</option>
                                 <option value="avg_Ringed_seal">Ringed Seal </option>
@@ -152,8 +167,8 @@
                         </div>
                     </div>
                 </div>
-    
-        
+
+
                 <!-- SVG container for the chart -->
                 <div class="container">
                     <div class="row">
@@ -161,7 +176,7 @@
                             <div id="dietDiv" class="diet-style"></div>
                         </div>
                         <div class="col-4">
-                            <div id="dietAnalysis" >Analysis</div>
+                            <div id="dietAnalysis">Analysis</div>
                         </div>
                     </div>
                 </div>
@@ -179,8 +194,9 @@
                         <img src="images/health.png" alt="health" class="img-fluid">
                     </div>
                     <div class="col-md-3">
-                        Health is an important indicator of the well-being of polar bears and one that has been affected 
-                        drastically in the past decade. Let's take a look at how the health of polar bears has changed over 
+                        Health is an important indicator of the well-being of polar bears and one that has been affected
+                        drastically in the past decade. Let's take a look at how the health of polar bears has changed
+                        over
                         time and examine indicators such as reproductive health, stress, and BMI.
                     </div>
                 </div>
@@ -253,10 +269,10 @@
         crossorigin="anonymous"></script>
     <script src="https://d3js.org/d3.v7.min.js"></script>
 
-    
+
     <!-- fullpage.js -->
     <script type="text/javascript" src="js/fullpage/fullpage.js"></script>
-    
+
     <script>
         new fullpage('#fullPage', {
             licenseKey: 'gplv3-license',
@@ -271,6 +287,9 @@
     <script src="js/linegraph.js"></script>
     <script src="js/dietVis.js"></script>
     <!-- Load data, create visualizations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.4.0/nouislider.min.js"
+        integrity="sha512-mZXUH8DAODwCHioWP3gltQwa953LbABMlzTYwYkKqv8eNxOk37B1HgNNuCMfFxgrpW5C34WJbxPDcM58+s1dJA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="js/main.js"></script>
 
 </body>
