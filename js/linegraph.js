@@ -17,7 +17,7 @@ class LineGraph {
         const vis = this;
 
         // Set up the SVG drawing area
-        vis.margin = { top: 20, right: 20, bottom: 40, left: 40 };
+        vis.margin = { top: 40, right: 20, bottom: 40, left: 40 };
         vis.width = 500 - vis.margin.left - vis.margin.right;
         vis.height = 300 - vis.margin.top - vis.margin.bottom;
 
@@ -72,8 +72,14 @@ class LineGraph {
         vis.yScale.domain([minY, maxY]);
     
         vis.svg.select('.x-axis')
+            .transition()
+            .duration(500)
             .call(vis.xAxis.tickFormat(d3.format('d'))); // Use 'd' format to remove commas
-        vis.svg.select('.y-axis').call(vis.yAxis);
+
+        vis.svg.select('.y-axis')
+            .transition()
+            .duration(500)
+            .call(vis.yAxis);
     
         // Draw lines connecting circles
         const line = d3.line()
@@ -81,12 +87,16 @@ class LineGraph {
             .y(d => vis.yScale(d[vis.yLabel]));
     
         vis.svg.selectAll('.line').remove(); // Remove existing lines
+        
         vis.svg
             .append('path')
             .datum(vis.data)
             .attr('class', 'line')
             .attr('d', line)
             .attr('fill', 'none')
+            .attr('stroke-width', 3)
+            .attr('stroke-linejoin', 'round')
+            .attr('opacity', 0.5)
             .attr('stroke', vis.lineColor); // Set line color
     
         // Draw circles
