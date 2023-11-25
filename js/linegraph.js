@@ -72,8 +72,14 @@ class LineGraph {
         vis.yScale.domain([minY, maxY]);
     
         vis.svg.select('.x-axis')
+            .transition()
+            .duration(500)
             .call(vis.xAxis.tickFormat(d3.format('d'))); // Use 'd' format to remove commas
-        vis.svg.select('.y-axis').call(vis.yAxis);
+
+        vis.svg.select('.y-axis')
+            .transition()
+            .duration(500)
+            .call(vis.yAxis);
     
         // Draw lines connecting circles
         const line = d3.line()
@@ -81,6 +87,7 @@ class LineGraph {
             .y(d => vis.yScale(d[vis.yLabel]));
     
         vis.svg.selectAll('.line').remove(); // Remove existing lines
+        
         vis.svg
             .append('path')
             .datum(vis.data)
