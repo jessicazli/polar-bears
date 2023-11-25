@@ -60,25 +60,26 @@ class LineGraph {
 
     updateGraph() {
         const vis = this;
-
+    
         // Find the minimum and maximum values of x and y in the data
         const minX = d3.min(vis.data, d => d[vis.xLabel]);
         const maxX = d3.max(vis.data, d => d[vis.xLabel]);
         const minY = d3.min(vis.data, d => d[vis.yLabel]);
         const maxY = d3.max(vis.data, d => d[vis.yLabel]);
-
+    
         // Update scales and axes using the minimum and maximum values
         vis.xScale.domain([minX, maxX]);
         vis.yScale.domain([minY, maxY]);
-
-        vis.svg.select('.x-axis').call(vis.xAxis);
+    
+        vis.svg.select('.x-axis')
+            .call(vis.xAxis.tickFormat(d3.format('d'))); // Use 'd' format to remove commas
         vis.svg.select('.y-axis').call(vis.yAxis);
-
+    
         // Draw lines connecting circles
         const line = d3.line()
             .x(d => vis.xScale(d[vis.xLabel]))
             .y(d => vis.yScale(d[vis.yLabel]));
-
+    
         vis.svg.selectAll('.line').remove(); // Remove existing lines
         vis.svg
             .append('path')
@@ -87,7 +88,7 @@ class LineGraph {
             .attr('d', line)
             .attr('fill', 'none')
             .attr('stroke', vis.lineColor); // Set line color
-
+    
         // Draw circles
         vis.svg.selectAll('.circle').remove(); // Remove existing circles
         vis.svg
@@ -101,6 +102,7 @@ class LineGraph {
             .attr('cy', d => vis.yScale(d[vis.yLabel]))
             .attr('r', 4); // Adjust the radius as needed
     }
+    
 }
 
 // Other utility functions or constants related to the line graph can be added here
