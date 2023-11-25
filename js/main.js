@@ -8,6 +8,7 @@ let dietVisual;
 
 // Declare chart variables outside the function
 let emissionsChart, iceExtentChart, tempChangeChart;
+let slider = d3.select('#time-slider').node();
 
 
 // main.js
@@ -44,12 +45,12 @@ function createVis(data) {
 
     let polarBearDietData = data[3]
 
-      // error, perDayData, metaData
-      // if(error) { console.log(error); }
+    // error, perDayData, metaData
+    // if(error) { console.log(error); }
 
-      console.log("diet data",data[3])
+    console.log("diet data", data[3])
 
-      dietVisual = new DietVis('dietDiv', polarBearDietData)
+    dietVisual = new DietVis('dietDiv', polarBearDietData)
 
     // (2) Make our data look nicer and more useful
     // ...
@@ -78,9 +79,48 @@ function createVis(data) {
     // (5) Bind event handler
     // *** TO-DO ***
     // eventHandler.bind("selectionChanged", function(event){ ...
+
+    // Initialize slider
+    noUiSlider.create(slider, {
+        start: [1979, 2023],
+        connect: true,
+        step: 1,
+        margin: 1,
+        // behavior: 'drag',
+        tooltips: [true, true],
+        format: {
+            to: value => Math.round(value),
+            from: value => parseFloat(value)
+        },
+        range: {
+            min: 1979,
+            max: 2023
+        },
+    });
+
+    d3.selectAll(".noUi-handle .noUi-tooltip").classed("range-slider-value", true);
+
+    // Attach an event handler to update the graphs when the slider changes
+    slider.noUiSlider.on('change', function (values) {
+        const startYear = parseInt(values[0]);
+        const endYear = parseInt(values[1]);
+
+        // Filter data based on the selected range and update graphs
+        const filteredEmissionsData = emissionsData.filter(d => d.Year >= startYear && d.Year <= endYear);
+        const filteredIceExtentData = iceExtentData.filter(d => d.Year >= startYear && d.Year <= endYear);
+        const filteredTemperatureChangeData = temperatureChangeData.filter(d => d.Year >= startYear && d.Year <= endYear);
+
+        emissionsChart.updateData(filteredEmissionsData);
+        iceExtentChart.updateData(filteredIceExtentData);
+        tempChangeChart.updateData(filteredTemperatureChangeData);
+    });
+
+
 }
 
-let selectedCategory =  document.getElementById('dietFilter').value;
+console.log('Slider element:', slider);
+
+let selectedCategory = document.getElementById('dietFilter').value;
 
 function dietCategoryChange() {
     // Get the selected value
@@ -88,5 +128,5 @@ function dietCategoryChange() {
 
     // Update the visualization with the selected category
     // dietVis.selectedFilter = selectedDietCategory;
-    dietVisual.wrangleData(selectedDietCategory); 
+    dietVisual.wrangleData(selectedDietCategory);
 }
