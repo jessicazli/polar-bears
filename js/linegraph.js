@@ -17,7 +17,7 @@ class LineGraph {
         const vis = this;
 
         // Set up the SVG drawing area
-        vis.margin = { top: 20, right: 20, bottom: 40, left: 40 };
+        vis.margin = { top: 40, right: 20, bottom: 40, left: 40 };
         vis.width = 500 - vis.margin.left - vis.margin.right;
         vis.height = 300 - vis.margin.top - vis.margin.bottom;
 
@@ -94,6 +94,9 @@ class LineGraph {
             .attr('class', 'line')
             .attr('d', line)
             .attr('fill', 'none')
+            .attr('stroke-width', 3)
+            .attr('stroke-linejoin', 'round')
+            .attr('opacity', 0.5)
             .attr('stroke', vis.lineColor); // Set line color
     
         // Draw circles

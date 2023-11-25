@@ -62,13 +62,13 @@ function createVis(data) {
     // let countVis = new CountVis("countvis", allData);
 
     // Create a line chart for CO2 emissions with red lines and dots
-    emissionsChart = new LineGraph('emissions', emissionsData, "Year", "Emissions", "CO2 Emissions Over Time", 'red', 'red');
+    emissionsChart = new LineGraph('emissions', emissionsData, "Year", "Emissions", "CO2 Emissions Over Time", '#f7a42a', '#fc9700');
 
     // Create a line chart for ice extent with blue lines and dots
-    iceExtentChart = new LineGraph('icemass', iceExtentData, "Year", "Ice Extent", "Minimum Ice Extent Over Time", 'blue', 'blue');
+    iceExtentChart = new LineGraph('icemass', iceExtentData, "Year", "Ice Extent", "Minimum Ice Extent Over Time", '#78aeeb', '#0060cf');
 
     // Create a line chart for temperature change with green lines and dots
-    tempChangeChart = new LineGraph('avgtemp', temperatureChangeData, "Year", "Temperature Change", "Global Temperature Change Over Time", 'green', 'green');
+    tempChangeChart = new LineGraph('avgtemp', temperatureChangeData, "Year", "Temperature Change", "Global Temperature Change Over Time", '#fc7168', '#de1507');
     // *** TO-DO ***
     //  pass event handler to CountVis, at constructor of CountVis above
 
