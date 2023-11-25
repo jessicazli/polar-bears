@@ -19,6 +19,9 @@
     <!-- Include Comic Neue font link -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
 
+    <!-- noUIslider -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.4.0/nouislider.css" integrity="sha512-DGB74Gyw93qON+V0QxSRs1er6sqoPyFoy23HBL5LN7MRJBcjeCU22zega+vOEGE0XQLoVrv4ExcaesSTwZQA2w==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
@@ -84,9 +87,11 @@
                 <!-- three line graphs -->
                 <div class="row">
                     <div class="col-6">
-                        As CO2 emissions and the average temperature of the Earth increase, 
-                        we see a stark decrease in the mass of Arctic sea ice.
+                        <p style="margin-bottom: 80px">As CO2 emissions and the average temperature of the Earth increase, 
+                        we see a stark decrease in the mass of Arctic sea ice.</p>
+                        <div id="time-slider"></div>
                     </div>
+                    
                     <div class="col-6">
                         <!-- line graph 1 -->
                         <div class="row">
@@ -100,6 +105,9 @@
                             <div id="icemass"></div>
                         </div>
                     </div>
+                    <!-- <div class="col-auto align-items-center">
+                        <div id="time-slider"></div>
+                    </div> -->
                 </div>
             </div>
         </div>
@@ -252,6 +260,12 @@
         integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
         crossorigin="anonymous"></script>
     <script src="https://d3js.org/d3.v7.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.4.0/nouislider.min.js"
+        integrity="sha512-mZXUH8DAODwCHioWP3gltQwa953LbABMlzTYwYkKqv8eNxOk37B1HgNNuCMfFxgrpW5C34WJbxPDcM58+s1dJA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
 
     
     <!-- fullpage.js -->

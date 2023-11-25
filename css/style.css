@@ -3,6 +3,7 @@
 body {
 	font-family: 'Poppins', sans-serif;
 	text-align: center;
+	background-color: #f7fcff;
 }
 
 h1 {
@@ -130,4 +131,28 @@ img {
     width: 100%; /* Make it take the full width of the container */
     margin-top: 10px; /* Adjust margin as needed */
   }
+}
+
+
+
+
+
+#time-slider {
+    width: 300px; /* Adjust the width as needed */
+    margin: 20px auto; /* Center the slider and add some margin */
+}
+
+.range-slider-value {
+    background-color: #3373b8; /* Change the background color */
+    color: #fff; /* Change the text color */
+    border-radius: 5px; /* Add border-radius for rounded corners */
+    padding: 5px 10px; /* Adjust padding as needed */
+    font-size: 16px; /* Adjust the font size */
+    display: inline-block;
+    vertical-align: top;
+    margin-top: -5px; /* Adjust margin-top to align with the slider */
+}
+  
+.noUi-connect {
+    background: rgb(169, 200, 233); /* Adjust the color as needed */
 }

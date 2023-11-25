@@ -102,6 +102,11 @@ class LineGraph {
             .attr('cy', d => vis.yScale(d[vis.yLabel]))
             .attr('r', 4); // Adjust the radius as needed
     }
+
+    updateData(newData) {
+        this.data = newData;
+        this.updateGraph();
+    }
     
 }
 
