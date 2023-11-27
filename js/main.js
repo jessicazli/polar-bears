@@ -2,9 +2,13 @@
 let dateFormatter = d3.timeFormat("%Y-%m-%d");
 let dateParser = d3.timeParse("%Y-%m-%d");
 
+function updateAllVisualizations() {
+    myMapVis.wrangleData()
+}
 
 // Declare chart variables outside the function
-let emissionsChart, iceExtentChart, tempChangeChart, dietVis, healthVis, subregionMap;
+
+let emissionsChart, iceExtentChart, tempChangeChart, dietVis, healthVis, subregionMap, migrationVisual;
 let slider = d3.select('#time-slider').node();
 
 let promises = [
@@ -14,7 +18,10 @@ let promises = [
     d3.csv("data/temperature_change.csv"),
     d3.csv("data/polarBearDiet.csv"),
     d3.csv("data/polar_bear_health.csv"),
+    d3.json("data/arctic_ice.json"),
+    d3.csv("data/migration.csv"),
     d3.csv("data/polar_bear_population_2021.csv")
+
 
 
 ];
@@ -45,19 +52,26 @@ function createVis(data) {
 
     let healthData = data[4]
     console.log("Health Data:", healthData)
-    
+
+
+    let arctic_ice = data[5]
+    let migrationData = data[6]
+
+
     // Create a line chart for CO2 emissions with red lines and dots
     emissionsChart = new LineGraph('emissions', emissionsData, "Year", "Emissions", "CO2 Emissions Over Time", '#f7a42a', '#fc9700');
-    
+
     // Create a line chart for ice extent with blue lines and dots
     iceExtentChart = new LineGraph('icemass', iceExtentData, "Year", "Ice Extent", "Minimum Ice Extent Over Time", '#78aeeb', '#0060cf');
-    
+
     // Create a line chart for temperature change with green lines and dots
     tempChangeChart = new LineGraph('avgtemp', temperatureChangeData, "Year", "Temperature Change", "Global Temperature Change Over Time", '#fc7168', '#de1507');
-    
+
     dietVisual = new DietVis('dietDiv', polarBearDietData)
 
     healthVisual = new HealthVis('healthDiv', healthData)
+
+    migrationVisual = new MigrationVis('migrationDiv', arctic_ice, migrationData)
    
     // create subregionVisual
     subregionMap = new SubregionMap('subregionMap', subregionData);
@@ -80,7 +94,29 @@ function createVis(data) {
         },
     });
 
+    // Initialize slider for migration map where the start is the oldest year in the dataset and end is the most recent
+    const minBearYear = d3.min(migrationData, d => new Date(d.DateTimeUTC_ud).getFullYear());
+    const maxBearYear = d3.max(migrationData, d => new Date(d.DateTimeUTC_ud).getFullYear());
+
+    // Initialize slider for migration map with dynamic range
+    noUiSlider.create(migrationSlider, {
+        start: [minBearYear, maxBearYear],
+        connect: true,
+        step: 1,
+        tooltips: [true, true],
+        format: {
+            to: value => Math.round(value),
+            from: value => parseFloat(value)
+        },
+        range: {
+            min: minBearYear,
+            max: maxBearYear
+        },
+    });
+
+
     d3.selectAll(".noUi-handle .noUi-tooltip").classed("range-slider-value", true);
+
 
     // Attach an event handler to update the graphs when the slider changes
     slider.noUiSlider.on('change', function (values) {
@@ -96,6 +132,21 @@ function createVis(data) {
         iceExtentChart.updateData(filteredIceExtentData);
         tempChangeChart.updateData(filteredTemperatureChangeData);
     });
+
+    // Attach an event handler to update the migration map when the slider changes
+    migrationSlider.noUiSlider.on('change', function (values) {
+        const startYear = parseInt(values[0]);
+        const endYear = parseInt(values[1]);
+
+        const filteredMigrationData = migrationData.filter(d => new Date(d.DateTimeUTC_ud).getFullYear() >= startYear && new Date(d.DateTimeUTC_ud).getFullYear() <= endYear);
+
+        // Update the data for the migration map
+        migrationVisual.updateData(filteredMigrationData);
+
+        console.log("Migration Data:", filteredMigrationData);
+    });
+
+
 
 
 }

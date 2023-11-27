@@ -65,10 +65,13 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-6">
-                        <img src="images/migration.jpeg" alt="health" class="img-fluid migration">
+                    <div class="col-7">
+                        <!-- <img src="images/migration.jpeg" alt="health" class="img-fluid migration"> -->
+                        <!-- <div id="mapDiv"></div> -->
+                        <div id="migrationDiv"></div>
+                        <div id="migrationSlider"></div>
                     </div>
-                    <div class="col-6">
+                    <div class="col-4">
                         <div>Climate change is pushing polar bears and grizzly bears closer together. As the Earth
                             warms,
                             grizzly bears are migrating up towards the Southern Beaufort Sea and polar bears are
@@ -81,7 +84,8 @@
                             nature are being redrawn by humans.
                             While a phenomenon like the pizzly bear may seem like a novelty, the realities of climate
                             change are far from it,
-                            especially for the polar bears.</div>
+                            especially for the polar bears.
+                        </div>
                     </div>
                 </div>
             </div>
@@ -296,6 +300,8 @@
         integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
         crossorigin="anonymous"></script>
     <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://d3js.org/topojson.v2.min.js"></script>
+    <script src="https://d3js.org/d3-geo.v1.min.js"></script>
 
 
     <!-- fullpage.js -->
@@ -315,7 +321,10 @@
     <script src="js/linegraph.js"></script>
     <script src="js/dietVis.js"></script>
     <script src="js/healthVis.js"></script>
+    <script src="js/migration.js"></script>
     <script src="js/subregionMap.js"></script>
+  
+  
     <!-- Load data, create visualizations -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.4.0/nouislider.min.js"
         integrity="sha512-mZXUH8DAODwCHioWP3gltQwa953LbABMlzTYwYkKqv8eNxOk37B1HgNNuCMfFxgrpW5C34WJbxPDcM58+s1dJA=="

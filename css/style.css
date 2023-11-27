@@ -146,6 +146,11 @@ img {
     margin: 20px auto; /* Center the slider and add some margin */
 }
 
+#migrationSlider {
+    width: 400px; /* Adjust the width as needed */
+    margin: 20px auto; /* Center the slider and add some margin */
+}
+
 .range-slider-value {
     background-color: #3373b8; /* Change the background color */
     color: #fff; /* Change the text color */
