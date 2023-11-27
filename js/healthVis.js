@@ -44,7 +44,7 @@ class HealthVis {
             .append('text')
             .attr('class', 'title')
             .attr('x', (d, i) => i === 0 ? vis.xScale(true) : vis.xScale(false))
-            .attr('y', -10) // Position above the nodes
+            .attr('y', -5) // Position above the nodes
             .attr('text-anchor', 'middle')
             .text(d => d);
 
@@ -68,16 +68,16 @@ class HealthVis {
             .attr('transform', (d, i) => `translate(0, ${i * 20})`); // Stack legend items vertically
 
         // Draw legend colored rectangles
-        legendItem.append('rect')
+        legendItem.append('circle')
             .attr('x', 0)
-            .attr('width', 18)
-            .attr('height', 18)
+            .attr('r', 8)
             .style('fill', d => d.color);
 
         // Draw legend text
         legendItem.append('text')
+            .attr('class', 'legend-text')
             .attr('x', 24)
-            .attr('y', 9)
+            .attr('y', 0)
             .attr('dy', '0.35em') // Center text vertically
             .text(d => d.text);
 

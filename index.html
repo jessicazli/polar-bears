@@ -226,6 +226,32 @@
                         <h2>Health Visualization</h2>
                     </div>
                 </div>
+                <div class="row m-3">
+                    <div class="col-2">
+                        <select id="healthFilter" class="form-select align-self-center" aria-label="health-filter"
+                            onchange="healthCategoryChange()">
+                            <option value="parents" selected>Parents</option>
+                            <option value="bmi">BMI</option>
+                            <option value="hair_cortisol">Hair Cortisol</option>
+                        </select>
+                    </div>
+                    <div class="col-2">
+                        <select id="sexHealthFilter" class="form-select align-self-center" aria-label="sex-health-filter"
+                            onchange="sexHealthCategoryChange()">
+                            <option value="all" selected>Sex (All)</option>
+                            <option value="female">Female</option>
+                            <option value="male">Male</option>
+                        </select>
+                    </div>
+                    <div class="col-2">
+                        <select id="adultHealthFilter" class="form-select align-self-center" aria-label="age-health-filter"
+                            onchange="ageHealthCategoryChange()">
+                            <option value="all">Age (All)</option>
+                            <option value="adult" selected>Adult</option>
+                            <option value="subadult">Subadult</option>
+                        </select>
+                    </div>
+                </div>
                 <div class="row">
                     <div class="col-9">
                         <div id="healthDiv"></div>
