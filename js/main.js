@@ -8,7 +8,7 @@ function updateAllVisualizations() {
 
 // Declare chart variables outside the function
 
-let emissionsChart, iceExtentChart, tempChangeChart, dietVis, healthVis, subregionMap, migrationVisual;
+let emissionsChart, iceExtentChart, tempChangeChart, dietVis, healthVis, subregionMap, migrationVisual, arcticMap;
 let slider = d3.select('#time-slider').node();
 
 let promises = [
@@ -21,6 +21,7 @@ let promises = [
     d3.csv("data/polar_bear_population_2021.csv"), // 5
     d3.json("data/arctic_ice.json"), // 6
     d3.csv("data/migration.csv"), // 7
+    d3.json("data/linegraph_arcticice.json"), // 8
 
 
 
@@ -44,6 +45,7 @@ function createVis(data) {
     let subregionData = data[5];
     let arctic_ice = data[6]
     let migrationData = data[7]
+    let linegraph_arcticice = data[8]
 
     // console.log(data);
     // console.log("Emissions Data:", emissionsData);
@@ -69,6 +71,9 @@ function createVis(data) {
    
     // create subregionVisual
     subregionMap = new SubregionMap('subregionMap', subregionData);
+
+    // create arcticMap
+    arcticMap = new ArcticMap('arcticmap', linegraph_arcticice, migrationData);
 
     // Initialize slider
     noUiSlider.create(slider, {

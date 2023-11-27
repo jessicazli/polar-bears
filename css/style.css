@@ -24,6 +24,10 @@ h2 {
 	font-weight: bold;
 }
 
+h5 {
+	font-size: 13px;
+}
+
 #fp-nav ul li .fp-tooltip {
 	color: #3373b8;
 }
