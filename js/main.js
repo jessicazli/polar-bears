@@ -69,7 +69,7 @@ function createVis(data) {
 
     healthVisual = new HealthVis('healthDiv', healthData)
 
-    migrationVisual = new migrationVis('migrationDiv', arctic_ice)
+    migrationVisual = new MigrationVis('migrationDiv', arctic_ice, migrationData)
     // myMapVis = new MapVis('mapDiv', airportData, worldData)
    
     // Initialize slider
