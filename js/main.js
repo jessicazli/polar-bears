@@ -7,7 +7,7 @@ function updateAllVisualizations(){
 }
 
 // Declare chart variables outside the function
-let emissionsChart, iceExtentChart, tempChangeChart, dietVis, healthVis, migrationVis, myMapVis;
+let emissionsChart, iceExtentChart, tempChangeChart, dietVis, healthVis, migrationVisual, myMapVis;
 let slider = d3.select('#time-slider').node();
 
 let promises = [
@@ -17,7 +17,7 @@ let promises = [
     d3.csv("data/temperature_change.csv"),
     d3.csv("data/polarBearDiet.csv"),
     d3.csv("data/polar_bear_health.csv"),
-    d3.json("data/map.json"),
+    d3.json("data/arctic_ice.json"),
     d3.csv("data/migration.csv"),
     d3.json("data/airports.json"),
     d3.json("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-50m.json")
@@ -50,7 +50,7 @@ function createVis(data) {
     let healthData = data[4]
     console.log("Health Data:", healthData)
 
-    let mapData = data[5]
+    let arctic_ice = data[5]
     let migrationData = data[6]
     let airportData = data[7]
     let worldData = data[8]
@@ -69,8 +69,8 @@ function createVis(data) {
 
     healthVisual = new HealthVis('healthDiv', healthData)
 
-    // migrationVisual = new MapVis('migrationDiv', mapData)
-    myMapVis = new MapVis('mapDiv', airportData, worldData)
+    migrationVisual = new migrationVis('migrationDiv', arctic_ice)
+    // myMapVis = new MapVis('mapDiv', airportData, worldData)
    
     // Initialize slider
     noUiSlider.create(slider, {
