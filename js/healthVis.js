@@ -44,7 +44,6 @@ class HealthVis {
             .domain([d3.min(vis.data, d => d['Hair Cortisol']), d3.max(vis.data, d => d['Hair Cortisol'])])
             .range([0, vis.width]);
         
-
         vis.updateVis(this.selectedHealthCategory);
 
     }
@@ -170,19 +169,20 @@ class HealthVis {
         }
 
         else if (selectedHealthCategory === 'bmi') {
-
+            
             // Determine the number of bins
             const numBins = Math.sqrt(vis.data.length); // Example dynamic bin count, can be adjusted
-
+            
             // Create a histogram layout generator
             const histogram = d3.histogram()
-                .value(d => d.BMI)
-                .domain(vis.xScaleBMI.domain())
-                .thresholds(vis.xScaleBMI.ticks(numBins)); // Create threshold ticks based on the scale
-
+            .value(d => d.BMI)
+            .domain(vis.xScaleBMI.domain())
+            .thresholds(vis.xScaleBMI.ticks(numBins)); // Create threshold ticks based on the scale
+            
             // Bin the data
             const bins = histogram(vis.data);
-
+            
+            
             // Prepare data points with additional layout information
             const stackedPoints = [];
             bins.forEach((bin, i) => {
@@ -201,7 +201,7 @@ class HealthVis {
                 .append('circle')
                 .attr('cx', d => vis.xScaleBMI(d.data.BMI))
                 .attr('cy', d => vis.height / 2 + d.yOffset + 200) // Center vertically and apply yOffset
-                .attr('r', 8)
+                .attr('r', 8) // transition to the final radius
                 .attr('fill', d => d.data.Sex === 'F' ? '#fca9e1' : '#7edffc')
                 .on("mouseover", function(event, d) {
                     vis.tooltip.transition()
