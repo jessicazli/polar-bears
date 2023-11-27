@@ -119,7 +119,7 @@ class LineGraph {
             .ease(d3.easeLinear)
             .attr('stroke-dashoffset', 0);  // Final position of the line
 
-        // Draw circles
+        // Remove existing circles
         vis.svg.selectAll('.circle').remove();
 
         // Append new circles with transition

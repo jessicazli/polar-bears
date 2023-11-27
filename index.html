@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>A Frigid Fate: The Decline of Polar Bears in a Warming World</title>
 
-    <link href="https://fonts.googleapis.com/css?family=Neuton:300,400,400i,700,800" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Neuton:300,400,400i,700,800|Inter" rel="stylesheet">
 
     <!-- CSS libraries -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -40,6 +40,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <h1>A Frigid Fate: The Decline of Polar Bears in a Warming World</h1>
+                        <img src="images/melting.png" alt="polar bear" class="img-fluid" style="height: 30vh; width: 30vh;"> 
                     </div>
                 </div>
             </div>
@@ -49,7 +50,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <h2>Did you know there is a new species in the Arctic?</h2>
-                        <div>PIZZLY BEARS!</div>
+                        <h3>PIZZLY BEARS!</h3>
                         <div>What are pizzly bears?</div>
                         <div>Pizzly bears are a hybrid between polar bears and their southern relatives, the grizzly
                             bears.</div>
@@ -65,10 +66,15 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-6">
-                        <img src="images/migration.jpeg" alt="health" class="img-fluid migration">
+                    <div class="col-7">
+                        <!-- <img src="images/migration.jpeg" alt="health" class="img-fluid migration"> -->
+                        <!-- <div id="mapDiv"></div> -->
+                        <div id="migrationDiv"></div>
+                        <div id="migrationSlider"></div>
+                        <h5>SLIDER BROKEN. Blue = arctic ice. Each dot is a polar bear's location in time, <br> and overall one color maps a polar bear's migration path.
+                        Larger circles signify <br> tracks from earlier years, and smaller one signify more recent years.</h5>
                     </div>
-                    <div class="col-6">
+                    <div class="col-4">
                         <div>Climate change is pushing polar bears and grizzly bears closer together. As the Earth
                             warms,
                             grizzly bears are migrating up towards the Southern Beaufort Sea and polar bears are
@@ -81,7 +87,8 @@
                             nature are being redrawn by humans.
                             While a phenomenon like the pizzly bear may seem like a novelty, the realities of climate
                             change are far from it,
-                            especially for the polar bears.</div>
+                            especially for the polar bears.
+                        </div>
                     </div>
                 </div>
             </div>
@@ -90,16 +97,18 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-12">
-                        <h2>A Closer Look into Climate Change</h2>
+                        <h2 style="text-align: left;">A Closer Look into Climate Change</h2>
                     </div>
                 </div>
                 <!-- three line graphs -->
                 <div class="row">
                     <div class="col-6">
-                        <p style="margin-bottom: 80px">As CO2 emissions and the average temperature of the Earth
+                        <p style="margin-bottom: 80px; text-align: left;">As CO2 emissions and the average temperature of the Earth
                             increase,
                             we see a stark decrease in the mass of Arctic sea ice.</p>
                         <div id="time-slider"></div>
+                        <div id="arcticmap" style="margin-bottom: 40px;"></div>
+                        <h5 style="text-align: left;"> (not done yet but as you move the slider you should be able to play an animation of a sort of timelapse of the minimum ice extent across the years)</h5>
                     </div>
                     <div class="col-6">
                         <!-- line graph 1 -->
@@ -121,18 +130,39 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-12">
-                        <h2>Subregions</h2>
+                        <h2>19 Subpopulations throughout the Arctic</h2>
                     </div>
                 </div>
+                <div class="row justify-content-center m-3">
+                    <div class="col-3">
+                    <div class="row justify-content-center full-height">
+                        <select id="subregionFilter" class="form-select align-self-center" aria-label="filter-dropdown" onchange="changeSubregionFilter()">
+                        <option value="Ecoregions" selected>Ecoregions</option>
+                        <option value="Population_Change">Population Change</option>
+                        <option value="Sea_Ice_Change">Sea Ice Change</option>
+                        <option value="Bear_Population">Population Size</option>
+                        </select>
+                    </div>
+                    </div>
+                </div>
+      
                 <div class="row">
                     <div class="col-8">
-                        <img src="images/regions.png" alt="health" class="img-fluid">
+                        <div id="subregionMap" class="diet-style"></div>
                     </div>
                     <div class="col-4">
-                        Let's take a closer look into how the melting of the Arctic sea ice is
-                        affecting polar bears in each of the 18 different subregions.
+                        <div id="subregionAnalysis">
+                            <p>Let's take a closer look into how the melting of the Arctic sea ice is
+                                affecting polar bears in each of the 19 different subregions in the year 2021. </p>
+                            <br />
+                            <p>Most subregions experience sea ice loss in 2021, with Chukchi Sea losing the most - around 25% - of its sea ice extent in 2021.
+                                This is alarming because Chukchi Sea also has the largest polar bear population.</p>
+                            <br />
+                            <p>Population change data is unknown or deficient for most subpopulations, but among the subpopulations with information available, 3 of those populations likely decreased. </p>
+                        </div>
                     </div>
                 </div>
+
             </div>
         </div>
         <div class="section s6">
@@ -176,7 +206,14 @@
                             <div id="dietDiv" class="diet-style"></div>
                         </div>
                         <div class="col-4">
-                            <div id="dietAnalysis">Analysis</div>
+                            <div id="dietAnalysis">
+                                <p>
+                                   
+                                    Polar Bears are carnivores and feed mainly on ringed and beared seals. Depending on their location and available
+                                    food sources, they also hunt whales. However, as sea ice extent decreased throughout the years, 
+                                    polar bears' average consumption of beluga whales has signficantly declined
+                                    from 2004 to 2016, suggesting a change in their diet. 
+                                </p> </div>
                         </div>
                     </div>
                 </div>
@@ -294,6 +331,8 @@
         integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
         crossorigin="anonymous"></script>
     <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://d3js.org/topojson.v2.min.js"></script>
+    <script src="https://d3js.org/d3-geo.v1.min.js"></script>
 
 
     <!-- fullpage.js -->
@@ -313,6 +352,11 @@
     <script src="js/linegraph.js"></script>
     <script src="js/dietVis.js"></script>
     <script src="js/healthVis.js"></script>
+    <script src="js/migration.js"></script>
+    <script src="js/subregionMap.js"></script>
+    <script src="js/arcticmap.js"></script>
+  
+  
     <!-- Load data, create visualizations -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.4.0/nouislider.min.js"
         integrity="sha512-mZXUH8DAODwCHioWP3gltQwa953LbABMlzTYwYkKqv8eNxOk37B1HgNNuCMfFxgrpW5C34WJbxPDcM58+s1dJA=="
