@@ -24,6 +24,16 @@ h2 {
 	font-weight: bold;
 }
 
+h3 {
+	color: #000c18;
+	font-size: 18px;
+	/* margin-top: 10px; */
+	margin-bottom: 30px;
+	font-family: 'Inter', sans-serif;
+	font-weight: bold;
+
+}
+
 h5 {
 	font-size: 13px;
 }
@@ -93,8 +103,8 @@ img {
 #dietFilter {
 	max-width: 200px; /* Set a maximum width */
 	margin: 0; /* Remove default margin */
-	border-radius: 8px; /* Add border radius */
-	background-color: #c4e4fb;
+	border-radius: 10px; /* Add border radius */
+	background-color: #ffffff;
 }
 
 .diet-style {
