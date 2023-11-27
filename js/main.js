@@ -10,6 +10,8 @@ function updateAllVisualizations() {
 
 let emissionsChart, iceExtentChart, tempChangeChart, dietVis, healthVis, subregionMap, migrationVisual, arcticMap;
 let slider = d3.select('#time-slider').node();
+let migrationSlider = document.getElementById('migrationSlider');
+
 
 let promises = [
 
@@ -114,7 +116,7 @@ function createVis(data) {
     });
 
 
-    d3.selectAll(".noUi-handle .noUi-tooltip").classed("range-slider-value", true);
+    // d3.selectAll(".noUi-handle .noUi-tooltip").classed("range-slider-value", true);
 
 
     // Attach an event handler to update the graphs when the slider changes
@@ -145,12 +147,7 @@ function createVis(data) {
         console.log("Migration Data:", filteredMigrationData);
     });
 
-
-
-
 }
-
-console.log('Slider element:', slider);
 
 let selectedCategory = document.getElementById('dietFilter').value;
 

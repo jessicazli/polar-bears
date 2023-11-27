@@ -57,7 +57,7 @@ class ArcticMap {
       .attr("d", vis.path)
       .attr("stroke", "steelblue")
       .attr("stroke-width", 1.2)
-      .attr("fill-opacity", 0.5)
+      .attr("fill-opacity", 0.2)
       .style("fill", "steelblue");
 
     // // Update the graph

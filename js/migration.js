@@ -24,8 +24,8 @@ class MigrationVis {
 
     // Create a projection
     vis.projection = d3.geoOrthographic()
-      .scale(vis.height / 0.4)
-      .translate([vis.width - 200, vis.height + 100])
+      .scale(vis.height / 0.3)
+      .translate([vis.width - 100, vis.height +150])
       .rotate([0, -90])
       .clipAngle(100)
       .precision(.5);
@@ -57,7 +57,7 @@ class MigrationVis {
       .attr("d", vis.path)
       .attr("stroke", "steelblue")
       .attr("stroke-width", 1.2)
-      .attr("fill-opacity", 0.5)
+      .attr("fill-opacity", 0.2)
       .style("fill", "steelblue");
 
     // Update the graph
@@ -71,26 +71,28 @@ class MigrationVis {
     const parseTime = d3.timeParse("%m/%d/%Y %H:%M");
 
     // Append new circles with transition
-    vis.svg.selectAll("circle")
-      .data(vis.bearData)
-      .enter()
-      .append("circle")
-      .attr("cx", d => vis.projection([d.longitude_ud, d.latitude_ud])[0])
-      .attr("cy", d => vis.projection([d.longitude_ud, d.latitude_ud])[1])
-      .attr("r", d => vis.radiusScale(parseTime(d.DateTimeUTC_ud)))
-      .attr("stroke", "black")
-      .attr("stroke-opacity", 0.5)
-      .attr("fill", d => vis.colorScale(parseTime(d.DateTimeUTC_ud)))
-      .attr("fill-opacity", 0.6)
-      .transition()
-      .duration(500)
-      .attr("r", d => vis.radiusScale(parseTime(d.DateTimeUTC_ud)));
+    const circles = vis.svg.selectAll(".circle")
+        .data(vis.bearData);
 
-    vis.svg.selectAll("circle")
-      .data(vis.bearData)
-      .exit()
-      .remove();
-  }
+    circles.enter()
+        .append('circle')
+        .attr("class", "circle")  // Add a class for selection
+        .merge(circles)  // Merging the enter and update selections
+        .attr("cx", d => vis.projection([d.longitude_ud, d.latitude_ud])[0])
+        .attr("cy", d => vis.projection([d.longitude_ud, d.latitude_ud])[1])
+        .attr("r", d => vis.radiusScale(parseTime(d.DateTimeUTC_ud)))
+        .attr("stroke", "black")
+        .attr("stroke-opacity", 0.4)
+        .attr("fill", d => vis.colorScale(parseTime(d.DateTimeUTC_ud)))
+        .attr("fill-opacity", 0.5)
+        .transition()
+        .duration(500)
+        .attr("r", d => vis.radiusScale(parseTime(d.DateTimeUTC_ud)));
+
+    // Remove circles that are no longer needed
+    circles.exit().remove();
+}
+
 
   updateData(newData) {
     this.data = newData;
