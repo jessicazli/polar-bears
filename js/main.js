@@ -8,7 +8,7 @@ function updateAllVisualizations() {
 
 // Declare chart variables outside the function
 
-let emissionsChart, iceExtentChart, tempChangeChart, dietVis, healthVis, subregionMap, migrationVisual, arcticMap;
+let emissionsChart, iceExtentChart, tempChangeChart, dietVisual, healthVisual, adoptVisual, subregionMap, migrationVisual, arcticMap;
 let slider = d3.select('#time-slider').node();
 let migrationSlider = document.getElementById('migrationSlider');
 
@@ -68,6 +68,8 @@ function createVis(data) {
     dietVisual = new DietVis('dietDiv', polarBearDietData)
 
     healthVisual = new HealthVis('healthDiv', healthData)
+
+    adoptVisual = new AdoptBear('adoptDiv', healthData)
 
     migrationVisual = new MigrationVis('migrationDiv', arctic_ice, migrationData)
    
@@ -146,6 +148,13 @@ function createVis(data) {
 
         console.log("Migration Data:", filteredMigrationData);
     });
+
+    // event listener
+    document.getElementById('adoptButton').addEventListener('click', function() {
+        adoptVisual.updateBear();
+        document.getElementById(adoptVisual.parentElement).innerHTML = adoptVisual.description;
+    });
+    
 
 }
 
