@@ -4,7 +4,7 @@ let dateParser = d3.timeParse("%Y-%m-%d");
 
 
 // Declare chart variables outside the function
-let emissionsChart, iceExtentChart, tempChangeChart, dietVis, healthVis;
+let emissionsChart, iceExtentChart, tempChangeChart, dietVis, healthVis, subregionMap;
 let slider = d3.select('#time-slider').node();
 
 let promises = [
@@ -14,6 +14,7 @@ let promises = [
     d3.csv("data/temperature_change.csv"),
     d3.csv("data/polarBearDiet.csv"),
     d3.csv("data/polar_bear_health.csv"),
+    d3.csv("data/polar_bear_population_2021.csv")
 
 
 ];
@@ -31,18 +32,19 @@ function createVis(data) {
     let emissionsData = data[0];
     let iceExtentData = data[1];
     let temperatureChangeData = data[2];
+    let subregionData = data[5];
 
     console.log(data);
     console.log("Emissions Data:", emissionsData);
     console.log("Ice Extent Data:", iceExtentData);
     console.log("Temperature Change Data:", temperatureChangeData);
+    console.log("subregion", subregionData)
 
     let polarBearDietData = data[3]
     console.log("diet data", data[3])
 
     let healthData = data[4]
     console.log("Health Data:", healthData)
-
     
     // Create a line chart for CO2 emissions with red lines and dots
     emissionsChart = new LineGraph('emissions', emissionsData, "Year", "Emissions", "CO2 Emissions Over Time", '#f7a42a', '#fc9700');
@@ -57,6 +59,9 @@ function createVis(data) {
 
     healthVisual = new HealthVis('healthDiv', healthData)
    
+    // create subregionVisual
+    subregionMap = new SubregionMap('subregionMap', subregionData);
+
     // Initialize slider
     noUiSlider.create(slider, {
         start: [1979, 2023],
@@ -103,7 +108,9 @@ function dietCategoryChange() {
     // Get the selected value
     selectedDietCategory = document.getElementById('dietFilter').value;
 
-    // Update the visualization with the selected category
-    // dietVis.selectedFilter = selectedDietCategory;
     dietVisual.wrangleData(selectedDietCategory);
+}
+
+function changeSubregionFilter() {
+    subregionMap.wrangleData();
 }

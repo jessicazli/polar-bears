@@ -9,7 +9,7 @@ class DietVis {
 
       this.selectedDietCategory = 'total_consumption'
 
-      this.colors=["#134078", "#add8e6", "#134078"]
+      this.colors=["#134078", "#add8e6", "#3D5573"]
       console.log(this.data)
       // Initialize the chart
       this.initVis();
@@ -230,35 +230,6 @@ class DietVis {
                 .html(``);
           });
         })
-        // .on('mouseover', function(event, d) {
-        //   d3.select(this)
-        //     .attr('stroke-width', '1px')
-        //     .attr('stroke', vis.colors[2])
-
-        //     vis.tooltip
-        //         .style('opacity', 0.9)
-        //         .html(`
-        //         <div style="border: thin solid lightblue; border-radius: 5px; text-align: left; background: ${vis.colors[0]}; color: white; padding: 20px">
-        //         <h3>${d[0]}</h3>
-        //         <p> <span style="font-weight: bold;color: #dfeaf8;"> Year: </span>${d[0]} 
-        //         <br>
-        //         <span style="font-weight: bold;color: #dfeaf8;"> Total Consumption: </span> ${d[1][dataField]}
-        //         <br>
-        //         <span style="font-weight: bold; color: #dfeaf8;"> Number of Polar Bears Captured: </span> ${d[1].num_bears} </p>
-        //           </div>`)
-        //         .style('left', event.pageX + 10 + 'px')
-        //         .style('top', event.pageY - 15 + 'px');
-        // })
-        // .on('mouseout', function(event, d){
-        //     d3.select(this)
-        //       .attr('stroke-width', '0px')
-
-        //     vis.tooltip
-        //       .style('opacity', 0)
-        //       .style("left", 0)
-        //       .style("top", 0)
-        //       .html(``);
-        // });
 
     vis.bar.exit().remove();
 }
