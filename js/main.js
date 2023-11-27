@@ -97,7 +97,7 @@ function createVis(data) {
 
 console.log('Slider element:', slider);
 
-let selectedCategory = document.getElementById('dietFilter').value;
+// let selectedCategory = document.getElementById('dietFilter').value;
 
 function dietCategoryChange() {
     // Get the selected value
@@ -106,4 +106,10 @@ function dietCategoryChange() {
     // Update the visualization with the selected category
     // dietVis.selectedFilter = selectedDietCategory;
     dietVisual.wrangleData(selectedDietCategory);
+}
+
+function healthCategoryChange() {
+    selectedHealthCategory = document.getElementById('healthFilter').value;
+
+    healthVisual.updateVis(selectedHealthCategory);
 }
