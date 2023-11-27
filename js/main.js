@@ -13,14 +13,14 @@ let slider = d3.select('#time-slider').node();
 
 let promises = [
 
-    d3.csv("data/CO2_emissions.csv"),
-    d3.csv("data/september_minimum_ice_extent.csv"),
-    d3.csv("data/temperature_change.csv"),
-    d3.csv("data/polarBearDiet.csv"),
-    d3.csv("data/polar_bear_health.csv"),
-    d3.json("data/arctic_ice.json"),
-    d3.csv("data/migration.csv"),
-    d3.csv("data/polar_bear_population_2021.csv")
+    d3.csv("data/CO2_emissions.csv"), // 0
+    d3.csv("data/september_minimum_ice_extent.csv"), // 1
+    d3.csv("data/temperature_change.csv"), // 2
+    d3.csv("data/polarBearDiet.csv"), // 3
+    d3.csv("data/polar_bear_health.csv"), // 4
+    d3.csv("data/polar_bear_population_2021.csv"), // 5
+    d3.json("data/arctic_ice.json"), // 6
+    d3.csv("data/migration.csv"), // 7
 
 
 
@@ -39,23 +39,17 @@ function createVis(data) {
     let emissionsData = data[0];
     let iceExtentData = data[1];
     let temperatureChangeData = data[2];
-    let subregionData = data[5];
-
-    console.log(data);
-    console.log("Emissions Data:", emissionsData);
-    console.log("Ice Extent Data:", iceExtentData);
-    console.log("Temperature Change Data:", temperatureChangeData);
-    console.log("subregion", subregionData)
-
     let polarBearDietData = data[3]
-    console.log("diet data", data[3])
-
     let healthData = data[4]
-    console.log("Health Data:", healthData)
+    let subregionData = data[5];
+    let arctic_ice = data[6]
+    let migrationData = data[7]
 
-
-    let arctic_ice = data[5]
-    let migrationData = data[6]
+    // console.log(data);
+    // console.log("Emissions Data:", emissionsData);
+    // console.log("Ice Extent Data:", iceExtentData);
+    // console.log("Temperature Change Data:", temperatureChangeData);
+    // console.log("subregion", subregionData)
 
 
     // Create a line chart for CO2 emissions with red lines and dots
