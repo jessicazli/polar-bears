@@ -149,7 +149,7 @@ function createVis(data) {
 
 }
 
-let selectedCategory = document.getElementById('dietFilter').value;
+// let selectedCategory = document.getElementById('dietFilter').value;
 
 function dietCategoryChange() {
     // Get the selected value
@@ -158,6 +158,13 @@ function dietCategoryChange() {
     dietVisual.wrangleData(selectedDietCategory);
 }
 
+function healthCategoryChange() {
+    selectedHealthCategory = document.getElementById('healthFilter').value;
+
+    healthVisual.updateVis(selectedHealthCategory);
+}
+
 function changeSubregionFilter() {
     subregionMap.wrangleData();
 }
+

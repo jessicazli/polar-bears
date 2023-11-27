@@ -183,3 +183,15 @@ img {
 .noUi-connect {
     background: rgb(169, 200, 233); /* Adjust the color as needed */
 }
+
+
+.health-tooltip {
+    position: absolute;
+    text-align: left;
+    padding: 8px;
+    font: 12px sans-serif;
+    background: white;
+    border: solid 1px #aaa;
+    border-radius: 4px;
+    pointer-events: none;
+}
