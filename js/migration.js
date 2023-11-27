@@ -1,5 +1,4 @@
 class MigrationVis {
-
   constructor(parentElement, geoData, bearData) {
     this.parentElement = parentElement;
     this.geoData = geoData;
@@ -61,7 +60,17 @@ class MigrationVis {
       .attr("fill-opacity", 0.5)
       .style("fill", "steelblue");
 
-    // Bind bear data and create circles for each location
+    // Update the graph
+    vis.updateVis();
+  }
+
+  updateVis() {
+    const vis = this;
+
+    // Parse timestamps to create a time scale
+    const parseTime = d3.timeParse("%m/%d/%Y %H:%M");
+
+    // Append new circles with transition
     vis.svg.selectAll("circle")
       .data(vis.bearData)
       .enter()
@@ -72,11 +81,21 @@ class MigrationVis {
       .attr("stroke", "black")
       .attr("stroke-opacity", 0.5)
       .attr("fill", d => vis.colorScale(parseTime(d.DateTimeUTC_ud)))
-      .attr("fill-opacity", 0.6);
+      .attr("fill-opacity", 0.6)
+      .transition()
+      .duration(500)
+      .attr("r", d => vis.radiusScale(parseTime(d.DateTimeUTC_ud)));
+
+    vis.svg.selectAll("circle")
+      .data(vis.bearData)
+      .exit()
+      .remove();
   }
 
   updateData(newData) {
     this.data = newData;
-    this.updateGraph();
-}
+    this.updateVis();
+  }
+
+
 }
