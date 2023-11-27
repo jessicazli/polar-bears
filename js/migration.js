@@ -35,9 +35,6 @@ class MigrationVis {
     vis.path = d3.geoPath()
       .projection(vis.projection);
 
-    // Create color scale for unique bear IDs
-    vis.colorScale = d3.scaleOrdinal(d3.schemeBlues[9]);
-
     // Parse timestamps to create a time scale
     const parseTime = d3.timeParse("%m/%d/%Y %H:%M");
     const maxDate = d3.max(vis.bearData, d => parseTime(d.DateTimeUTC_ud));
@@ -46,7 +43,12 @@ class MigrationVis {
     // Create a time scale for circle sizes
     vis.radiusScale = d3.scaleTime()
       .domain([minDate, maxDate])
-      .range([1, 5]); // Adjust the range for the desired size variation
+      .range([5, 0.2]); // Adjust the range for the desired size variation
+
+    // Create a sequential color scale for time
+    vis.colorScale = d3.scaleSequential()
+      .domain([minDate, maxDate])
+      .interpolator(d3.interpolateGnBu); // You can adjust the color scheme if needed
 
     // Bind data and create one path per GeoJSON feature
     vis.svg.selectAll("path")
@@ -69,7 +71,7 @@ class MigrationVis {
       .attr("r", d => vis.radiusScale(parseTime(d.DateTimeUTC_ud)))
       .attr("stroke", "black")
       .attr("stroke-opacity", 0.5)
-      .attr("fill", d => vis.colorScale(d.BearID_ud))
-      .attr("fill-opacity", 0.8);
+      .attr("fill", d => vis.colorScale(parseTime(d.DateTimeUTC_ud)))
+      .attr("fill-opacity", 0.6);
   }
 }
