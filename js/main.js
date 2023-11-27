@@ -19,8 +19,7 @@ let promises = [
     d3.csv("data/polar_bear_health.csv"),
     d3.json("data/arctic_ice.json"),
     d3.csv("data/migration.csv"),
-    d3.json("data/airports.json"),
-    d3.json("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-50m.json")
+    // d3.json("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-50m.json")
 
 
 ];
@@ -52,8 +51,6 @@ function createVis(data) {
 
     let arctic_ice = data[5]
     let migrationData = data[6]
-    let airportData = data[7]
-    let worldData = data[8]
 
     
     // Create a line chart for CO2 emissions with red lines and dots
@@ -70,7 +67,6 @@ function createVis(data) {
     healthVisual = new HealthVis('healthDiv', healthData)
 
     migrationVisual = new MigrationVis('migrationDiv', arctic_ice, migrationData)
-    // myMapVis = new MapVis('mapDiv', airportData, worldData)
    
     // Initialize slider
     noUiSlider.create(slider, {
@@ -90,7 +86,25 @@ function createVis(data) {
         },
     });
 
+    // Initialize slider for migration map
+    noUiSlider.create(migrationSlider, {
+        start: [1979, 2023],
+        connect: true,
+        step: 1,
+        margin: 1,
+        tooltips: [true, true],
+        format: {
+            to: value => Math.round(value),
+            from: value => parseFloat(value)
+        },
+        range: {
+            min: 1979,
+            max: 2023
+        },
+    });
+
     d3.selectAll(".noUi-handle .noUi-tooltip").classed("range-slider-value", true);
+    
 
     // Attach an event handler to update the graphs when the slider changes
     slider.noUiSlider.on('change', function (values) {
@@ -105,6 +119,15 @@ function createVis(data) {
         emissionsChart.updateData(filteredEmissionsData);
         iceExtentChart.updateData(filteredIceExtentData);
         tempChangeChart.updateData(filteredTemperatureChangeData);
+    });
+
+    // Attach an event handler to update the migration map when the slider changes
+    migrationSlider.noUiSlider.on('change', function (values) {
+        const startYear = parseInt(values[0]);
+        const endYear = parseInt(values[1]);
+
+        // Update the time range for the migration map
+        migrationVisual.updateTimeRange([new Date(startYear, 0, 1), new Date(endYear, 0, 1)]);
     });
 
 

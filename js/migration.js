@@ -74,4 +74,9 @@ class MigrationVis {
       .attr("fill", d => vis.colorScale(parseTime(d.DateTimeUTC_ud)))
       .attr("fill-opacity", 0.6);
   }
+
+  updateData(newData) {
+    this.data = newData;
+    this.updateGraph();
+}
 }
