@@ -50,6 +50,10 @@ img {
 	margin-bottom: 30px;
 }
 
+.legend-text {
+	font-size: 14px;
+}
+
 /*
 .brush {
 	fill: #ccc;
