@@ -3,6 +3,8 @@ class MigrationVis {
     this.parentElement = parentElement;
     this.geoData = geoData;
     this.bearData = bearData;
+    this.displayData = bearData;
+
 
     this.initVis();
   }
@@ -72,8 +74,8 @@ class MigrationVis {
 
     // Append new circles with transition
     const circles = vis.svg.selectAll(".circle")
-        .data(vis.bearData);
-
+        .data(vis.displayData);
+  
     circles.enter()
         .append('circle')
         .attr("class", "circle")  // Add a class for selection
@@ -95,7 +97,7 @@ class MigrationVis {
 
 
   updateData(newData) {
-    this.data = newData;
+    this.displayData = newData;
     this.updateVis();
   }
 

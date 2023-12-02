@@ -137,14 +137,14 @@ function createVis(data) {
     });
 
     // Attach an event handler to update the migration map when the slider changes
-    migrationSlider.noUiSlider.on('change', function (values) {
+    migrationSlider.noUiSlider.on('change', async function (values) {
         const startYear = parseInt(values[0]);
         const endYear = parseInt(values[1]);
 
         const filteredMigrationData = migrationData.filter(d => new Date(d.DateTimeUTC_ud).getFullYear() >= startYear && new Date(d.DateTimeUTC_ud).getFullYear() <= endYear);
 
         // Update the data for the migration map
-        migrationVisual.updateData(filteredMigrationData);
+        await migrationVisual.updateData(filteredMigrationData);
 
         console.log("Migration Data:", filteredMigrationData);
     });
