@@ -195,3 +195,21 @@ img {
     border-radius: 4px;
     pointer-events: none;
 }
+
+/* .subregion {
+	height: 50vh;
+} */
+
+/* .table {
+	font-size: 0.9em;
+} */
+
+.table-style {
+	overflow-y: scroll; 
+	height: 70vh; 
+	width:100%;
+	border: thin solid grey; 
+	border-radius: 5px; 
+
+	color: black;
+}

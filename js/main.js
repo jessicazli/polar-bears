@@ -65,9 +65,9 @@ function createVis(data) {
     // Create a line chart for temperature change with green lines and dots
     tempChangeChart = new LineGraph('avgtemp', temperatureChangeData, "Year", "Temperature Change", "Global Temperature Change Over Time", '#fc7168', '#de1507');
 
-    dietVisual = new DietVis('dietDiv', polarBearDietData)
-
     healthVisual = new HealthVis('healthDiv', healthData)
+
+    dietVisual = new DietVis('dietDiv', polarBearDietData)
 
     adoptVisual = new AdoptBear('adoptDiv', healthData)
 
@@ -75,6 +75,7 @@ function createVis(data) {
    
     // create subregionVisual
     subregionMap = new SubregionMap('subregionMap', subregionData);
+    subregionTable = new SubregionTable('subregionTable', subregionData)
 
     // create arcticMap
     arcticMap = new ArcticMap('arcticmap', linegraph_arcticice, migrationData);
@@ -175,5 +176,6 @@ function healthCategoryChange() {
 
 function changeSubregionFilter() {
     subregionMap.wrangleData();
+    subregionTable.wrangleData();
 }
 

@@ -134,7 +134,8 @@
                     </div>
                 </div>
                 <div class="row justify-content-center m-3">
-                    <div class="col-3">
+                    <!-- subpopulations map -->
+                    <div class="col-4">
                     <div class="row justify-content-center full-height">
                         <select id="subregionFilter" class="form-select align-self-center" aria-label="filter-dropdown" onchange="changeSubregionFilter()">
                         <option value="Ecoregions" selected>Ecoregions</option>
@@ -144,21 +145,27 @@
                         </select>
                     </div>
                     </div>
+   
                 </div>
       
                 <div class="row">
-                    <div class="col-8">
+                    <div class="col-4">
                         <div id="subregionMap" class="diet-style"></div>
+                    </div>
+
+                    <!-- subpopulations table -->
+                    <div class="col-4">
+                        <div id="subregionTable" class="subregion table table-style"></div>
                     </div>
                     <div class="col-4">
                         <div id="subregionAnalysis">
-                            <p>Let's take a closer look into how the melting of the Arctic sea ice is
+                            <p class="text-start">Let's take a closer look into how the melting of the Arctic sea ice is
                                 affecting polar bears in each of the 19 different subregions in the year 2021. </p>
                             <br />
-                            <p>Most subregions experience sea ice loss in 2021, with Chukchi Sea losing the most - around 25% - of its sea ice extent in 2021.
+                            <p class="text-start">Most subregions experience sea ice loss in 2021, with Chukchi Sea losing the most - around 25% - of its sea ice extent in 2021.
                                 This is alarming because Chukchi Sea also has the largest polar bear population.</p>
                             <br />
-                            <p>Population change data is unknown or deficient for most subpopulations, but among the subpopulations with information available, 3 of those populations likely decreased. </p>
+                            <p class="text-start">Population change data is unknown or deficient for most subpopulations, but among the subpopulations with information available, 3 of those populations likely decreased. </p>
                         </div>
                     </div>
                 </div>
@@ -371,6 +378,8 @@
             navigation: true,
             anchors: ["section1", "section2", "section3", "section4", "section5", "section6", "section7", "section8", "section9", "section10"],
             navigationTooltips: ['Home', 'Pizzly', 'Migration', 'Climate Change', 'Regions', 'Diet', 'Health', 'Adopt a Bear', 'Thank You', 'About Us'],
+            normalScrollElements: '#subregionTable',
+            scrollOverflow: true,
         });
     </script>
 
@@ -382,7 +391,8 @@
     <script src="js/migration.js"></script>
     <script src="js/subregionMap.js"></script>
     <script src="js/arcticmap.js"></script>
-  
+    <script src="js/subregionTable.js"></script>
+
   
     <!-- Load data, create visualizations -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.4.0/nouislider.min.js"

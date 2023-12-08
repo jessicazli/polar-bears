@@ -68,7 +68,7 @@ class SubregionMap {
         vis.seaIceMin = d3.min(vis.seaIceFilteredData, d => d["Sea_Ice_Change"])
         console.log(vis.seaIceMin, vis.seaIceMax)
         vis.seaIceChangeColor = d3.scaleSequential()
-          .interpolator(d3.interpolateGnBu)
+          .interpolator(d3.interpolateRdPu)
           .domain([vis.seaIceMax, vis.seaIceMin]); 
 
  
@@ -80,6 +80,7 @@ class SubregionMap {
   wrangleData() {
     let vis = this;
 
+    // get filter value
     vis.selectedSubregionFilter = document.getElementById('subregionFilter').value;
     console.log("subregion filter", vis.selectedSubregionFilter)
 
@@ -100,6 +101,7 @@ class SubregionMap {
     .attr('stroke', vis.colors[5]) // Set the stroke color
     .attr('stroke-width', 1.5)
     .attr('fill', d => setColor(vis.selectedSubregionFilter, d[vis.selectedSubregionFilter]))
+    .attr("opacity", 0.50)
     .on('mouseover', function(event, d) {
       d3.select(this)
       .attr('stroke-width', '2.5px')
@@ -162,13 +164,10 @@ class SubregionMap {
       case 'Ecoregions':
         return vis.ecoregionsColor(regionData) || vis.colors[0];
       case 'Population_Change':
-        console.log(vis.popChangeColors(regionData), vis.colors, "pop change");
         return vis.popChangeColors(regionData) || vis.colors[0];
       case 'Bear_Population':
-        console.log(vis.populationSizeColor(regionData), "pop size")
         return vis.populationSizeColor(regionData) || vis.colors[0];
       case 'Sea_Ice_Change':
-        console.log(vis.seaIceChangeColor(regionData), 'sea ice change')
         return vis.seaIceChangeColor(regionData) || vis.colors[0];
       default:
         return vis.colors[0];
