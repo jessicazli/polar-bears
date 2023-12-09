@@ -1,12 +1,13 @@
 class SubregionTable {
 
-  constructor(parentElement, data) {
+  constructor(parentElement, data, subregionMap) {
       this.parentElement = parentElement;
       this.subregionData = data;
       this.displayData = [];
+      this.subregionMap = subregionMap
    
       // color - gray, yellow, red, green, orange, med blue, lightblue, pink, purple, darkblue
-      this.colors = ['#DBE1E8', '#FEF192', '#F85959', '#A4E296', '#EDA57F', '#4074B7', '#add8e6', '#F2ABE9', '#ABABF2', '#134078']
+      this.colors = ['#DBE1E8', '#F85959', '#FEF192', '#A4E296', '#EDA57F', '#4074B7', '#add8e6', '#F2ABE9', '#ABABF2', '#134078']
       // get filter
       this.selectedSubregionFilter = document.getElementById('subregionFilter').value;
 
@@ -15,7 +16,6 @@ class SubregionTable {
         d.Sea_Ice_Change = +d.Sea_Ice_Change;
       })
       
-      console.log(this.subregionData)
       // Initialize the chart
       this.initTable();
   }
@@ -32,31 +32,34 @@ class SubregionTable {
       // append table body
       tableObject.tbody = tableObject.table.append("tbody")
 
+      // color scales
       tableObject.popChangeColors = d3.scaleOrdinal()
       .domain(['Likely increased', 'Likely decreased', 'Likely stable', 'NA'])
       .range([tableObject.colors[2], tableObject.colors[1], tableObject.colors[3], tableObject.colors[0]]);
 
       tableObject.ecoregionsColor = d3.scaleOrdinal()
         .domain(["Divergent", "Seasonal", "Archipelago", "Convergent", "NA"])
-        .range([tableObject.colors[6], tableObject.colors[7], tableObject.colors[8], tableObject.colors[1], tableObject.colors[0]])
+        .range([tableObject.colors[6], tableObject.colors[7], tableObject.colors[8], tableObject.colors[2], tableObject.colors[0]])
 
       tableObject.popFilteredData = tableObject.subregionData.filter(row => row.Bear_Population !== 'NA');
-      console.log(tableObject.popFilteredData, "pop data", tableObject.popFilteredData.map(d => d.Bear_Population))
 
       tableObject.populationMax = d3.max(tableObject.popFilteredData, d => d["Bear_Population"])
       tableObject.populationMin = d3.min(tableObject.popFilteredData, d => d["Bear_Population"])
-      tableObject.populationSizeColor = d3.scaleSequential()
+      tableObject.populationSizeColor = d3.scaleSequential(function(t){
+        return d3.interpolateBuPu(t/2+0.15)})
         .domain([tableObject.populationMin, tableObject.populationMax])
-        .interpolator(d3.interpolateGnBu); 
 
 
-        tableObject.seaIceFilteredData = tableObject.subregionData.filter(row => row.Sea_Ice_Change !== 'NA');
-        tableObject.seaIceMax = d3.max(tableObject.seaIceFilteredData, d => d["Sea_Ice_Change"])
-        tableObject.seaIceMin = d3.min(tableObject.seaIceFilteredData, d => d["Sea_Ice_Change"])
-        tableObject.seaIceChangeColor = d3.scaleSequential()
-        .interpolator(d3.interpolateRdPu)
+      tableObject.seaIceFilteredData = tableObject.subregionData.filter(row => row.Sea_Ice_Change !== 'NA');
+      tableObject.seaIceMax = d3.max(tableObject.seaIceFilteredData, d => d["Sea_Ice_Change"])
+      tableObject.seaIceMin = d3.min(tableObject.seaIceFilteredData, d => d["Sea_Ice_Change"])
+      tableObject.seaIceChangeColor = d3.scaleSequential(function(t){
+          return d3.interpolatePuRd(t/1.5)})
         .domain([tableObject.seaIceMax, tableObject.seaIceMin]); 
 
+      // set table order
+      tableObject.EcoOrder = ['Divergent', 'Seasonal', 'Archipelago', 'Convergent', 'NA']
+      tableObject.PopOrder = ['Likely stable', 'Likely increased', 'Likely decreased', 'NA']
       // wrangleData
       tableObject.wrangleData()
   }
@@ -94,6 +97,8 @@ class SubregionTable {
       tableObject.displayData.push(displayDataItem);
     });
 
+    console.log(tableObject.displayData, "display data")
+    
     // sort display data
     if (
       tableObject.selectedSubregionFilter === "Bear_Population" ||
@@ -111,9 +116,21 @@ class SubregionTable {
           return valueB - valueA
         }
       });
-    }
-   
-      console.log(tableObject.displayData, "display data");
+    } 
+
+    if (tableObject.selectedSubregionFilter === "Ecoregions") {
+      tableObject.displayData.sort((a, b) => {
+        return tableObject.EcoOrder.indexOf(a[tableObject.rolName]) - tableObject.EcoOrder.indexOf(b[tableObject.rolName]);
+      })
+    } 
+
+    if (tableObject.selectedSubregionFilter === "Population_Change") {
+      tableObject.displayData.sort((a, b) => {
+
+        return tableObject.PopOrder.indexOf(a[tableObject.rolName]) - tableObject.PopOrder.indexOf(b[tableObject.rolName]);
+      })
+    } 
+
 
       tableObject.updateTable();
 
@@ -121,10 +138,7 @@ class SubregionTable {
 
   updateTable() {
       let tableObject = this;
-
-      console.log("col name", tableObject.rolName, tableObject.selectedSubregionFilter, "selected category update vis sub region")
-      console.log(tableObject.displayData, "display data in update table");
-
+      // add color
       function setColor(filterType, regionData) {
         switch (filterType) {
           case 'Ecoregions':
@@ -134,7 +148,6 @@ class SubregionTable {
           case 'Bear_Population':
             return tableObject.populationSizeColor(regionData) || tableObject.colors[0];
           case 'Sea_Ice_Change':
-            console.log('sea ice change', regionData)
             return tableObject.seaIceChangeColor(regionData) || tableObject.colors[0];
           default:
             return tableObject.colors[0];
@@ -145,7 +158,7 @@ class SubregionTable {
       tableObject.thead.html(
         `<tr>
             <th scope="col">Region</th>
-            <th scope="col">Abbr</th>
+            <th scope="col">Region Code</th>
             <th scope="col">${tableObject.rolName}</th>
         </tr>`
     )
@@ -161,24 +174,21 @@ class SubregionTable {
               <td>${region[tableObject.rolName]}`
           )
           row.style('background-color', setColor(tableObject.selectedSubregionFilter, region[tableObject.rolName]))
-          row.style('opacity', 0.5);
-          console.log('background color', `rgba(${setColor(tableObject.selectedSubregionFilter, region[tableObject.rolName])}80)`)
-          // if (typeof region[tableObject.rolName] === 'number') {
-          //   // If the value is a number, use the quantitative color scale
-          //   row.style('background-color', `${colorScale(region[tableObject.rolName])}80`);
-          // } else {
-          //   // If the value is not a number (e.g., 'NA'), use a default color
-          //   row.style('background-color', 'gray');
-          // }
-      
-          // row.on('mouseover', function () {
-          //     console.log(' you hovered over a row - the selected state is', state.state)
-          //     selectedState = state.state;
-          //     myBrushVis.wrangleDataResponsive();
-          // })
+          row.on('mouseover', function (event, d) {
+            // highlight corresdponding map area and add border
+            tableObject.subregionMap.highlightMap(region.Abbr, true);
+            row.style('border', '1px solid black');
+        });
+        
+        row.on('mouseout', function (event, d) {
+            // undo highlight corresdponding map area and border
+            tableObject.subregionMap.highlightMap(region.Abbr, false);
+            row.style('border', '');
+        });
+        
       })
 
-      
+   
 
   }
 }
