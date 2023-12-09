@@ -75,7 +75,7 @@ function createVis(data) {
    
     // create subregionVisual
     subregionMap = new SubregionMap('subregionMap', subregionData);
-    subregionTable = new SubregionTable('subregionTable', subregionData)
+    subregionTable = new SubregionTable('subregionTable', subregionData, subregionMap)
 
     // create arcticMap
     arcticMap = new ArcticMap('arcticmap', linegraph_arcticice, migrationData);

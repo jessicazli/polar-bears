@@ -130,7 +130,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-12">
-                        <h2>19 Subpopulations throughout the Arctic</h2>
+                        <h2>19 Subpopulations throughout the Arctic in 2021</h2>
                     </div>
                 </div>
                 <div class="row justify-content-center m-3">
@@ -138,10 +138,10 @@
                     <div class="col-4">
                     <div class="row justify-content-center full-height">
                         <select id="subregionFilter" class="form-select align-self-center" aria-label="filter-dropdown" onchange="changeSubregionFilter()">
-                        <option value="Ecoregions" selected>Ecoregions</option>
+                        <option value="Bear_Population" selected>Population Size</option>
+                        <option value="Ecoregions">Ecoregions</option>
                         <option value="Population_Change">Population Change</option>
                         <option value="Sea_Ice_Change">Sea Ice Change</option>
-                        <option value="Bear_Population">Population Size</option>
                         </select>
                     </div>
                     </div>
@@ -149,27 +149,34 @@
                 </div>
       
                 <div class="row">
-                    <div class="col-4">
+                    <div class="col-6 subregionMapColumn">
                         <div id="subregionMap" class="diet-style"></div>
                     </div>
 
                     <!-- subpopulations table -->
-                    <div class="col-4">
+                    <div class="col-6 subregionTableColumn">
                         <div id="subregionTable" class="subregion table table-style"></div>
                     </div>
-                    <div class="col-4">
-                        <div id="subregionAnalysis">
-                            <p class="text-start">Let's take a closer look into how the melting of the Arctic sea ice is
-                                affecting polar bears in each of the 19 different subregions in the year 2021. </p>
-                            <br />
-                            <p class="text-start">Most subregions experience sea ice loss in 2021, with Chukchi Sea losing the most - around 25% - of its sea ice extent in 2021.
-                                This is alarming because Chukchi Sea also has the largest polar bear population.</p>
-                            <br />
-                            <p class="text-start">Population change data is unknown or deficient for most subpopulations, but among the subpopulations with information available, 3 of those populations likely decreased. </p>
-                        </div>
-                    </div>
                 </div>
+               
 
+            </div>
+        </div>
+        <div class="section s5_5">
+            <div class="row" id="subregionAnalysis">
+                <div class="overlay-box text-start">
+                    <h2>How did the melting of the Arctic sea ice affect polar bears
+                        in each of the 19 different subregions in year 2021?</h2>
+                    <p> <span class="bold">Majority of subregions experience sea ice loss in 2021,</span> with Norweigan Sea losing the largest percentage (26.5%) of
+                         sea ice extent per decade between 1979 and 2019 among all Arctic regions. This region records the second-lowest polar bear population of 203 bears in 2021.
+                        Chukchi Sea lost the second largest sea ice extent with 25%, which is alarming because this region also has the largest polar bear population.
+                    </p>
+                    <p>Population change data is unknown or deficient for most subpopulations, but among the subpopulations with information available,
+                        3 of those populations likely decreased.</p>
+                    <br>
+                    <h3>Where did we get this data from?</h3>
+                    <p>The data comes from The IUCN Polar Bear Specialist Group report and Statista.</p>
+                </div>
             </div>
         </div>
         <div class="section s6">
@@ -374,10 +381,12 @@
     <script>
         new fullpage('#fullPage', {
             licenseKey: 'gplv3-license',
+            // make the page seamless if autoscroll false
             autoScrolling: true,
+            // lazyLoading: true,
             navigation: true,
-            anchors: ["section1", "section2", "section3", "section4", "section5", "section6", "section7", "section8", "section9", "section10"],
-            navigationTooltips: ['Home', 'Pizzly', 'Migration', 'Climate Change', 'Regions', 'Diet', 'Health', 'Adopt a Bear', 'Thank You', 'About Us'],
+            anchors: ["section1", "section2", "section3", "section4", "section5", "section6", "section7", "section8", "section9", "section10", "section11"],
+            navigationTooltips: ['Home', 'Pizzly', 'Migration', 'Climate Change', 'Regions', 'Regions Analysis', 'Diet', 'Health', 'Adopt a Bear', 'Thank You', 'About Us'],
             normalScrollElements: '#subregionTable',
             scrollOverflow: true,
         });
