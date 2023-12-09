@@ -213,7 +213,7 @@ th {
 
 #subregionAnalysis {
 
-	background-image: url('https://img.freepik.com/free-vector/hand-drawn-w-colours-illustration_23-2149868441.jpg');
+	background-image: url('/images/bear_background.avif');
 	background-size: cover;
 	background-position: center;
 	height: 100vh; /* Adjust as needed */
@@ -258,4 +258,39 @@ th {
 
 .bold {
 	font-weight: bold;
+}
+
+/* Add these styles to your existing styles.css file */
+#revealButton {
+	padding: 15px 30px; /* Adjust padding for height and width */
+	border: none;
+	border-radius: 25px;
+	background-color: #6cc3e6; /* Light Blue */
+	color: #fff; /* White text */
+	font-size: 1.1em; /* Adjust font size */
+	cursor: pointer;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+	transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+#revealButton:hover {
+	background-color: rgb(72, 146, 215);
+	box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Increase shadow on hover */
+}
+
+Right column styles
+.col-md-6 {
+	float: right;
+}
+
+
+#hiddenText {
+	display: none;
+}
+
+.reveal-box {
+	background-color: #ffffff; /* Set background color */
+	border: 2px solid rgb(72, 146, 215); /* Set border color and width */
+	border-radius: 10px; /* Set border radius for rounded corners */
+	padding: 20px; /* Add padding inside the box */
 }

@@ -179,3 +179,6 @@ function changeSubregionFilter() {
     subregionTable.wrangleData();
 }
 
+function revealText() {
+    document.getElementById('hiddenText').style.display = 'block';
+}
