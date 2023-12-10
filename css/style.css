@@ -294,3 +294,8 @@ Right column styles
 	border-radius: 10px; /* Set border radius for rounded corners */
 	padding: 20px; /* Add padding inside the box */
 }
+
+.line-highlight {
+    stroke-width: 3; /* or any other style changes to make the line stand out */
+    stroke: orange; /* color of the highlight */
+}

@@ -8,7 +8,7 @@ function updateAllVisualizations() {
 
 // Declare chart variables outside the function
 
-let emissionsChart, iceExtentChart, tempChangeChart, dietVisual, healthVisual, adoptVisual, subregionMap, migrationVisual, arcticMap;
+let emissionsChart, iceExtentChart, tempChangeChart, dietVisual, healthVisual, adoptVisual, subregionMap, migrationVisual, arcticMap, allHealthVisual, subregionTable;
 let slider = d3.select('#time-slider').node();
 let migrationSlider = document.getElementById('migrationSlider');
 
@@ -42,12 +42,12 @@ function createVis(data) {
     let emissionsData = data[0];
     let iceExtentData = data[1];
     let temperatureChangeData = data[2];
-    let polarBearDietData = data[3]
-    let healthData = data[4]
+    let polarBearDietData = data[3];
+    let healthData = data[4];
     let subregionData = data[5];
-    let arctic_ice = data[6]
-    let migrationData = data[7]
-    let linegraph_arcticice = data[8]
+    let arctic_ice = data[6];
+    let migrationData = data[7];
+    let linegraph_arcticice = data[8];
 
     // console.log(data);
     // console.log("Emissions Data:", emissionsData);
@@ -64,18 +64,20 @@ function createVis(data) {
 
     // Create a line chart for temperature change with green lines and dots
     tempChangeChart = new LineGraph('avgtemp', temperatureChangeData, "Year", "Temperature Change", "Global Temperature Change Over Time", '#fc7168', '#de1507');
+    
+    healthVisual = new HealthVis('healthDiv', healthData);
 
-    healthVisual = new HealthVis('healthDiv', healthData)
+    dietVisual = new DietVis('dietDiv', polarBearDietData);
+    
+    adoptVisual = new AdoptBear('adoptDiv', healthData);
 
-    dietVisual = new DietVis('dietDiv', polarBearDietData)
+    allHealthVisual = new AllHealthVis('allHealthDiv', healthData);
 
-    adoptVisual = new AdoptBear('adoptDiv', healthData)
-
-    migrationVisual = new MigrationVis('migrationDiv', arctic_ice, migrationData)
+    migrationVisual = new MigrationVis('migrationDiv', arctic_ice, migrationData);
    
     // create subregionVisual
     subregionMap = new SubregionMap('subregionMap', subregionData);
-    subregionTable = new SubregionTable('subregionTable', subregionData, subregionMap)
+    subregionTable = new SubregionTable('subregionTable', subregionData, subregionMap);
 
     // create arcticMap
     arcticMap = new ArcticMap('arcticmap', linegraph_arcticice, migrationData);
@@ -169,9 +171,23 @@ function dietCategoryChange() {
 }
 
 function healthCategoryChange() {
-    selectedHealthCategory = document.getElementById('healthFilter').value;
+    let selectedHealthCategory = document.getElementById('healthFilter').value;
 
-    healthVisual.updateVis(selectedHealthCategory);
+    healthVisual.selectedHealthCategory = selectedHealthCategory;
+
+    healthVisual.updateVis(selectedHealthCategory, healthVisual.selectedSex, healthVisual.selectedAgeclass);
+}
+
+function sexHealthCategoryChange() {
+    selectedSex = document.getElementById('sexHealthFilter').value;
+
+    healthVisual.updateVis(healthVisual.selectedHealthCategory, selectedSex, healthVisual.selectedAgeclass);
+}
+
+function ageclassHealthCategoryChange() {
+    selectedAgeclass = document.getElementById('ageclassHealthFilter').value;
+
+    healthVisual.updateVis(healthVisual.selectedHealthCategory, healthVisual.selectedSex, selectedAgeclass);
 }
 
 function changeSubregionFilter() {

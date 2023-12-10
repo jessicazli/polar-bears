@@ -273,8 +273,7 @@
                         <select id="healthFilter" class="form-select align-self-center" aria-label="health-filter"
                             onchange="healthCategoryChange()">
                             <option value="parents" selected>Parents</option>
-                            <option value="bmi">BMI</option>
-                            <option value="hair_cortisol">Hair Cortisol</option>
+                            <option value="location">Location During Summer</option>
                         </select>
                     </div>
                     <div class="col-2">
@@ -286,15 +285,12 @@
                         </select>
                     </div>
                     <div class="col-2">
-                        <select id="adultHealthFilter" class="form-select align-self-center" aria-label="age-health-filter"
-                            onchange="ageHealthCategoryChange()">
-                            <option value="all">Age (All)</option>
-                            <option value="Adult" selected>Adult</option>
+                        <select id="ageclassHealthFilter" class="form-select align-self-center" aria-label="ageclass-health-filter"
+                            onchange="ageclassHealthCategoryChange()">
+                            <option value="all" selected>Ageclass (All)</option>
+                            <option value="Adult">Adult</option>
                             <option value="Subadult">Subadult</option>
                         </select>
-                    </div>
-                    <div class="col-2">
-                        *filters in progress
                     </div>
                 </div>
                 <div class="row">
@@ -304,8 +300,7 @@
                     <div class="col-md-4">
                         Health is an important indicator of the well-being of polar bears and one that has been affected
                         drastically in the past decade. Let's take a look at how the health of polar bears has changed
-                        over
-                        time and examine indicators such as reproductive health, stress, and BMI.
+                        over time and examine indicators such as reproductive health, stress, and BMI.
                     </div>
                 </div>
             </div>
@@ -318,47 +313,34 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-12 m-4">
-                        Dive deeper and learn more about a specific polar bear by adopting one!
-                    </div>
-                </div>
-                <div class="row align-items-center justify-content-center m-4">
-                    <div class="col-auto">Sex:</div>
-                    <div class="col-auto">
-                        <button type="button" class="btn btn-outline-dark">Female</button>
-                        <button type="button" class="btn btn-outline-dark">Male</button>
-                        <button type="button" class="btn btn-outline-dark">Any</button>
-                    </div>
-                </div>
-                <div class="row align-items-center justify-content-center m-4">
-                    <div class="col-auto">Age:</div>
-                    <div class="col-auto">
-                        <button type="button" class="btn btn-outline-dark">Adult</button>
-                        <button type="button" class="btn btn-outline-dark">Subadult</button>
-                        <button type="button" class="btn btn-outline-dark">Any</button>
-                    </div>
-                </div>
-                <div class="row justify-content-center m-6">
-                    <div class="col-2">
-                        <button type="button" id="adoptButton" class="btn btn-primary">Adopt a Bear!</button>
-                    </div>
-                </div>
-                <div class="row">
                     <div class="col">
-                    </div>
-                    <div class="col">
-                        <div class="row align-items-end m-4"> 
-                            <div class="col">
-                                <div class="form-group">
-                                    <label for="inputName">Name Your Polar Bear</label>
-                                    <input type="name" class="form-control" id="inputName" placeholder="Name">
-                                </div>
-                            </div>
-                            <div class="col">
-                                <button type="submit" class="btn btn-primary">Save</button>
+                        <div class="row align-items-center justify-content-center m-4">
+                            <div class="col-auto">Sex:</div>
+                            <div class="col-auto">
+                                <button type="button" class="btn btn-outline-dark">Female</button>
+                                <button type="button" class="btn btn-outline-dark">Male</button>
+                                <button type="button" class="btn btn-outline-dark">Any</button>
                             </div>
                         </div>
-                        <div id="adoptDiv"></div>
+                        <div class="row align-items-center justify-content-center m-4">
+                            <div class="col-auto">Age:</div>
+                            <div class="col-auto">
+                                <button type="button" class="btn btn-outline-dark">Adult</button>
+                                <button type="button" class="btn btn-outline-dark">Subadult</button>
+                                <button type="button" class="btn btn-outline-dark">Any</button>
+                            </div>
+                        </div>
+                        <div class="row justify-content-center m-6">
+                            <div class="col-5"> 
+                                <button type="button" id="adoptButton" class="btn btn-primary">Explore a Polar Bear!</button>
+                            </div>
+                        </div>
+                        <div class="row justify-content-center m-6">
+                            <div id="adoptDiv"></div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div id="allHealthDiv"></div>
                     </div>
                 </div>
             </div>
@@ -440,13 +422,14 @@
     <script src="js/subregionMap.js"></script>
     <script src="js/arcticmap.js"></script>
     <script src="js/subregionTable.js"></script>
+    <script src="js/allHealthVis.js"></script>
 
   
     <!-- Load data, create visualizations -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.4.0/nouislider.min.js"
         integrity="sha512-mZXUH8DAODwCHioWP3gltQwa953LbABMlzTYwYkKqv8eNxOk37B1HgNNuCMfFxgrpW5C34WJbxPDcM58+s1dJA=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="js/main.js"></script>
+        <script src="js/main.js"></script>
 
 </body>
 
