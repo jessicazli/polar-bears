@@ -94,7 +94,7 @@ class MigrationVis {
     // Create a time scale for circle sizes
     vis.radiusScale = d3.scaleTime()
       .domain([minDate, maxDate])
-      .range([5, 0.2]); // Adjust the range for the desired size variation
+      .range([5, 4]); // Adjust the range for the desired size variation
 
     // Create a sequential color scale for time
     vis.colorScale = d3.scaleSequential()
@@ -211,9 +211,9 @@ class MigrationVis {
 
 
       .transition()
-      .duration(200) // Adjust the duration as needed
+      .duration(500) // Adjust the duration as needed
       .ease(d3.easeLinear)
-      .delay((d, i) => i * 1) // Delay for each bear
+      .delay((d, i) => i * 4) // Delay for each bear
       .attr("r", d => vis.radiusScale(parseTime(d.DateTimeUTC_ud)))
 
     // Append color legend
@@ -355,9 +355,9 @@ class MigrationVis {
         }
       })
       .transition()
-      .duration(200) // Adjust the duration as needed
+      .duration(500) // Adjust the duration as needed
       .ease(d3.easeLinear)
-      .delay((d, i) => i * 1) // Delay for each bear
+      .delay((d, i) => i * 4) // Delay for each bear
       .attr("r", d => vis.radiusScale(parseTime(d.DateTimeUTC_ud)));
 
     // Remove circles that are no longer needed
