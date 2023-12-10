@@ -45,6 +45,8 @@ class MigrationVis {
     const parseTime = d3.timeParse("%m/%d/%Y %H:%M");
     const maxDate = d3.max(vis.bearData, d => parseTime(d.DateTimeUTC_ud));
     const minDate = d3.min(vis.bearData, d => parseTime(d.DateTimeUTC_ud));
+    const startDate = dateFormatter(new Date(d3.min(vis.displayData, entry => new Date(entry.DateTimeUTC_ud))));
+    const endDate = dateFormatter(new Date(d3.max(vis.displayData, entry => new Date(entry.DateTimeUTC_ud))));
 
     // Sort the displayData based on DateTimeUTC_ud
     vis.displayData.sort((a, b) => d3.ascending(parseTime(a.DateTimeUTC_ud), parseTime(b.DateTimeUTC_ud)));
@@ -76,7 +78,13 @@ class MigrationVis {
     vis.svg.selectAll(".circle")
       .data(vis.displayData)
       .enter()
+
       .append('circle')
+      // Transition to gradually increase the radius
+      // .transition()
+      // .duration(500) // Adjust the duration as needed
+      // .ease(d3.easeLinear)
+      // .delay((d, i) => i * .8) // Adjust the delay between circles
       .attr("class", "circle")
       .attr("cx", d => vis.projection([d.longitude_ud, d.latitude_ud])[0])
       .attr("cy", d => vis.projection([d.longitude_ud, d.latitude_ud])[1])
@@ -98,7 +106,15 @@ class MigrationVis {
         vis.tooltip.transition()
           .duration(200)
           .style('opacity', 0.9);
-        vis.tooltip.html(`<strong>Bear ID:</strong> ${bearID}`)
+
+          
+          vis.tooltip.html(`
+          <div style="border-radius: 5px;  border: 2px solid #34629C; text-align: left; background: #D9E8F3; padding: 20px">
+          <strong>Bear ID:</strong> ${bearID}
+          <br>
+          <strong>Locations found from:</strong> ${startDate} to ${endDate}
+          </div>
+          `)
           .style('left', `${event.pageX}px`)
           .style('top', `${event.pageY - 28}px`);
       })
@@ -110,13 +126,6 @@ class MigrationVis {
           .duration(500)
           .style('opacity', 0);
       })
-
-      // Transition to gradually increase the radius
-      .transition()
-      .duration(500) // Adjust the duration as needed
-      .ease(d3.easeLinear)
-      .delay((d, i) => i * 50) // Adjust the delay between circles
-      .attr("r", d => vis.radiusScale(parseTime(d.DateTimeUTC_ud)));
 
     vis.updateVis();
   }
@@ -140,7 +149,9 @@ class MigrationVis {
     circles.enter()
       .append('circle')
       .attr("class", "circle")  // Add a class for selection
-      .merge(circles)  // Merging the enter and update selections
+
+      
+      // .merge(circles)  // Merging the enter and update selections //made it slower??
       .attr("cx", d => vis.projection([d.longitude_ud, d.latitude_ud])[0])
       .attr("cy", d => vis.projection([d.longitude_ud, d.latitude_ud])[1])
       .attr("r", d => vis.radiusScale(parseTime(d.DateTimeUTC_ud)))
@@ -153,10 +164,6 @@ class MigrationVis {
 
         vis.svg.selectAll('.circle')
           .style('opacity', d => (d.BearID_ud === bearID) ? 1 : 0.02)
-          .transition()
-          // .duration(500) // Adjust the duration as needed
-          // .ease(d3.easeLinear)
-          // .delay((d, i) => i * 50) // Adjust the delay between circles
           .attr("r", d => vis.radiusScale(parseTime(d.DateTimeUTC_ud)));
 
         vis.svg.selectAll('path')
@@ -165,7 +172,7 @@ class MigrationVis {
         vis.tooltip.transition()
           .duration(100)
           .style('opacity', 0.9);
-        
+
         vis.tooltip.html(`
         <div style="border-radius: 5px;  border: 2px solid #34629C; text-align: left; background: #D9E8F3; padding: 20px">
         <strong>Bear ID:</strong> ${bearID}
@@ -184,14 +191,21 @@ class MigrationVis {
           .duration(500)
           .style('opacity', 0);
       })
+      // .transition()
+      // .duration(5000)
+      // .ease(d3.easeLinear)
+      // .delay((d, i) => i * 50)
+      // .attr("r", d => vis.radiusScale(parseTime(d.DateTimeUTC_ud)));
+
+    // Remove circles that are no longer needed
+    circles.exit()
+      .remove()
       .transition()
       .duration(5000)
       .ease(d3.easeLinear)
       .delay((d, i) => i * 50)
       .attr("r", d => vis.radiusScale(parseTime(d.DateTimeUTC_ud)));
-
-    // Remove circles that are no longer needed
-    circles.exit().remove();
+      ;
   }
 
   updateData(newData) {
