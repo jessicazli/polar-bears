@@ -114,7 +114,7 @@ img {
 }
 
 .diet-vis {
-	height: 40vh; 
+	height: 35vh; 
 	width: 100%; 
 }
 
@@ -293,4 +293,10 @@ Right column styles
 	border: 2px solid rgb(72, 146, 215); /* Set border color and width */
 	border-radius: 10px; /* Set border radius for rounded corners */
 	padding: 20px; /* Add padding inside the box */
+}
+
+.whale {
+	width: 60%;
+	height: 60%;
+
 }
