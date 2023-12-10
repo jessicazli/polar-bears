@@ -147,7 +147,7 @@ class MigrationVis {
     .attr("d", vis.path)
     .attr("stroke", "steelblue")
     .attr("stroke-width", 0.5)
-    .attr("fill-opacity", 0.6)
+    .attr("fill-opacity", 0.8)
     .style("fill", "Ghostwhite");
 
 
