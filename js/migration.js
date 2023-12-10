@@ -225,10 +225,8 @@ class MigrationVis {
     vis.svg.selectAll("path")
       .attr("d", vis.path);
 
-    // Update circle positions
-    vis.svg.selectAll(".circle")
-      .attr("cx", d => vis.projection([d.longitude_ud, d.latitude_ud])[0])
-      .attr("cy", d => vis.projection([d.longitude_ud, d.latitude_ud])[1]);
+    // Remove existing circles
+    vis.svg.selectAll(".circle").remove();
 
     // Append new circles with transition
     const circles = vis.svg.selectAll(".circle")
@@ -252,9 +250,6 @@ class MigrationVis {
           .style('opacity', d => (d.BearID_ud === bearID) ? 1 : 0.02)
           .attr("r", d => vis.radiusScale(parseTime(d.DateTimeUTC_ud)));
 
-        // vis.svg.selectAll('path')
-        //   .style('opacity', d => (d.BearID_ud === bearID) ? 1 : 0.02);
-
         vis.tooltip.transition()
           .duration(100)
           .style('opacity', 0.9);
@@ -272,21 +267,18 @@ class MigrationVis {
       .on('mouseout', function () {
         const isMouseOverTooltip = d3.select(event.relatedTarget).classed('tooltip');
     
-    if (!isMouseOverTooltip) {
-        // Reset the opacity of circles
-        vis.svg.selectAll('.circle')
-            .style('opacity', 1)
-            .attr("r", d => vis.radiusScale(parseTime(d.DateTimeUTC_ud)));
+        if (!isMouseOverTooltip) {
+            // Reset the opacity of circles
+            vis.svg.selectAll('.circle')
+                .style('opacity', 1)
+                .attr("r", d => vis.radiusScale(parseTime(d.DateTimeUTC_ud)));
 
-        // Reset the opacity of paths (if you want to include this)
-        // vis.svg.selectAll('path').style('opacity', 1);
-
-        // Hide the tooltip
-        vis.tooltip.transition()
-            .duration(500)
-            .style('opacity', 0);
-    }
-    })
+            // Hide the tooltip
+            vis.tooltip.transition()
+                .duration(500)
+                .style('opacity', 0);
+        }
+      })
       .transition()
       .duration(200) // Adjust the duration as needed
       .ease(d3.easeLinear)
@@ -296,6 +288,7 @@ class MigrationVis {
     // Remove circles that are no longer needed
     circles.exit().remove();
   }
+
 
   updateData(newData) {
     this.displayData = newData;
