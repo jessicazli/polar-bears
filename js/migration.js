@@ -1,10 +1,13 @@
 class MigrationVis {
-  constructor(parentElement, geoData, bearData, marineData) {
+  constructor(parentElement, geoData, bearData, marineData, landData, nameData, oceanData) {
     this.parentElement = parentElement;
     this.geoData = geoData;
     this.bearData = bearData;
     this.displayData = bearData;
     this.marineData = marineData;
+    this.landData = landData;
+    this.nameData = nameData;
+    this.oceanData = oceanData;
 
     this.initVis();
   }
@@ -33,8 +36,24 @@ class MigrationVis {
       .clipAngle(100)
       .precision(.5);
 
-    // Create a projection for marine
+    // Create a projection for coastline
     vis.projectionMarine = d3.geoOrthographic()
+      .scale(vis.height / 0.3)
+      .translate([vis.width - 100, vis.height + 150])
+      .rotate([0, -90])
+      .clipAngle(100)
+      .precision(.5);
+
+    // Create a projection for land
+    vis.projectionLand = d3.geoOrthographic()
+      .scale(vis.height / 0.3)
+      .translate([vis.width - 100, vis.height + 150])
+      .rotate([0, -90])
+      .clipAngle(100)
+      .precision(.5);
+
+    // Create a projection for ocean
+    vis.projectionOcean = d3.geoOrthographic()
       .scale(vis.height / 0.3)
       .translate([vis.width - 100, vis.height + 150])
       .rotate([0, -90])
@@ -48,6 +67,14 @@ class MigrationVis {
     // Define a geo generator and pass the projection to it
     vis.pathMarine = d3.geoPath()
       .projection(vis.projectionMarine);
+
+    // Define a geo generator and pass the projection to it
+    vis.pathLand = d3.geoPath()
+      .projection(vis.projectionLand);
+
+    // define a geo generator and pass the projection to it
+    vis.pathOcean = d3.geoPath()
+      .projection(vis.projectionOcean);
 
     // Append tooltip
     vis.tooltip = d3.select(`#${vis.parentElement}`).append('div')
@@ -76,18 +103,7 @@ class MigrationVis {
 
 
 
-
-    // Bind data and create one path per GeoJSON feature
-    vis.svg.selectAll(".ice-outline")
-        .data(vis.geoData.features)
-        .enter()
-        .append("path")
-        .attr("class", "ice-outline")
-        .attr("d", vis.path)
-        .attr("stroke", "steelblue")
-        .attr("stroke-width", 0.2)
-        .attr("fill-opacity", 0.2)
-        .style("fill", "steelblue");
+        
 
     // Bind data and create one path per GeoJSON feature
     vis.svg.selectAll("marinepath")
@@ -95,11 +111,44 @@ class MigrationVis {
       .enter()
       .append("path")
       .attr("d", vis.pathMarine)
-      .attr("stroke", "red")
-      .attr("stroke-width", 1.2)
+      .attr("stroke", "DarkCyan")
+      .attr("stroke-width", 2.0)
       .attr("fill-opacity", 0.0)
       .style("fill", "aqua");
 
+    // Bind data and create one path per GeoJSON feature
+    vis.svg.selectAll("oceanpath")
+      .data(vis.oceanData.features)
+      .enter()
+      .append("path")
+      .attr("d", vis.pathOcean)
+      // .attr("stroke", "DarkBlue")
+      // .attr("stroke-width", 2.0)
+      .attr("fill-opacity", 0.6)
+      .style("fill", "DodgerBlue");
+
+          // Bind data and create one path per GeoJSON feature
+    vis.svg.selectAll("landpath")
+    .data(vis.landData.features)
+    .enter()
+    .append("path")
+    .attr("d", vis.pathLand)
+    // .attr("stroke", "green")
+    // .attr("stroke-width", 1.2)
+    .attr("fill-opacity", 0.8)
+    .style("fill", "BurlyWood");
+
+          // Bind data and create one path per GeoJSON feature
+    vis.svg.selectAll(".ice-outline")
+    .data(vis.geoData.features)
+    .enter()
+    .append("path")
+    .attr("class", "ice-outline")
+    .attr("d", vis.path)
+    .attr("stroke", "steelblue")
+    .attr("stroke-width", 0.5)
+    .attr("fill-opacity", 0.6)
+    .style("fill", "Ghostwhite");
 
 
     // Append circles with tooltips

@@ -24,7 +24,10 @@ let promises = [
     d3.json("data/arctic_ice.json"), // 6
     d3.csv("data/migration.csv"), // 7
     d3.json("data/linegraph_arcticice.json"), // 8
-    d3.json("data/marine.json"), // 9
+    d3.json("data/coastline.json"), // 9
+    d3.json("data/land.json"), // 10
+    d3.json("data/name.json"), // 11
+    d3.json("data/ocean.json"), // 12
 
 
 
@@ -50,6 +53,9 @@ function createVis(data) {
     let migrationData = data[7];
     let linegraph_arcticice = data[8];
     let marineData = data[9];
+    let landData = data[10];
+    let nameData = data[11];
+    let oceanData = data[12];
 
     // console.log(data);
     // console.log("Emissions Data:", emissionsData);
@@ -75,7 +81,7 @@ function createVis(data) {
 
     allHealthVisual = new AllHealthVis('allHealthDiv', healthData);
 
-    migrationVisual = new MigrationVis('migrationDiv', arctic_ice, migrationData, marineData);
+    migrationVisual = new MigrationVis('migrationDiv', arctic_ice, migrationData, marineData, landData, nameData, oceanData);
 
     dietStacked = new DietStacked('dietStacked', polarBearDietData)
    
