@@ -15,6 +15,7 @@ class MigrationVis {
     vis.width = 600;
     vis.height = 500;
 
+
     vis.svg = d3
       .select(`#${vis.parentElement}`)
       .append('svg')
@@ -45,6 +46,9 @@ class MigrationVis {
     const maxDate = d3.max(vis.bearData, d => parseTime(d.DateTimeUTC_ud));
     const minDate = d3.min(vis.bearData, d => parseTime(d.DateTimeUTC_ud));
 
+    // Sort the displayData based on DateTimeUTC_ud
+    vis.displayData.sort((a, b) => d3.ascending(parseTime(a.DateTimeUTC_ud), parseTime(b.DateTimeUTC_ud)));
+
     // Create a time scale for circle sizes
     vis.radiusScale = d3.scaleTime()
       .domain([minDate, maxDate])
@@ -53,7 +57,7 @@ class MigrationVis {
     // Create a sequential color scale for time
     vis.colorScale = d3.scaleSequential()
       .domain([minDate, maxDate])
-      .interpolator(d3.interpolateGnBu); // You can adjust the color scheme if needed
+      .interpolator(d3.interpolateYlGnBu); // You can adjust the color scheme if needed
 
     // Bind data and create one path per GeoJSON feature
     vis.svg.selectAll("path")
@@ -65,6 +69,8 @@ class MigrationVis {
       .attr("stroke-width", 1.2)
       .attr("fill-opacity", 0.2)
       .style("fill", "steelblue");
+
+
 
     // Append circles with tooltips
     vis.svg.selectAll(".circle")
@@ -104,9 +110,12 @@ class MigrationVis {
           .duration(500)
           .style('opacity', 0);
       })
+
+      // Transition to gradually increase the radius
       .transition()
-      .duration(5000)
+      .duration(500) // Adjust the duration as needed
       .ease(d3.easeLinear)
+      .delay((d, i) => i * 50) // Adjust the delay between circles
       .attr("r", d => vis.radiusScale(parseTime(d.DateTimeUTC_ud)));
 
     vis.updateVis();
@@ -115,11 +124,14 @@ class MigrationVis {
   updateVis() {
     const vis = this;
 
-    const startDate = dateFormatter(new Date(d3.min(vis.displayData, entry => new Date(entry.DateTimeUTC_ud))));
-    const endDate = dateFormatter(new Date(d3.max(vis.displayData, entry => new Date(entry.DateTimeUTC_ud))));
-
     // Parse timestamps to create a time scale
     const parseTime = d3.timeParse("%m/%d/%Y %H:%M");
+
+    // Sort the displayData based on DateTimeUTC_ud
+    vis.displayData.sort((a, b) => d3.ascending(parseTime(a.DateTimeUTC_ud), parseTime(b.DateTimeUTC_ud)));
+
+    const startDate = dateFormatter(new Date(d3.min(vis.displayData, entry => new Date(entry.DateTimeUTC_ud))));
+    const endDate = dateFormatter(new Date(d3.max(vis.displayData, entry => new Date(entry.DateTimeUTC_ud))));
 
     // Append new circles with transition
     const circles = vis.svg.selectAll(".circle")
@@ -140,14 +152,20 @@ class MigrationVis {
         const bearID = d.BearID_ud;
 
         vis.svg.selectAll('.circle')
-          .style('opacity', d => (d.BearID_ud === bearID) ? 1 : 0.05);
+          .style('opacity', d => (d.BearID_ud === bearID) ? 1 : 0.02)
+          .transition()
+          // .duration(500) // Adjust the duration as needed
+          // .ease(d3.easeLinear)
+          // .delay((d, i) => i * 50) // Adjust the delay between circles
+          .attr("r", d => vis.radiusScale(parseTime(d.DateTimeUTC_ud)));
 
         vis.svg.selectAll('path')
-          .style('opacity', d => (d.properties.BearID_ud === bearID) ? 1 : 0.05);
+          .style('opacity', d => (d.properties.BearID_ud === bearID) ? 1 : 0.02);
 
         vis.tooltip.transition()
-          .duration(200)
+          .duration(100)
           .style('opacity', 0.9);
+        
         vis.tooltip.html(`
         <div style="border-radius: 5px;  border: 2px solid #34629C; text-align: left; background: #D9E8F3; padding: 20px">
         <strong>Bear ID:</strong> ${bearID}
@@ -169,6 +187,7 @@ class MigrationVis {
       .transition()
       .duration(5000)
       .ease(d3.easeLinear)
+      .delay((d, i) => i * 50)
       .attr("r", d => vis.radiusScale(parseTime(d.DateTimeUTC_ud)));
 
     // Remove circles that are no longer needed
