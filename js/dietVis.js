@@ -24,7 +24,7 @@ class DietVis {
 
         vis.margin = { top: 20, right: 20, bottom: 50, left: 50 };
         vis.width = document.getElementById(vis.parentElement).getBoundingClientRect().width - vis.margin.left - vis.margin.right;
-        vis.height = (document.getElementById(vis.parentElement).getBoundingClientRect().height / 1.5) ;
+        vis.height = (document.getElementById(vis.parentElement).getBoundingClientRect().height / 1.5 - 50) ;
 
         // Create SVG container
         vis.svg = d3.select("#" + vis.parentElement).append("svg")
@@ -166,11 +166,11 @@ class DietVis {
 
     function getYLabel(dataField) {
       let labelMapping = {
-        avg_Bearded_seal: 'Bearded Seal (% of Total Diet)',
-        avg_Ringed_seal: 'Ringed Seal (% of Total Diet)',
-        avg_Beluga_whale: 'Beluga Whale (% of Total Diet)',
-        avg_Bowhead_whale: 'Bowhead Whale (% of Total Diet)',
-        avg_Seabird_nestling: 'Seabird Nestling (% of Total Diet)',
+        avg_Bearded_seal: 'Bearded Seal (% of Diet)',
+        avg_Ringed_seal: 'Ringed Seal (% of Diet)',
+        avg_Beluga_whale: 'Beluga Whale (% of Diet)',
+        avg_Bowhead_whale: 'Bowhead Whale (% of Diet)',
+        avg_Seabird_nestling: 'Seabird Nestling (% of Diet)',
       };
     
       return labelMapping[dataField];
@@ -183,7 +183,8 @@ class DietVis {
 
     vis.yLabel
       .text(getYLabel(dataField))
-      .style("fill", vis.colors[0]);
+      .style("fill", vis.colors[0])
+      .style("font-size", "0.9em")
 
     console.log(getYLabel(dataField))
 

@@ -269,14 +269,14 @@ createGradientLegend(color, domain, min, title){
     gradientLegend.append('text')
       .attr('x', 10)
       .attr('y', 580) 
-      .text(domain) 
+      .text(min) 
       .attr("fill", vis.colors[9])
 
 
     gradientLegend.append('text')
       .attr('x', 190)
       .attr('y', 580) 
-      .text(min)
+      .text(domain)
       .attr("fill", vis.colors[9])
 
     

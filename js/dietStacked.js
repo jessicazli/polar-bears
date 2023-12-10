@@ -149,7 +149,7 @@ class DietStacked {
   
     vis.xGroup = vis.chartGroup.append('g')
       .attr('class', 'x-axis axis diet-axis')
-      .attr('transform', `translate(0, 222)`)
+      .attr('transform', `translate(0, ${vis.height-20})`)
       .call(vis.xAxis)
       .selectAll("text")
       .attr("dx", "0.5em") // Adjust the horizontal position if needed
