@@ -100,7 +100,7 @@ class MigrationVis {
         //   .style('opacity', d => (d.BearID_ud === bearID) ? 1 : 0.05);
 
         vis.tooltip.transition()
-        .duration(100)
+        .duration(10)
         .style('opacity', 0.9)
         .style('left', `${event.clientX}px`)
         .style('top', `${event.clientY - 28}px`);
@@ -129,7 +129,7 @@ class MigrationVis {
 
         // Hide the tooltip
         vis.tooltip.transition()
-            .duration(500)
+            .duration(10)
             .style('opacity', 0);
     }
     })
