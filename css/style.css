@@ -33,7 +33,9 @@ h3 {
 	font-weight: bold;
 
 }
-
+p{
+	color: #143c69;
+}
 h5 {
 	font-size: 13px;
 }
@@ -111,8 +113,8 @@ img {
 	background-color: #ffffff;
 }
 
-.diet-style {
-	height: 100%; 
+.diet-vis {
+	height: 40vh; 
 	width: 100%; 
 }
 
@@ -145,15 +147,6 @@ img {
 	font-size: 1.3em;
 }
 
-
-/* Media query for smaller screens */
-@media (max-width: 999px) {
-  #dietAnalysis {
-    display: block; /* Change display property to block to make it a block element */
-    width: 100%; /* Make it take the full width of the container */
-    margin-top: 10px; /* Adjust margin as needed */
-  }
-}
 
 
 
@@ -251,8 +244,15 @@ th {
 
 	 .subregionMapColumn {
 		width: 100%;
-
 }
+
+		.dietVis {
+			width: 100%
+		}
+		#dietAnalysis {
+			width: 100%; 
+}
+
 }
 
 

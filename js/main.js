@@ -72,6 +72,8 @@ function createVis(data) {
     adoptVisual = new AdoptBear('adoptDiv', healthData)
 
     migrationVisual = new MigrationVis('migrationDiv', arctic_ice, migrationData)
+
+    dietStacked = new DietStacked('dietStacked', polarBearDietData)
    
     // create subregionVisual
     subregionMap = new SubregionMap('subregionMap', subregionData);
