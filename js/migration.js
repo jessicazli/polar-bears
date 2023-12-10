@@ -100,8 +100,10 @@ class MigrationVis {
         //   .style('opacity', d => (d.BearID_ud === bearID) ? 1 : 0.05);
 
         vis.tooltip.transition()
-          .duration(100)
-          .style('opacity', 0.9);
+        .duration(100)
+        .style('opacity', 0.9)
+        .style('left', `${event.clientX}px`)
+        .style('top', `${event.clientY - 28}px`);
 
         vis.tooltip.html(`
           <div style="border-radius: 5px;  border: 2px solid #34629C; text-align: left; background: #D9E8F3; padding: 20px">
@@ -114,13 +116,23 @@ class MigrationVis {
           .style('top', `${event.pageY - 28}px`);
       })
       .on('mouseout', function () {
-        vis.svg.selectAll('.circle').style('opacity', 1);
-        vis.svg.selectAll('path').style('opacity', 1);
+        const isMouseOverTooltip = d3.select(event.relatedTarget).classed('tooltip');
+    
+    if (!isMouseOverTooltip) {
+        // Reset the opacity of circles
+        vis.svg.selectAll('.circle')
+            .style('opacity', 1)
+            .attr("r", d => vis.radiusScale(parseTime(d.DateTimeUTC_ud)));
 
+        // Reset the opacity of paths (if you want to include this)
+        // vis.svg.selectAll('path').style('opacity', 1);
+
+        // Hide the tooltip
         vis.tooltip.transition()
-          .duration(500)
-          .style('opacity', 0);
-      })
+            .duration(500)
+            .style('opacity', 0);
+    }
+    })
 
 
       .transition()
@@ -258,13 +270,23 @@ class MigrationVis {
           .style('top', `${event.pageY - 28}px`);
       })
       .on('mouseout', function () {
-        vis.svg.selectAll('.circle').style('opacity', 1);
-        vis.svg.selectAll('path').style('opacity', 1);
+        const isMouseOverTooltip = d3.select(event.relatedTarget).classed('tooltip');
+    
+    if (!isMouseOverTooltip) {
+        // Reset the opacity of circles
+        vis.svg.selectAll('.circle')
+            .style('opacity', 1)
+            .attr("r", d => vis.radiusScale(parseTime(d.DateTimeUTC_ud)));
 
+        // Reset the opacity of paths (if you want to include this)
+        // vis.svg.selectAll('path').style('opacity', 1);
+
+        // Hide the tooltip
         vis.tooltip.transition()
-          .duration(500)
-          .style('opacity', 0);
-      })
+            .duration(500)
+            .style('opacity', 0);
+    }
+    })
       .transition()
       .duration(200) // Adjust the duration as needed
       .ease(d3.easeLinear)
