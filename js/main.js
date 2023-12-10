@@ -73,7 +73,9 @@ function createVis(data) {
 
     allHealthVisual = new AllHealthVis('allHealthDiv', healthData);
 
-    migrationVisual = new MigrationVis('migrationDiv', arctic_ice, migrationData);
+    migrationVisual = new MigrationVis('migrationDiv', arctic_ice, migrationData)
+
+    dietStacked = new DietStacked('dietStacked', polarBearDietData)
    
     // create subregionVisual
     subregionMap = new SubregionMap('subregionMap', subregionData);
@@ -147,7 +149,8 @@ function createVis(data) {
         const filteredMigrationData = migrationData.filter(d => new Date(d.DateTimeUTC_ud).getFullYear() >= startYear && new Date(d.DateTimeUTC_ud).getFullYear() <= endYear);
 
         // Update the data for the migration map
-        await migrationVisual.updateData(filteredMigrationData);
+        migrationVisual.updateData(filteredMigrationData);
+        migrationVisual.updateVis();
 
         console.log("Migration Data:", filteredMigrationData);
     });

@@ -7,9 +7,9 @@ class DietVis {
       this.data = data;
       this.displayData = [];
 
-      this.selectedDietCategory = 'total_consumption'
+      this.selectedDietCategory = 'avg_Beluga_whale'
 
-      this.colors=["#134078", "#add8e6", "#3D5573"]
+      this.colors=["#134078", "#3D5573", '#EDA57F', '#add8e6', '#4074B7','#F2ABE9', '#ABABF2']
       console.log(this.data)
       // Initialize the chart
       this.initVis();
@@ -24,7 +24,7 @@ class DietVis {
 
         vis.margin = { top: 20, right: 20, bottom: 50, left: 50 };
         vis.width = document.getElementById(vis.parentElement).getBoundingClientRect().width - vis.margin.left - vis.margin.right;
-        vis.height = 400;
+        vis.height = (document.getElementById(vis.parentElement).getBoundingClientRect().height / 1.5 - 50) ;
 
         // Create SVG container
         vis.svg = d3.select("#" + vis.parentElement).append("svg")
@@ -74,6 +74,13 @@ class DietVis {
           .attr("dy", "1em")
           .style("text-anchor", "middle")
 
+      vis.setColors = {
+        avg_Bearded_seal: vis.colors[3],
+        avg_Ringed_seal:  vis.colors[2],
+        avg_Beluga_whale: vis.colors[6],
+        avg_Bowhead_whale: vis.colors[5],
+        avg_Seabird_nestling: vis.colors[4],
+      };
       // Update the chart
       this.wrangleData(vis.selectedDietCategory);
     }
@@ -159,28 +166,31 @@ class DietVis {
 
     function getYLabel(dataField) {
       let labelMapping = {
-        total_consumption: 'Total Consumption',
-        avg_Bearded_seal: 'Average Bearded Seal Consumption (% of Total Diet)',
-        avg_Ringed_seal: 'Average Ringed Seal Consumption (% of Total Diet)',
-        avg_Beluga_whale: 'Average Beluga Whale Consumption (% of Total Diet)',
-        avg_Bowhead_whale: 'Average Bowhead Whale Consumption (% of Total Diet)',
-        avg_Seabird_nestling: 'Average Seabird Nestling Consumption (% of Total Diet)',
+        avg_Bearded_seal: 'Bearded Seal (% of Diet)',
+        avg_Ringed_seal: 'Ringed Seal (% of Diet)',
+        avg_Beluga_whale: 'Beluga Whale (% of Diet)',
+        avg_Bowhead_whale: 'Bowhead Whale (% of Diet)',
+        avg_Seabird_nestling: 'Seabird Nestling (% of Diet)',
       };
     
       return labelMapping[dataField];
     }
 
-    
+
     vis.xLabel
       .text("Year")
       .style("fill", vis.colors[0])
 
     vis.yLabel
       .text(getYLabel(dataField))
-      .style("fill", vis.colors[0]);
+      .style("fill", vis.colors[0])
+      .style("font-size", "0.9em")
 
     console.log(getYLabel(dataField))
 
+    vis.currentColor = vis.setColors[vis.selectedDietCategory]
+
+    console.log(vis.currentColor)
     // Create a bar chart
     vis.bar = vis.svg.selectAll('.bar')
         .data(vis.displayData);
@@ -192,8 +202,9 @@ class DietVis {
         .attr('y', vis.height)
         .attr("height", 0) 
         .attr('width', d => vis.xScale.bandwidth())
-        .style("fill", vis.colors[1])
+        .style("fill", vis.currentColor)
         .merge(vis.bar)  // Merge enter and update selections
+        .style("fill", vis.currentColor)
         .transition()
         .duration(800)
         .attr('y', d => vis.yScale(d[1][dataField]))
@@ -203,14 +214,14 @@ class DietVis {
           .on('mouseover', function(event, d) {
             d3.select(this)
               .attr('stroke-width', '1px')
-              .attr('stroke', vis.colors[2])
+              .attr('stroke', vis.colors[1])
   
               vis.tooltip
                   .style('opacity', 0.9)
                   .html(`
                   <div style="border: thin solid lightblue; border-radius: 5px; text-align: left; background: ${vis.colors[0]}; color: white; padding: 20px">
-                  <h3>${d[0]}</h3>
-                  <p> <span style="font-weight: bold;color: #dfeaf8;"> Year: </span>${d[0]} 
+                  <h3 style="color: white">${d[0]} </h3>
+                  <p style="color: #dfeaf8;"> <span style="font-weight: bold;color: #dfeaf8;"> Year: </span>${d[0]} 
                   <br>
                   <span style="font-weight: bold;color: #dfeaf8;"> ${getYLabel(dataField)}: </span> ${d[1][dataField]}
                   <br>

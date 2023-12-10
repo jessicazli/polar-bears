@@ -45,19 +45,6 @@
                 </div>
             </div>
         </div>
-        <!-- <div class="section s2">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-12">
-                        <h2>Did you know there is a new species in the Arctic?</h2>
-                        <h3>PIZZLY BEARS!</h3>
-                        <div>What are pizzly bears?</div>
-                        <div>Pizzly bears are a hybrid between polar bears and their southern relatives, the grizzly
-                            bears.</div>
-                    </div>
-                </div>
-            </div>
-        </div> -->
 
         <div class="section s2">
             <div class="container">
@@ -79,7 +66,9 @@
                             <h3>PIZZLY BEARS!</h3>
                             <p class="text-start">What are pizzly bears? </p>
                             </br>
-                            <p class="text-start">Pizzly bears are a hybrid between polar bears and their southern relatives, the grizzly bears.</p>
+                            <p class="text-start">Pizzly bears are a hybrid between polar bears and their southern relatives, the grizzly bears.
+                                This hybrid bear is a product of the environmental crisis associated with climate change. 
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -99,6 +88,7 @@
                         <!-- <div id="mapDiv"></div> -->
                         <div id="migrationDiv"></div>
                         <div id="migrationSlider"></div>
+                        <div id="migrationLegend"></div>
                         <h5>SLIDER BROKEN. Blue = arctic ice. Each dot is a polar bear's location in time, <br> and overall one color maps a polar bear's migration path.
                         Larger circles signify <br> tracks from earlier years, and smaller one signify more recent years.</h5>
                     </div>
@@ -211,13 +201,16 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-12">
-                        <h2>Polar Bear Diet Consumption</h2>
+                        <h2> Southern Beaufort Sea Polar Bear Diet Trend</h2>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-12">
-                        As sea ice melts, polar bears must adapt to changes in their environment.
-                        Specifically, we can see how their diet has changed over time.
+                    <div class="col-12 text-start">
+                        As sea ice melts, polar bears must adapt to changes in their environment. Population trend from 2021 shows that
+                        Southern Beaufort Sea polar bear population has likely decreased. Specifically, let's see how the diet of Southern 
+                        Beaufort Sea Polar Bears has changed between 2004-2016. We accessed the dataset from USGS Alaska Science Center - Polar Bear Research Program.
+                        To obtain the percentage breakdown by diet type in a particular year, we calculated the total consumption of
+                        each food source from that year and divided by the number of polar bears captured. This yields the average consumption (as % of total diet) of each food source.
                     </div>
                 </div>
 
@@ -227,10 +220,9 @@
                         <div class="row justify-content-center full-height">
                             <select id="dietFilter" class="form-select align-self-center" aria-label="diet-filter"
                                 onchange="dietCategoryChange()">
-                                <option value="total_consumption" selected>All Diets (Total)</option>
                                 <option value="avg_Bearded_seal">Bearded Seal</option>
                                 <option value="avg_Ringed_seal">Ringed Seal </option>
-                                <option value="avg_Beluga_whale">Beluga Whale </option>
+                                <option value="avg_Beluga_whale" selected>Beluga Whale </option>
                                 <option value="avg_Bowhead_whale">Bowhead Whale </option>
                                 <option value="avg_Seabird_nestling">Seabird Nestling </option>
 
@@ -240,22 +232,28 @@
                     </div>
                 </div>
 
-
                 <!-- SVG container for the chart -->
                 <div class="container">
                     <div class="row">
-                        <div class="col-8">
-                            <div id="dietDiv" class="diet-style"></div>
+                        <div class="col-8 dietVis">
+                            <div id="dietStacked" class="diet-vis"></div>  
+                            <div id="dietDiv" class="diet-vis"></div>
                         </div>
-                        <div class="col-4">
-                            <div id="dietAnalysis">
-                                <p>
-                                   
+                        <div id="dietAnalysis" class="col-4 ">
+                            <div class="text-start reveal-box">
+                                <h3>As sea ice extent decreased throughout the years, there was a significant decline in
+                                  polar bears' consumption of Beluga whales from 2004 to 2016.
+                                </h3>
+                                <img class="mx-auto d-block whale" src="/images/whale.jpeg" alt="whale">
+                                <p >
                                     Polar Bears are carnivores and feed mainly on ringed and beared seals. Depending on their location and available
-                                    food sources, they also hunt whales. However, as sea ice extent decreased throughout the years, 
-                                    polar bears' average consumption of beluga whales has signficantly declined
-                                    from 2004 to 2016, suggesting a change in their diet. 
-                                </p> </div>
+                                    food sources, they also hunt whales. The energy contained in whales is more than seals. According to scientists
+                                    <a href="https://esajournals.onlinelibrary.wiley.com/doi/full/10.1002/fee.1963"> Laidre et al.</a>, 
+                                    a population of polar bears would need to eat more than 1,300 adult ringed seals to obtain the same amount of 
+                                    energy stored in one bowhead whale carcass. This difference in polar bear diet throughout the years indicates their changing environment
+                                    and the potential impact of climate change on other arctic species like whales.
+                                </p> 
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -404,7 +402,7 @@
             licenseKey: 'gplv3-license',
             // make the page seamless if autoscroll false
             autoScrolling: true,
-            // lazyLoading: true,
+            // lazyLoading: false,
             navigation: true,
             anchors: ["section1", "section2", "section3", "section4", "section5", "section6", "section7", "section8", "section9", "section10", "section11"],
             navigationTooltips: ['Home', 'Pizzly', 'Migration', 'Climate Change', 'Regions', 'Regions Analysis', 'Diet', 'Health', 'Adopt a Bear', 'Thank You', 'About Us'],
@@ -422,7 +420,7 @@
     <script src="js/subregionMap.js"></script>
     <script src="js/arcticmap.js"></script>
     <script src="js/subregionTable.js"></script>
-    <script src="js/allHealthVis.js"></script>
+    <script src="js/dietStacked.js"></script>
 
   
     <!-- Load data, create visualizations -->
