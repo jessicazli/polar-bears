@@ -80,11 +80,6 @@ class MigrationVis {
       .enter()
 
       .append('circle')
-      // Transition to gradually increase the radius
-      // .transition()
-      // .duration(500) // Adjust the duration as needed
-      // .ease(d3.easeLinear)
-      // .delay((d, i) => i * .8) // Adjust the delay between circles
       .attr("class", "circle")
       .attr("cx", d => vis.projection([d.longitude_ud, d.latitude_ud])[0])
       .attr("cy", d => vis.projection([d.longitude_ud, d.latitude_ud])[1])
@@ -107,8 +102,8 @@ class MigrationVis {
           .duration(200)
           .style('opacity', 0.9);
 
-          
-          vis.tooltip.html(`
+
+        vis.tooltip.html(`
           <div style="border-radius: 5px;  border: 2px solid #34629C; text-align: left; background: #D9E8F3; padding: 20px">
           <strong>Bear ID:</strong> ${bearID}
           <br>
@@ -149,9 +144,6 @@ class MigrationVis {
     circles.enter()
       .append('circle')
       .attr("class", "circle")  // Add a class for selection
-
-      
-      // .merge(circles)  // Merging the enter and update selections //made it slower??
       .attr("cx", d => vis.projection([d.longitude_ud, d.latitude_ud])[0])
       .attr("cy", d => vis.projection([d.longitude_ud, d.latitude_ud])[1])
       .attr("r", d => vis.radiusScale(parseTime(d.DateTimeUTC_ud)))
@@ -191,21 +183,9 @@ class MigrationVis {
           .duration(500)
           .style('opacity', 0);
       })
-      // .transition()
-      // .duration(5000)
-      // .ease(d3.easeLinear)
-      // .delay((d, i) => i * 50)
-      // .attr("r", d => vis.radiusScale(parseTime(d.DateTimeUTC_ud)));
 
     // Remove circles that are no longer needed
-    circles.exit()
-      .remove()
-      .transition()
-      .duration(5000)
-      .ease(d3.easeLinear)
-      .delay((d, i) => i * 50)
-      .attr("r", d => vis.radiusScale(parseTime(d.DateTimeUTC_ud)));
-      ;
+    circles.exit().remove();
   }
 
   updateData(newData) {
