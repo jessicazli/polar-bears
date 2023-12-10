@@ -3,16 +3,16 @@
 class AllHealthVis {
     constructor(parentElement, data) {
         this.parentElement = parentElement;
-        this.data = this.initialFilterData(data);
+        this.data = this.filterData(data);
         this.keys = Object.keys(this.data[0]).slice(3);
-        console.log("keys: " + this.keys);
+
         this.selectedSex = 'all';
         this.selectedAgeclass = 'all';
 
         this.initVis();
     }
 
-    initialFilterData(data) {
+    filterData(data) {
         return data.filter(row => row.BodyLength != "" && row.Mass != "" 
                             && row.BMI != "" && row.StorageEnergy != "" && row.HairWeight != "" 
                             && row.HairCortisol != "" && row.ReactiveOxySpecies != "" 
@@ -33,20 +33,6 @@ class AllHealthVis {
             }));
     };
 
-    filterData() {
-        let filteredData = this.data;
-
-        if (this.currentSex !== 'all') {
-            filteredData = filteredData.filter(d => d.Sex === this.currentSex);
-        }
-
-        if (this.currentAgeclass !== 'all') {
-            filteredData = filteredData.filter(d => d.Ageclass === this.currentAgeclass);
-        }
-
-        return filteredData;
-    }
-
     initVis() {
 
         let vis = this;
@@ -65,28 +51,28 @@ class AllHealthVis {
             .attr('transform', `translate(${vis.margin.left},${vis.margin.top})`);
 
         // Scales and Axes
-        const x = new Map(vis.keys.map(key => [key, d3.scaleLinear()
+         vis.x = new Map(vis.keys.map(key => [key, d3.scaleLinear()
             .domain(d3.extent(vis.data, d => d[key]))
             .range([0, vis.width])]));
 
-        const y = d3.scalePoint(vis.keys, [0, vis.height]);
+        vis.y = d3.scalePoint(vis.keys, [0, vis.height]);
 
         // Color scale
-        const color = d3.scaleSequential(d3.extent(vis.data, d => d[vis.keys[0]]), d3.interpolateBrBG);
+        vis.color = d3.scaleSequential(d3.extent(vis.data, d => d[vis.keys[0]]), d3.interpolateBrBG);
 
         // Lines
-        const line = d3.line()
+        vis.line = d3.line()
             .defined(([, value]) => value != null)
-            .x(([key, value]) => x.get(key)(value))
-            .y(([key]) => y(key));
+            .x(([key, value]) => vis.x.get(key)(value))
+            .y(([key]) => vis.y(key));
 
-        const path = vis.svg.append("g")
+        vis.path = vis.svg.append("g")
             .selectAll("path")
             .data(vis.data)
             .join("path")
                 .attr("class", d => `line line-${d.BearID}`)
-                .attr("stroke", d => color(d[vis.keys[0]]))
-                .attr("d", d => line(Array.from(x, ([key]) => [key, d[key]])));
+                .attr("stroke", d => vis.color(d[vis.keys[0]]))
+                .attr("d", d => vis.line(Array.from(vis.x, ([key]) => [key, d[key]])));
 
         const units = {
             BodyLength: "cm",
@@ -101,11 +87,11 @@ class AllHealthVis {
         };
 
         // Axes
-        const axes = vis.svg.selectAll("g")
+        vis.axes = vis.svg.selectAll("g")
             .data(vis.keys)
             .join("g")
-                .attr("transform", d => `translate(0,${y(d)})`)
-                .each(function(d) { d3.select(this).call(d3.axisBottom(x.get(d))); })
+                .attr("transform", d => `translate(0,${vis.y(d)})`)
+                .each(function(d) { d3.select(this).call(d3.axisBottom(vis.x.get(d))); })
                 .call(g => g.append("text")
                     .attr("x", 0)
                     .attr("y", -6)
@@ -120,15 +106,14 @@ class AllHealthVis {
                     .attr("stroke", "white"));
 
         // Brush Behavior
-        const brushHeight = 50;
-        const brush = d3.brushX()
+        vis.brush = d3.brushX()
             .extent([
-                [0, -(brushHeight / 2)],
-                [vis.width, brushHeight / 2]
+                [0, -(50 / 2)],
+                [vis.width, 50 / 2]
             ])
             .on("start brush end", brushed);
 
-        axes.call(brush);
+        vis.axes.call(vis.brush);
 
         const selections = new Map();
 
@@ -136,10 +121,10 @@ class AllHealthVis {
             if (selection === null) {
                 selections.delete(key);
             } else {
-                selections.set(key, selection.map(x.get(key).invert));
+                selections.set(key, selection.map(vis.x.get(key).invert));
             }
         
-            path.each(function(d) {
+            vis.path.each(function(d) {
                 const element = d3.select(this);
                 const isHighlighted = element.classed("line-highlight");
                 const isActive = isHighlighted || Array.from(selections).every(([currentKey, [min, max]]) => {
@@ -148,13 +133,34 @@ class AllHealthVis {
         
                 // Update the stroke color only if this isn't the highlighted line
                 if (!isHighlighted) {
-                    element.style("stroke", isActive ? color(d[vis.keys[0]]) : "#ddd");
+                    element.style("stroke", isActive ? vis.color(d[vis.keys[0]]) : "#ddd");
                 }
             });
         
             // Raise the highlighted line so it's on top
             vis.svg.selectAll(".line-highlight").raise();
         }
+
+        vis.updateVis(this.selectedSex, this.selectedAgeclass);
+    }
+
+    updateVis(selectedSex, selectedAgeclass) {
+        let vis = this;
+
+        vis.selectedSex = selectedSex;
+        vis.selectedAgeclass = selectedAgeclass;
+
+        let filteredData = vis.data.filter(d => {
+            const sexFilter = selectedSex === 'all' || d.Sex === selectedSex;
+            const ageFilter = selectedAgeclass === 'all' || d.Ageclass === selectedAgeclass;
+            return sexFilter && ageFilter;
+        });
+
+        // Filter data based on the selected options
+        console.log("selectedSex: " + selectedSex);
+        console.log("selectedAgeclass: " + selectedAgeclass);
+        
+
     }
 
     highlightBear(bearID) {

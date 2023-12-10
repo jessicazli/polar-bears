@@ -199,17 +199,16 @@ function ageclassHealthCategoryChange() {
 }
 
 function sexAllHealthCategoryChange() {
-    const selectedSex = document.getElementById('sexAllHealthFilter').value;
-    allHealthVisual.currentSex = selectedSex;
-    allHealthVisual.updateVis();
+    selectedSex = document.getElementById('sexAllHealthFilter').value;
+ 
+    allHealthVisual.updateVis(selectedSex, allHealthVisual.selectedAgeclass);
 }
 
 function ageclassAllHealthCategoryChange() {
-    const selectedAgeclass = document.getElementById('ageclassAllHealthFilter').value;
-    allHealthVisual.currentAgeclass = selectedAgeclass;
-    allHealthVisual.updateVis();
+    selectedAgeclass = document.getElementById('ageclassAllHealthFilter').value;
+   
+    allHealthVisual.updateVis(allHealthVisual.selectedSex, selectedAgeclass);
 }
-
 
 function changeSubregionFilter() {
     subregionMap.wrangleData();
