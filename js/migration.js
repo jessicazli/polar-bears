@@ -1,9 +1,13 @@
 class MigrationVis {
-  constructor(parentElement, geoData, bearData) {
+  constructor(parentElement, geoData, bearData, marineData, landData, nameData, oceanData) {
     this.parentElement = parentElement;
     this.geoData = geoData;
     this.bearData = bearData;
     this.displayData = bearData;
+    this.marineData = marineData;
+    this.landData = landData;
+    this.nameData = nameData;
+    this.oceanData = oceanData;
 
     this.initVis();
   }
@@ -24,8 +28,32 @@ class MigrationVis {
       .append('g')
       .attr('transform', `translate(${vis.margin.left},${vis.margin.top})`);
 
-    // Create a projection
+    // Create a projection for ice
     vis.projection = d3.geoOrthographic()
+      .scale(vis.height / 0.3)
+      .translate([vis.width - 100, vis.height + 150])
+      .rotate([0, -90])
+      .clipAngle(100)
+      .precision(.5);
+
+    // Create a projection for coastline
+    vis.projectionMarine = d3.geoOrthographic()
+      .scale(vis.height / 0.3)
+      .translate([vis.width - 100, vis.height + 150])
+      .rotate([0, -90])
+      .clipAngle(100)
+      .precision(.5);
+
+    // Create a projection for land
+    vis.projectionLand = d3.geoOrthographic()
+      .scale(vis.height / 0.3)
+      .translate([vis.width - 100, vis.height + 150])
+      .rotate([0, -90])
+      .clipAngle(100)
+      .precision(.5);
+
+    // Create a projection for ocean
+    vis.projectionOcean = d3.geoOrthographic()
       .scale(vis.height / 0.3)
       .translate([vis.width - 100, vis.height + 150])
       .rotate([0, -90])
@@ -35,6 +63,18 @@ class MigrationVis {
     // Define a geo generator and pass the projection to it
     vis.path = d3.geoPath()
       .projection(vis.projection);
+
+    // Define a geo generator and pass the projection to it
+    vis.pathMarine = d3.geoPath()
+      .projection(vis.projectionMarine);
+
+    // Define a geo generator and pass the projection to it
+    vis.pathLand = d3.geoPath()
+      .projection(vis.projectionLand);
+
+    // define a geo generator and pass the projection to it
+    vis.pathOcean = d3.geoPath()
+      .projection(vis.projectionOcean);
 
     // Append tooltip
     vis.tooltip = d3.select(`#${vis.parentElement}`).append('div')
@@ -54,7 +94,7 @@ class MigrationVis {
     // Create a time scale for circle sizes
     vis.radiusScale = d3.scaleTime()
       .domain([minDate, maxDate])
-      .range([5, 0.2]); // Adjust the range for the desired size variation
+      .range([5, 4]); // Adjust the range for the desired size variation
 
     // Create a sequential color scale for time
     vis.colorScale = d3.scaleSequential()
@@ -63,17 +103,52 @@ class MigrationVis {
 
 
 
+        
+
     // Bind data and create one path per GeoJSON feature
-    vis.svg.selectAll("path")
-      .data(vis.geoData.features)
+    vis.svg.selectAll("marinepath")
+      .data(vis.marineData.features)
       .enter()
       .append("path")
-      .attr("d", vis.path)
-      .attr("stroke", "steelblue")
-      .attr("stroke-width", 1.2)
-      .attr("fill-opacity", 0.2)
-      .style("fill", "steelblue");
+      .attr("d", vis.pathMarine)
+      .attr("stroke", "DarkCyan")
+      .attr("stroke-width", 2.0)
+      .attr("fill-opacity", 0.0)
+      .style("fill", "aqua");
 
+    // Bind data and create one path per GeoJSON feature
+    vis.svg.selectAll("oceanpath")
+      .data(vis.oceanData.features)
+      .enter()
+      .append("path")
+      .attr("d", vis.pathOcean)
+      // .attr("stroke", "DarkBlue")
+      // .attr("stroke-width", 2.0)
+      .attr("fill-opacity", 0.6)
+      .style("fill", "DodgerBlue");
+
+          // Bind data and create one path per GeoJSON feature
+    vis.svg.selectAll("landpath")
+    .data(vis.landData.features)
+    .enter()
+    .append("path")
+    .attr("d", vis.pathLand)
+    // .attr("stroke", "green")
+    // .attr("stroke-width", 1.2)
+    .attr("fill-opacity", 0.8)
+    .style("fill", "BurlyWood");
+
+          // Bind data and create one path per GeoJSON feature
+    vis.svg.selectAll(".ice-outline")
+    .data(vis.geoData.features)
+    .enter()
+    .append("path")
+    .attr("class", "ice-outline")
+    .attr("d", vis.path)
+    .attr("stroke", "steelblue")
+    .attr("stroke-width", 0.5)
+    .attr("fill-opacity", 0.8)
+    .style("fill", "Ghostwhite");
 
 
     // Append circles with tooltips
@@ -100,7 +175,7 @@ class MigrationVis {
         //   .style('opacity', d => (d.BearID_ud === bearID) ? 1 : 0.05);
 
         vis.tooltip.transition()
-        .duration(100)
+        .duration(10)
         .style('opacity', 0.9)
         .style('left', `${event.clientX}px`)
         .style('top', `${event.clientY - 28}px`);
@@ -129,16 +204,16 @@ class MigrationVis {
 
         // Hide the tooltip
         vis.tooltip.transition()
-            .duration(500)
+            .duration(10)
             .style('opacity', 0);
     }
     })
 
 
       .transition()
-      .duration(200) // Adjust the duration as needed
+      .duration(500) // Adjust the duration as needed
       .ease(d3.easeLinear)
-      .delay((d, i) => i * 1) // Delay for each bear
+      .delay((d, i) => i * 4) // Delay for each bear
       .attr("r", d => vis.radiusScale(parseTime(d.DateTimeUTC_ud)))
 
     // Append color legend
@@ -280,9 +355,9 @@ class MigrationVis {
         }
       })
       .transition()
-      .duration(200) // Adjust the duration as needed
+      .duration(500) // Adjust the duration as needed
       .ease(d3.easeLinear)
-      .delay((d, i) => i * 1) // Delay for each bear
+      .delay((d, i) => i * 4) // Delay for each bear
       .attr("r", d => vis.radiusScale(parseTime(d.DateTimeUTC_ud)));
 
     // Remove circles that are no longer needed
