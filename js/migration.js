@@ -1,9 +1,10 @@
 class MigrationVis {
-  constructor(parentElement, geoData, bearData) {
+  constructor(parentElement, geoData, bearData, marineData) {
     this.parentElement = parentElement;
     this.geoData = geoData;
     this.bearData = bearData;
     this.displayData = bearData;
+    this.marineData = marineData;
 
     this.initVis();
   }
@@ -24,8 +25,16 @@ class MigrationVis {
       .append('g')
       .attr('transform', `translate(${vis.margin.left},${vis.margin.top})`);
 
-    // Create a projection
+    // Create a projection for ice
     vis.projection = d3.geoOrthographic()
+      .scale(vis.height / 0.3)
+      .translate([vis.width - 100, vis.height + 150])
+      .rotate([0, -90])
+      .clipAngle(100)
+      .precision(.5);
+
+    // Create a projection for marine
+    vis.projectionMarine = d3.geoOrthographic()
       .scale(vis.height / 0.3)
       .translate([vis.width - 100, vis.height + 150])
       .rotate([0, -90])
@@ -35,6 +44,10 @@ class MigrationVis {
     // Define a geo generator and pass the projection to it
     vis.path = d3.geoPath()
       .projection(vis.projection);
+
+    // Define a geo generator and pass the projection to it
+    vis.pathMarine = d3.geoPath()
+      .projection(vis.projectionMarine);
 
     // Append tooltip
     vis.tooltip = d3.select(`#${vis.parentElement}`).append('div')
@@ -63,16 +76,29 @@ class MigrationVis {
 
 
 
+
     // Bind data and create one path per GeoJSON feature
-    vis.svg.selectAll("path")
-      .data(vis.geoData.features)
+    vis.svg.selectAll(".ice-outline")
+        .data(vis.geoData.features)
+        .enter()
+        .append("path")
+        .attr("class", "ice-outline")
+        .attr("d", vis.path)
+        .attr("stroke", "steelblue")
+        .attr("stroke-width", 0.2)
+        .attr("fill-opacity", 0.2)
+        .style("fill", "steelblue");
+
+    // Bind data and create one path per GeoJSON feature
+    vis.svg.selectAll("marinepath")
+      .data(vis.marineData.features)
       .enter()
       .append("path")
-      .attr("d", vis.path)
-      .attr("stroke", "steelblue")
+      .attr("d", vis.pathMarine)
+      .attr("stroke", "red")
       .attr("stroke-width", 1.2)
-      .attr("fill-opacity", 0.2)
-      .style("fill", "steelblue");
+      .attr("fill-opacity", 0.0)
+      .style("fill", "aqua");
 
 
 
