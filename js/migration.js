@@ -5,7 +5,6 @@ class MigrationVis {
     this.bearData = bearData;
     this.displayData = bearData;
 
-
     this.initVis();
   }
 
@@ -27,7 +26,7 @@ class MigrationVis {
     // Create a projection
     vis.projection = d3.geoOrthographic()
       .scale(vis.height / 0.3)
-      .translate([vis.width - 100, vis.height +150])
+      .translate([vis.width - 100, vis.height + 150])
       .rotate([0, -90])
       .clipAngle(100)
       .precision(.5);
@@ -35,6 +34,11 @@ class MigrationVis {
     // Define a geo generator and pass the projection to it
     vis.path = d3.geoPath()
       .projection(vis.projection);
+
+    // Append tooltip
+    vis.tooltip = d3.select(`#${vis.parentElement}`).append('div')
+      .attr('class', 'tooltip')
+      .attr('id', 'migrationTooltip');
 
     // Parse timestamps to create a time scale
     const parseTime = d3.timeParse("%m/%d/%Y %H:%M");
@@ -62,44 +66,117 @@ class MigrationVis {
       .attr("fill-opacity", 0.2)
       .style("fill", "steelblue");
 
-    // Update the graph
+    // Append circles with tooltips
+    vis.svg.selectAll(".circle")
+      .data(vis.displayData)
+      .enter()
+      .append('circle')
+      .attr("class", "circle")
+      .attr("cx", d => vis.projection([d.longitude_ud, d.latitude_ud])[0])
+      .attr("cy", d => vis.projection([d.longitude_ud, d.latitude_ud])[1])
+      .attr("r", d => vis.radiusScale(parseTime(d.DateTimeUTC_ud)))
+      .attr("stroke", "black")
+      .attr("stroke-opacity", 0.4)
+      .attr("fill", d => vis.colorScale(parseTime(d.DateTimeUTC_ud)))
+      .attr("fill-opacity", 0.5)
+      .on('mouseover', function (event, d) {
+        d3.select(this).style('opacity', 1);
+        const bearID = d.BearID_ud; // Corrected the typo
+
+        vis.svg.selectAll('.circle')
+          .style('opacity', d => (d.BearID_ud === bearID) ? 1 : 0.05);
+
+        vis.svg.selectAll('path')
+          .style('opacity', d => (d.properties.BearID_ud === bearID) ? 1 : 0.05);
+
+        vis.tooltip.transition()
+          .duration(200)
+          .style('opacity', 0.9);
+        vis.tooltip.html(`<strong>Bear ID:</strong> ${bearID}`)
+          .style('left', `${event.pageX}px`)
+          .style('top', `${event.pageY - 28}px`);
+      })
+      .on('mouseout', function () {
+        vis.svg.selectAll('.circle').style('opacity', 1);
+        vis.svg.selectAll('path').style('opacity', 1);
+
+        vis.tooltip.transition()
+          .duration(500)
+          .style('opacity', 0);
+      })
+      .transition()
+      .duration(5000)
+      .ease(d3.easeLinear)
+      .attr("r", d => vis.radiusScale(parseTime(d.DateTimeUTC_ud)));
+
     vis.updateVis();
   }
 
   updateVis() {
     const vis = this;
 
+    const startDate = dateFormatter(new Date(d3.min(vis.displayData, entry => new Date(entry.DateTimeUTC_ud))));
+    const endDate = dateFormatter(new Date(d3.max(vis.displayData, entry => new Date(entry.DateTimeUTC_ud))));
+
     // Parse timestamps to create a time scale
     const parseTime = d3.timeParse("%m/%d/%Y %H:%M");
 
     // Append new circles with transition
     const circles = vis.svg.selectAll(".circle")
-        .data(vis.displayData);
-  
+      .data(vis.displayData);
+
     circles.enter()
-        .append('circle')
-        .attr("class", "circle")  // Add a class for selection
-        .merge(circles)  // Merging the enter and update selections
-        .attr("cx", d => vis.projection([d.longitude_ud, d.latitude_ud])[0])
-        .attr("cy", d => vis.projection([d.longitude_ud, d.latitude_ud])[1])
-        .attr("r", d => vis.radiusScale(parseTime(d.DateTimeUTC_ud)))
-        .attr("stroke", "black")
-        .attr("stroke-opacity", 0.4)
-        .attr("fill", d => vis.colorScale(parseTime(d.DateTimeUTC_ud)))
-        .attr("fill-opacity", 0.5)
-        .transition()
-        .duration(500)
-        .attr("r", d => vis.radiusScale(parseTime(d.DateTimeUTC_ud)));
+      .append('circle')
+      .attr("class", "circle")  // Add a class for selection
+      .merge(circles)  // Merging the enter and update selections
+      .attr("cx", d => vis.projection([d.longitude_ud, d.latitude_ud])[0])
+      .attr("cy", d => vis.projection([d.longitude_ud, d.latitude_ud])[1])
+      .attr("r", d => vis.radiusScale(parseTime(d.DateTimeUTC_ud)))
+      .attr("stroke", "black")
+      .attr("stroke-opacity", 0.4)
+      .attr("fill", d => vis.colorScale(parseTime(d.DateTimeUTC_ud)))
+      .attr("fill-opacity", 0.5)
+      .on('mouseover', function (event, d) {
+        const bearID = d.BearID_ud;
+
+        vis.svg.selectAll('.circle')
+          .style('opacity', d => (d.BearID_ud === bearID) ? 1 : 0.05);
+
+        vis.svg.selectAll('path')
+          .style('opacity', d => (d.properties.BearID_ud === bearID) ? 1 : 0.05);
+
+        vis.tooltip.transition()
+          .duration(200)
+          .style('opacity', 0.9);
+        vis.tooltip.html(`
+        <div style="border-radius: 5px;  border: 2px solid #34629C; text-align: left; background: #D9E8F3; padding: 20px">
+        <strong>Bear ID:</strong> ${bearID}
+        <br>
+        <strong>Locations found from:</strong> ${startDate} to ${endDate}
+        </div>
+        `)
+          .style('left', `${event.pageX}px`)
+          .style('top', `${event.pageY - 28}px`);
+      })
+      .on('mouseout', function () {
+        vis.svg.selectAll('.circle').style('opacity', 1);
+        vis.svg.selectAll('path').style('opacity', 1);
+
+        vis.tooltip.transition()
+          .duration(500)
+          .style('opacity', 0);
+      })
+      .transition()
+      .duration(5000)
+      .ease(d3.easeLinear)
+      .attr("r", d => vis.radiusScale(parseTime(d.DateTimeUTC_ud)));
 
     // Remove circles that are no longer needed
     circles.exit().remove();
-}
-
+  }
 
   updateData(newData) {
     this.displayData = newData;
     this.updateVis();
   }
-
-
 }
