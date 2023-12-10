@@ -122,6 +122,7 @@ img {
 	position: absolute;
 	text-align: center;
 	font: 12px sans-serif;
+	color:rgb(169, 200, 233)
 	/*  pointer-events: none;	This line needs to be removed */
 }
 .diet-tooltip h3,h4 {

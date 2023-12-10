@@ -221,7 +221,7 @@ class DietVis {
                   .html(`
                   <div style="border: thin solid lightblue; border-radius: 5px; text-align: left; background: ${vis.colors[0]}; color: white; padding: 20px">
                   <h3 style="color: white">${d[0]} </h3>
-                  <p> <span style="font-weight: bold;color: #dfeaf8;"> Year: </span>${d[0]} 
+                  <p style="color: #dfeaf8;"> <span style="font-weight: bold;color: #dfeaf8;"> Year: </span>${d[0]} 
                   <br>
                   <span style="font-weight: bold;color: #dfeaf8;"> ${getYLabel(dataField)}: </span> ${d[1][dataField]}
                   <br>
