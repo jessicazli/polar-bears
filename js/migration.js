@@ -61,6 +61,8 @@ class MigrationVis {
       .domain([minDate, maxDate])
       .interpolator(d3.interpolateYlGnBu); // You can adjust the color scheme if needed
 
+    
+
     // Bind data and create one path per GeoJSON feature
     vis.svg.selectAll("path")
       .data(vis.geoData.features)
@@ -120,23 +122,69 @@ class MigrationVis {
           .style('opacity', 0);
       })
 
-      
+
       .transition()
       .duration(200) // Adjust the duration as needed
       .ease(d3.easeLinear)
       .delay((d, i) => i * 1) // Delay for each bear
       .attr("r", d => vis.radiusScale(parseTime(d.DateTimeUTC_ud)))
 
-      // Create zoom behavior
-  vis.zoom = d3.zoom()
-  .scaleExtent([1, 8]) // Set the minimum and maximum zoom levels
-  .on("zoom", function (event) {
-    vis.svg.attr("transform", event.transform);
-  });
+    // Append color legend
+const legendWidth = 200;
+const legendHeight = 20;
+const legend = vis.svg.append('g')
+  .attr('class', 'legend')
+  .attr('transform', `translate(${vis.width - legendWidth},${vis.height - legendHeight - 10})`);
 
-// Apply zoom behavior to the SVG
-vis.svg.call(vis.zoom);
-      
+const defs = legend.append('defs');
+
+const linearGradient = defs.append('linearGradient')
+  .attr('id', 'linear-gradient')
+  .attr('x1', '0%')
+  .attr('y1', '0%')
+  .attr('x2', '100%')
+  .attr('y2', '0%');
+
+linearGradient.selectAll('stop')
+  .data([
+    { offset: '0%', color: vis.colorScale(minDate) },
+    { offset: '100%', color: vis.colorScale(maxDate) }
+  ])
+  .enter().append('stop')
+  .attr('offset', d => d.offset)
+  .attr('stop-color', d => d.color);
+
+legend.append('rect')
+  .attr('width', legendWidth)
+  .attr('height', legendHeight)
+  .style('fill', 'url(#linear-gradient)');
+
+// Add legend axis
+const legendScale = d3.scaleTime()
+  .domain([minDate, maxDate])
+  .range([0, legendWidth]);
+
+const legendAxis = d3.axisBottom(legendScale)
+  .tickSize(0)
+  .ticks(5);
+
+legend.append('g')
+  .attr('class', 'axis')
+  .attr('transform', `translate(0, ${legendHeight})`)
+  .call(legendAxis);
+
+    // Create zoom behavior
+    vis.zoom = d3.zoom()
+      .scaleExtent([1, 8]) // Set the minimum and maximum zoom levels
+      .on("zoom", function (event) {
+        vis.svg.attr("transform", event.transform);
+      });
+
+    // Apply zoom behavior to the SVG
+    vis.svg.call(vis.zoom);
+
+    
+
 
     vis.updateVis();
   }
@@ -154,36 +202,36 @@ vis.svg.call(vis.zoom);
     const endDate = dateFormatter(new Date(d3.max(vis.displayData, entry => new Date(entry.DateTimeUTC_ud))));
 
     // Update projection based on zoom
-  vis.projection
-  .scale(vis.height / 0.3 )
-  .translate([vis.width - 100, vis.height + 150]);
+    vis.projection
+      .scale(vis.height / 0.3)
+      .translate([vis.width - 100, vis.height + 150]);
 
-// Update path based on new projection
-vis.path.projection(vis.projection);
+    // Update path based on new projection
+    vis.path.projection(vis.projection);
 
-// Update GeoJSON paths
-vis.svg.selectAll("path")
-  .attr("d", vis.path);
+    // Update GeoJSON paths
+    vis.svg.selectAll("path")
+      .attr("d", vis.path);
 
-// Update circle positions
-vis.svg.selectAll(".circle")
-  .attr("cx", d => vis.projection([d.longitude_ud, d.latitude_ud])[0])
-  .attr("cy", d => vis.projection([d.longitude_ud, d.latitude_ud])[1]);
+    // Update circle positions
+    vis.svg.selectAll(".circle")
+      .attr("cx", d => vis.projection([d.longitude_ud, d.latitude_ud])[0])
+      .attr("cy", d => vis.projection([d.longitude_ud, d.latitude_ud])[1]);
 
     // Append new circles with transition
     const circles = vis.svg.selectAll(".circle")
       .data(vis.displayData);
 
     circles.enter()
-    .append('circle')
-    .attr("class", "circle")
-    .attr("cx", d => vis.projection([d.longitude_ud, d.latitude_ud])[0])
-    .attr("cy", d => vis.projection([d.longitude_ud, d.latitude_ud])[1])
-    .attr("r", 0) // Start with radius 0
-    .attr("stroke", "black")
-    .attr("stroke-opacity", 0.4)
-    .attr("fill", d => vis.colorScale(parseTime(d.DateTimeUTC_ud)))
-    .attr("fill-opacity", 0.5)
+      .append('circle')
+      .attr("class", "circle")
+      .attr("cx", d => vis.projection([d.longitude_ud, d.latitude_ud])[0])
+      .attr("cy", d => vis.projection([d.longitude_ud, d.latitude_ud])[1])
+      .attr("r", 0) // Start with radius 0
+      .attr("stroke", "black")
+      .attr("stroke-opacity", 0.4)
+      .attr("fill", d => vis.colorScale(parseTime(d.DateTimeUTC_ud)))
+      .attr("fill-opacity", 0.5)
       .on('mouseover', function (event, d) {
         const bearID = d.BearID_ud;
 
@@ -217,10 +265,10 @@ vis.svg.selectAll(".circle")
           .style('opacity', 0);
       })
       .transition()
-        .duration(200) // Adjust the duration as needed
-        .ease(d3.easeLinear)
-        .delay((d, i) => i * 1) // Delay for each bear
-        .attr("r", d => vis.radiusScale(parseTime(d.DateTimeUTC_ud)));
+      .duration(200) // Adjust the duration as needed
+      .ease(d3.easeLinear)
+      .delay((d, i) => i * 1) // Delay for each bear
+      .attr("r", d => vis.radiusScale(parseTime(d.DateTimeUTC_ud)));
 
     // Remove circles that are no longer needed
     circles.exit().remove();
