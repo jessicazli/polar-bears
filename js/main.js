@@ -140,7 +140,7 @@ function createVis(data) {
     });
 
     // Attach an event handler to update the migration map when the slider changes
-    migrationSlider.noUiSlider.on('slide', async function (values) {
+    migrationSlider.noUiSlider.on('change', async function (values) {
         const startYear = parseInt(values[0]);
         const endYear = parseInt(values[1]);
 

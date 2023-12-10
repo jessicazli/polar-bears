@@ -61,7 +61,7 @@ class MigrationVis {
       .domain([minDate, maxDate])
       .interpolator(d3.interpolateYlGnBu); // You can adjust the color scheme if needed
 
-    
+
 
     // Bind data and create one path per GeoJSON feature
     vis.svg.selectAll("path")
@@ -96,12 +96,14 @@ class MigrationVis {
         vis.svg.selectAll('.circle')
           .style('opacity', d => (d.BearID_ud === bearID) ? 1 : 0.05);
 
-        vis.svg.selectAll('path')
-          .style('opacity', d => (d.properties.BearID_ud === bearID) ? 1 : 0.05);
+        // vis.svg.selectAll('path')
+        //   .style('opacity', d => (d.BearID_ud === bearID) ? 1 : 0.05);
 
         vis.tooltip.transition()
-          .duration(200)
-          .style('opacity', 0.9);
+        .duration(100)
+        .style('opacity', 0.9)
+        .style('left', `${event.clientX}px`)
+        .style('top', `${event.clientY - 28}px`);
 
         vis.tooltip.html(`
           <div style="border-radius: 5px;  border: 2px solid #34629C; text-align: left; background: #D9E8F3; padding: 20px">
@@ -114,13 +116,23 @@ class MigrationVis {
           .style('top', `${event.pageY - 28}px`);
       })
       .on('mouseout', function () {
-        vis.svg.selectAll('.circle').style('opacity', 1);
-        vis.svg.selectAll('path').style('opacity', 1);
+        const isMouseOverTooltip = d3.select(event.relatedTarget).classed('tooltip');
+    
+    if (!isMouseOverTooltip) {
+        // Reset the opacity of circles
+        vis.svg.selectAll('.circle')
+            .style('opacity', 1)
+            .attr("r", d => vis.radiusScale(parseTime(d.DateTimeUTC_ud)));
 
+        // Reset the opacity of paths (if you want to include this)
+        // vis.svg.selectAll('path').style('opacity', 1);
+
+        // Hide the tooltip
         vis.tooltip.transition()
-          .duration(500)
-          .style('opacity', 0);
-      })
+            .duration(500)
+            .style('opacity', 0);
+    }
+    })
 
 
       .transition()
@@ -130,48 +142,48 @@ class MigrationVis {
       .attr("r", d => vis.radiusScale(parseTime(d.DateTimeUTC_ud)))
 
     // Append color legend
-const legendWidth = 200;
-const legendHeight = 20;
-const legend = vis.svg.append('g')
-  .attr('class', 'legend')
-  .attr('transform', `translate(${vis.width - legendWidth},${vis.height - legendHeight - 10})`);
+    const legendWidth = 200;
+    const legendHeight = 20;
+    const legend = vis.svg.append('g')
+      .attr('class', 'legend')
+      .attr('transform', `translate(${vis.width - legendWidth},${vis.height - legendHeight - 10})`);
 
-const defs = legend.append('defs');
+    const defs = legend.append('defs');
 
-const linearGradient = defs.append('linearGradient')
-  .attr('id', 'linear-gradient')
-  .attr('x1', '0%')
-  .attr('y1', '0%')
-  .attr('x2', '100%')
-  .attr('y2', '0%');
+    const linearGradient = defs.append('linearGradient')
+      .attr('id', 'linear-gradient')
+      .attr('x1', '0%')
+      .attr('y1', '0%')
+      .attr('x2', '100%')
+      .attr('y2', '0%');
 
-linearGradient.selectAll('stop')
-  .data([
-    { offset: '0%', color: vis.colorScale(minDate) },
-    { offset: '100%', color: vis.colorScale(maxDate) }
-  ])
-  .enter().append('stop')
-  .attr('offset', d => d.offset)
-  .attr('stop-color', d => d.color);
+    linearGradient.selectAll('stop')
+      .data([
+        { offset: '0%', color: vis.colorScale(minDate) },
+        { offset: '100%', color: vis.colorScale(maxDate) }
+      ])
+      .enter().append('stop')
+      .attr('offset', d => d.offset)
+      .attr('stop-color', d => d.color);
 
-legend.append('rect')
-  .attr('width', legendWidth)
-  .attr('height', legendHeight)
-  .style('fill', 'url(#linear-gradient)');
+    legend.append('rect')
+      .attr('width', legendWidth)
+      .attr('height', legendHeight)
+      .style('fill', 'url(#linear-gradient)');
 
-// Add legend axis
-const legendScale = d3.scaleTime()
-  .domain([minDate, maxDate])
-  .range([0, legendWidth]);
+    // Add legend axis
+    const legendScale = d3.scaleTime()
+      .domain([minDate, maxDate])
+      .range([0, legendWidth]);
 
-const legendAxis = d3.axisBottom(legendScale)
-  .tickSize(0)
-  .ticks(5);
+    const legendAxis = d3.axisBottom(legendScale)
+      .tickSize(0)
+      .ticks(5);
 
-legend.append('g')
-  .attr('class', 'axis')
-  .attr('transform', `translate(0, ${legendHeight})`)
-  .call(legendAxis);
+    legend.append('g')
+      .attr('class', 'axis')
+      .attr('transform', `translate(0, ${legendHeight})`)
+      .call(legendAxis);
 
     // Create zoom behavior
     vis.zoom = d3.zoom()
@@ -183,7 +195,7 @@ legend.append('g')
     // Apply zoom behavior to the SVG
     vis.svg.call(vis.zoom);
 
-    
+
 
 
     vis.updateVis();
@@ -213,10 +225,8 @@ legend.append('g')
     vis.svg.selectAll("path")
       .attr("d", vis.path);
 
-    // Update circle positions
-    vis.svg.selectAll(".circle")
-      .attr("cx", d => vis.projection([d.longitude_ud, d.latitude_ud])[0])
-      .attr("cy", d => vis.projection([d.longitude_ud, d.latitude_ud])[1]);
+    // Remove existing circles
+    vis.svg.selectAll(".circle").remove();
 
     // Append new circles with transition
     const circles = vis.svg.selectAll(".circle")
@@ -233,14 +243,12 @@ legend.append('g')
       .attr("fill", d => vis.colorScale(parseTime(d.DateTimeUTC_ud)))
       .attr("fill-opacity", 0.5)
       .on('mouseover', function (event, d) {
+        d3.select(this).style('opacity', 1);
         const bearID = d.BearID_ud;
 
         vis.svg.selectAll('.circle')
           .style('opacity', d => (d.BearID_ud === bearID) ? 1 : 0.02)
           .attr("r", d => vis.radiusScale(parseTime(d.DateTimeUTC_ud)));
-
-        vis.svg.selectAll('path')
-          .style('opacity', d => (d.properties.BearID_ud === bearID) ? 1 : 0.02);
 
         vis.tooltip.transition()
           .duration(100)
@@ -257,12 +265,19 @@ legend.append('g')
           .style('top', `${event.pageY - 28}px`);
       })
       .on('mouseout', function () {
-        vis.svg.selectAll('.circle').style('opacity', 1);
-        vis.svg.selectAll('path').style('opacity', 1);
+        const isMouseOverTooltip = d3.select(event.relatedTarget).classed('tooltip');
+    
+        if (!isMouseOverTooltip) {
+            // Reset the opacity of circles
+            vis.svg.selectAll('.circle')
+                .style('opacity', 1)
+                .attr("r", d => vis.radiusScale(parseTime(d.DateTimeUTC_ud)));
 
-        vis.tooltip.transition()
-          .duration(500)
-          .style('opacity', 0);
+            // Hide the tooltip
+            vis.tooltip.transition()
+                .duration(500)
+                .style('opacity', 0);
+        }
       })
       .transition()
       .duration(200) // Adjust the duration as needed
@@ -273,6 +288,7 @@ legend.append('g')
     // Remove circles that are no longer needed
     circles.exit().remove();
   }
+
 
   updateData(newData) {
     this.displayData = newData;
