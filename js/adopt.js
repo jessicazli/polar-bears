@@ -3,7 +3,7 @@
 class AdoptBear {
     constructor(parentElement, data) {
         this.parentElement = parentElement;
-        this.data = data;
+        this.data = this.filterData(data);
 
         this.initBear();
     }

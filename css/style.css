@@ -301,3 +301,8 @@ Right column styles
 	height: 60%;
 
 }
+
+.line-highlight {
+	stroke-width: 3; /* or any other style changes to make the line stand out */
+	stroke: orange; /* color of the highlight */
+ } 
