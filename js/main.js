@@ -160,6 +160,11 @@ function createVis(data) {
         adoptVisual.updateBear();
         document.getElementById(adoptVisual.parentElement).innerHTML = adoptVisual.description;
     });
+
+    document.getElementById('resetButton').addEventListener('click', function() {
+        allHealthVisual.resetSelection();
+        adoptVisual.clearDescription(); 
+    });
     
 
 }
@@ -192,6 +197,19 @@ function ageclassHealthCategoryChange() {
 
     healthVisual.updateVis(healthVisual.selectedHealthCategory, healthVisual.selectedSex, selectedAgeclass);
 }
+
+function sexAllHealthCategoryChange() {
+    const selectedSex = document.getElementById('sexAllHealthFilter').value;
+    allHealthVisual.currentSex = selectedSex;
+    allHealthVisual.updateVis();
+}
+
+function ageclassAllHealthCategoryChange() {
+    const selectedAgeclass = document.getElementById('ageclassAllHealthFilter').value;
+    allHealthVisual.currentAgeclass = selectedAgeclass;
+    allHealthVisual.updateVis();
+}
+
 
 function changeSubregionFilter() {
     subregionMap.wrangleData();

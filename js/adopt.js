@@ -34,7 +34,7 @@ class AdoptBear {
                 unit = "";
             };
             if (value !== "") {
-                description += `${label}: ${value}${unit}<br>`;
+                description += `${label}: ${value} ${unit}<br>`;
             };
         };
 
@@ -61,4 +61,10 @@ class AdoptBear {
         allHealthVisual.highlightBear(bear.BearID);
 
     }
+
+    clearDescription() {
+        this.description = ""; // Clear the description property
+        document.getElementById(this.parentElement).innerHTML = ""; // Clear the HTML content
+    }
+
 }

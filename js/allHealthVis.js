@@ -3,18 +3,24 @@
 class AllHealthVis {
     constructor(parentElement, data) {
         this.parentElement = parentElement;
-        this.data = this.filterData(data);
-        this.keys = Object.keys(this.data[0]);
+        this.data = this.initialFilterData(data);
+        this.keys = Object.keys(this.data[0]).slice(3);
+        console.log("keys: " + this.keys);
+        this.selectedSex = 'all';
+        this.selectedAgeclass = 'all';
+
         this.initVis();
     }
 
-    filterData(data) {
+    initialFilterData(data) {
         return data.filter(row => row.BodyLength != "" && row.Mass != "" 
                             && row.BMI != "" && row.StorageEnergy != "" && row.HairWeight != "" 
                             && row.HairCortisol != "" && row.ReactiveOxySpecies != "" 
                             && row.Lysis != "" && row.OxidativeBarrier != "") 
             .map(row => ({
                 BearID: row.BearID,
+                Sex: row.Sex,
+                Ageclass: row.Ageclass,
                 BodyLength: +row.BodyLength, 
                 Mass: +row.Mass,
                 BMI: +row.BMI,
@@ -26,6 +32,20 @@ class AllHealthVis {
                 OxidativeBarrier: +row.OxidativeBarrier
             }));
     };
+
+    filterData() {
+        let filteredData = this.data;
+
+        if (this.currentSex !== 'all') {
+            filteredData = filteredData.filter(d => d.Sex === this.currentSex);
+        }
+
+        if (this.currentAgeclass !== 'all') {
+            filteredData = filteredData.filter(d => d.Ageclass === this.currentAgeclass);
+        }
+
+        return filteredData;
+    }
 
     initVis() {
 
@@ -118,34 +138,22 @@ class AllHealthVis {
             } else {
                 selections.set(key, selection.map(x.get(key).invert));
             }
-            // Set the stroke of the path based on whether it is within the brushed extents
-            path.style("stroke", d => {
-                // Skip the styling for the highlighted line
-                if (d3.select(this).classed("line-highlight")) {
-                    return; 
-                }
         
-                const active = Array.from(selections).every(([currentKey, [min, max]]) => {
-                    return d[currentKey] >= min && d[currentKey] <= max;
-                });
-        
-                return active ? color(d[vis.keys[0]]) : "#ddd";
-            });
-        
-            // Handle raising lines and the highlighted line
             path.each(function(d) {
-                const active = Array.from(selections).every(([currentKey, [min, max]]) => {
+                const element = d3.select(this);
+                const isHighlighted = element.classed("line-highlight");
+                const isActive = isHighlighted || Array.from(selections).every(([currentKey, [min, max]]) => {
                     return d[currentKey] >= min && d[currentKey] <= max;
                 });
         
-                if (active && !d3.select(this).classed("line-highlight")) {
-                    d3.select(this).raise();
+                // Update the stroke color only if this isn't the highlighted line
+                if (!isHighlighted) {
+                    element.style("stroke", isActive ? color(d[vis.keys[0]]) : "#ddd");
                 }
             });
         
-            if (!vis.svg.select(".line-highlight").empty()) {
-                vis.svg.select(".line-highlight").raise();
-            }
+            // Raise the highlighted line so it's on top
+            vis.svg.selectAll(".line-highlight").raise();
         }
     }
 
@@ -154,6 +162,11 @@ class AllHealthVis {
         this.svg.selectAll(".line-highlight").classed("line-highlight", false);
     
         // Highlight the new line
-        this.svg.select(`.line-${bearID}`).classed("line-highlight", true);
+        this.svg.select(`.line-${bearID}`).classed("line-highlight", true).raise();
+    }
+
+    resetSelection() {
+        // Remove any highlighting from lines
+        this.svg.selectAll(".line-highlight").classed("line-highlight", false);
     }
 }
