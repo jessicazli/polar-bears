@@ -85,40 +85,39 @@ class YearlyLineChart {
 
         for (const [year, values] of d3.group(vis.data, d => d.Year)) {
             const path = vis.g.append("path")
-    .attr("class", "path")
-    .attr("d", vis.line(values))
-    .attr("stroke", vis.z(year))
-    .attr("stroke-dasharray", "0,1")
-    .on("mouseover", function () {
-        vis.highlightLine(this, year);
-        vis.showTooltip(this, year);
-        d3.select(this).attr("stroke", "darkorange");
-    })
-    .on("mouseout", function () {
-        vis.unhighlightLine(this);
-        vis.hideTooltip();
-        d3.select(this).attr("stroke", vis.z(year));
-    })
-    .transition()
-    .ease(d3.easeLinear)
-    .duration(200)
-    .attrTween("stroke-dasharray", vis.dashTween);
+                .attr("class", "path")
+                .attr("d", vis.line(values))
+                .attr("stroke", vis.z(year))
+                .attr("stroke-dasharray", "0,1")
+                .on("mouseover", function () {
+                    vis.highlightLine(this, year);
+                    vis.showTooltip(this, year);
+                    d3.select(this).attr("stroke", "darkorange");
+                })
+                .on("mouseout", function () {
+                    vis.unhighlightLine(this);
+                    vis.hideTooltip();
+                    d3.select(this).attr("stroke", vis.z(year));
+                })
+                .transition()
+                .ease(d3.easeLinear)
+                .duration(200)
+                .attrTween("stroke-dasharray", vis.dashTween);
 
             await new Promise(resolve => path.on("end", resolve));
 
             if (!isNaN(values[values.length - 1].Extent)) {
                 // Inside the animate method, where you create the text element for the year
-const text = vis.g.append("text")
-.attr("class", `year-text year-${year}`) // Add a unique class based on the year
-.attr("paint-order", "stroke")
-.attr("stroke", "white")
-.attr("stroke-width", 3)
-.attr("fill", vis.z(year))
-.attr("dx", 4)
-.attr("dy", "0.32em")
-.style("font-size", "18px")
-.text(year);
-
+                const text = vis.g.append("text")
+                .attr("class", `year-text year-${year}`) // Add a unique class based on the year
+                .attr("paint-order", "stroke")
+                .attr("stroke", "white")
+                .attr("stroke-width", 3)
+                .attr("fill", vis.z(year))
+                .attr("dx", 4)
+                .attr("dy", "0.32em")
+                .style("font-size", "18px")
+                .text(year);
 
                 const lastDataPoint = values[values.length - 1];
                 const xPos = vis.x(new Date(2000, lastDataPoint.Month - 1, lastDataPoint.Day)) - 15;
@@ -172,37 +171,34 @@ const text = vis.g.append("text")
         this.animate();
     }
 
-// Inside the YearlyLineChart class
-highlightLine(element, year) {
-    // Highlight the line
-    d3.select(element).classed("highlighted", true);
+    // Inside the YearlyLineChart class
+    highlightLine(element, year) {
+        // Highlight the line
+        d3.select(element).classed("highlighted", true);
 
-    // Highlight the corresponding text
-    this.g.selectAll(`.year-text.year-${year}`).classed("highlighted", true);
+        // Highlight the corresponding text
+        this.g.selectAll(`.year-text.year-${year}`).classed("highlighted", true);
 
-    // Fade out other lines
-    this.g.selectAll(".path:not(.year-" + year + ")").classed("faded", true);
+        // Fade out other lines
+        this.g.selectAll(".path:not(.year-" + year + ")").classed("faded", true);
 
-    // Fade out other text
-    this.g.selectAll(".year-text:not(.year-" + year + ")").classed("faded", true);
-}
+        // Fade out other text
+        this.g.selectAll(".year-text:not(.year-" + year + ")").classed("faded", true);
+    }
 
-unhighlightLine(element, year) {
-    // Restore the original color for the line
-    d3.select(element).classed("highlighted", false);
+    unhighlightLine(element, year) {
+        // Restore the original color for the line
+        d3.select(element).classed("highlighted", false);
 
-    // Restore the original color for the corresponding text
-    this.g.selectAll(`.year-text.year-${year}`).classed("highlighted", false);
+        // Restore the original color for the corresponding text
+        this.g.selectAll(`.year-text.year-${year}`).classed("highlighted", false);
 
-    // Restore the opacity of other lines
-    this.g.selectAll(".path").classed("faded", false);
+        // Restore the opacity of other lines
+        this.g.selectAll(".path").classed("faded", false);
 
-    // Restore the opacity of other text
-    this.g.selectAll(".year-text").classed("faded", false);
-}
-
-
-
+        // Restore the opacity of other text
+        this.g.selectAll(".year-text").classed("faded", false);
+    }
 
     dashTween() {
         const l = this.getTotalLength();

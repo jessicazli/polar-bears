@@ -13,16 +13,14 @@ class LineGraph {
         this.initGraph();
     }
 
-
-
     initGraph() {
 
         const vis = this;
 
         // Set up the SVG drawing area
         vis.margin = { top: 40, right: 20, bottom: 40, left: 60 };
-        vis.width = 500 - vis.margin.left - vis.margin.right;
-        vis.height = 300 - vis.margin.top - vis.margin.bottom;
+        vis.width = 400 - vis.margin.left - vis.margin.right;
+        vis.height = 250 - vis.margin.top - vis.margin.bottom;
 
         vis.svg = d3
             .select(`#${vis.parentElement}`)
@@ -170,5 +168,3 @@ class LineGraph {
     }
 
 }
-
-// Other utility functions or constants related to the line graph can be added here
