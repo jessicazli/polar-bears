@@ -268,6 +268,16 @@ th {
 	z-index: 10;
 }
 
+.bear2 {
+	width: 20vh;
+	height: 20vh;
+	position: absolute;
+    bottom: 12vh; 
+    right: 110vh;
+	z-index: 10;
+	transform: scaleX(-1);
+}
+
 .snow {
 	position: absolute;
     bottom: 0; 
