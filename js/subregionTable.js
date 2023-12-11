@@ -6,8 +6,8 @@ class SubregionTable {
       this.displayData = [];
       this.subregionMap = subregionMap
    
-      // color - gray, yellow, red, green, orange, med blue, lightblue, pink, purple, darkblue
-      this.colors = ['#DBE1E8', 'crimson', 'gold', 'forestgreen', '#EDA57F', '#4074B7', '#add8e6', '#F2ABE9', '#ABABF2', '#134078']
+      // color - gray, myorange, red, green, orange, med blue, lightblue, pink, purple, darkblue, blue2
+      this.colors = ['#DBE1E8', 'crimson', 'orange', 'forestgreen', '#EDA57F', '#4074B7', '#b5cfff', '#F2ABE9', '#367bf7', '#134078', '#25b4c4']
       // get filter
       this.selectedSubregionFilter = document.getElementById('subregionFilter').value;
 
@@ -34,12 +34,26 @@ class SubregionTable {
 
       // color scales
       tableObject.popChangeColors = d3.scaleOrdinal()
-      .domain(['Likely increased', 'Likely decreased', 'Likely stable', 'NA'])
-      .range([tableObject.colors[2], tableObject.colors[1], tableObject.colors[3], tableObject.colors[0]]);
+    .domain(['Likely increased', 'Likely decreased', 'Likely stable', 'NA'])
+    .range([
+        d3.color(tableObject.colors[2]).copy({opacity: 0.5}),
+        d3.color(tableObject.colors[1]).copy({opacity: 0.5}),
+        d3.color(tableObject.colors[3]).copy({opacity: 0.5}),
+        d3.color(tableObject.colors[0]).copy({opacity: 0.7})
+    ]);
 
-      tableObject.ecoregionsColor = d3.scaleOrdinal()
-        .domain(["Divergent", "Seasonal", "Archipelago", "Convergent", "NA"])
-        .range([tableObject.colors[6], tableObject.colors[7], tableObject.colors[8], tableObject.colors[2], tableObject.colors[0]])
+
+
+    tableObject.ecoregionsColor = d3.scaleOrdinal()
+    .domain(["Divergent", "Seasonal", "Archipelago", "Convergent", "NA"])
+    .range([
+        d3.color(tableObject.colors[6]).copy({opacity: 0.5}),
+        d3.color(tableObject.colors[10]).copy({opacity: 0.5}),
+        d3.color(tableObject.colors[8]).copy({opacity: 0.7}),
+        d3.color(tableObject.colors[2]).copy({opacity: 0.7}),
+        d3.color(tableObject.colors[0]).copy({opacity: 0.7})
+    ]);
+
 
       tableObject.popFilteredData = tableObject.subregionData.filter(row => row.Bear_Population !== 'NA');
 

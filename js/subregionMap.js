@@ -7,8 +7,8 @@ class SubregionMap {
 
 
     this.selectedSubregionFilter = document.getElementById('subregionFilter').value;
-    // color - gray, red, yellow, green, orange, med blue, lightblue, pink, purple, darkblue
-    this.colors = ['#DBE1E8', 'crimson', 'gold', 'forestgreen', '#EDA57F', '#4074B7', '#add8e6', '#F2ABE9', '#ABABF2', '#134078']
+    // color - gray, red, myorange, green, orange, med blue, lightblue, pink, purple, darkblue, blue2
+    this.colors = ['#DBE1E8', 'crimson', 'orange', 'forestgreen', '#EDA57F', '#4074B7', '#b5cfff', '#F2ABE9', '#367bf7', '#134078', '#25b4c4']
 
     this.subregionData.forEach(d => {
       d.Bear_Population = +d.Bear_Population;
@@ -52,19 +52,32 @@ class SubregionMap {
 
     // colors
     vis.popChangeColors = d3.scaleOrdinal()
-      .domain(['Likely increased', 'Likely decreased', 'Likely stable', 'NA'])
-      .range([vis.colors[2], vis.colors[1], vis.colors[3], vis.colors[0]]);
+    .domain(['Likely increased', 'Likely decreased', 'Likely stable', 'NA'])
+    .range([
+        d3.color(vis.colors[2]).copy({opacity: 0.5}),
+        d3.color(vis.colors[1]).copy({opacity: 0.5}),
+        d3.color(vis.colors[3]).copy({opacity: 0.5}),
+        d3.color(vis.colors[0]).copy({opacity: 0.7})
+    ]);
+
 
     vis.ecoregionsColor = d3.scaleOrdinal()
-      .domain(["Divergent", "Seasonal", "Archipelago", "Convergent", "NA"])
-      .range([vis.colors[6], vis.colors[7], vis.colors[8], vis.colors[2], vis.colors[0]])
+    .domain(["Divergent", "Seasonal", "Archipelago", "Convergent", "NA"])
+    .range([
+        d3.color(vis.colors[6]).copy({opacity: 0.7}),
+        d3.color(vis.colors[10]).copy({opacity: 0.9}),
+        d3.color(vis.colors[8]).copy({opacity: 0.9}),
+        d3.color(vis.colors[2]).copy({opacity: 0.7}),
+        d3.color(vis.colors[0]).copy({opacity: 0.9})
+    ]);
+
 
     vis.popFilteredData = vis.subregionData.filter(row => row.Bear_Population !== 'NA');
 
 
     vis.populationMax = d3.max(vis.popFilteredData, d => d["Bear_Population"])
     vis.populationMin = d3.min(vis.popFilteredData, d => d["Bear_Population"])
-    vis.populationSizeColor = d3.scaleSequential(t => d3.interpolate(d3.color("orange").copy({opacity: 0.7}), d3.color("indigo").copy({opacity: 0.7}))(t))
+    vis.populationSizeColor = d3.scaleSequential(t => d3.interpolate(d3.color("indigo").copy({opacity: 0.7}), d3.color("orange").copy({opacity: 0.7}))(t))
       .domain([vis.populationMin, vis.populationMax]);
 
 
@@ -142,7 +155,7 @@ class SubregionMap {
         vis.tooltip
           .style('opacity', 0.95)
           .html(`
-                  <div style="border-radius: 5px;  border: 2px solid #34629C; text-align: left; background: #D9E8F3; color: ${vis.colors[9]}; padding: 20px">
+                  <div style="border-radius: 5px;  border: 2px solid #34629C; text-align: left; background: white; padding: 20px">
                   <h3>${d.Region}</h3>
                   <p> <span style="font-weight: bold"> Region Code: </span>${d["Abbr"]} 
                   <br>
