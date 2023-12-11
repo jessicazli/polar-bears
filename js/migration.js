@@ -101,6 +101,11 @@ class MigrationVis {
       .domain([minDate, maxDate])
       .interpolator(d3.interpolateYlGnBu); // You can adjust the color scheme if needed
 
+    // Colorscale for bear IDs
+    vis.colorScaleBear = d3.scaleOrdinal(d3.schemeCategory10)
+      .domain(vis.bearData.map(d => d.BearID_ud));
+      // .interpolator(d3.interpolateCategory10)
+
 
 
         
@@ -146,7 +151,8 @@ class MigrationVis {
     .attr("class", "ice-outline")
     .attr("d", vis.path)
     .attr("stroke", "steelblue")
-    .attr("stroke-width", 0.5)
+    .attr("stroke-width", 5)
+    .attr("stroke-opacity", 0.4)
     .attr("fill-opacity", 0.8)
     .style("fill", "Ghostwhite");
 
@@ -160,54 +166,56 @@ class MigrationVis {
       .attr("cx", d => vis.projection([d.longitude_ud, d.latitude_ud])[0])
       .attr("cy", d => vis.projection([d.longitude_ud, d.latitude_ud])[1])
       .attr("r", 0) // Start with radius 0
-      .attr("stroke", "black")
+      // .attr("stroke", d => vis.colorScaleBear(d.BearID_ud)) // Use color scale for outline color
+
       .attr("stroke-opacity", 0.4)
       .attr("fill", d => vis.colorScale(parseTime(d.DateTimeUTC_ud)))
-      .attr("fill-opacity", 0.5)
-      .on('mouseover', function (event, d) {
-        d3.select(this).style('opacity', 1);
-        const bearID = d.BearID_ud; // Corrected the typo
+      .attr("fill-opacity", 0.8)
+      // .on('mouseover', function (event, d) {
+      //   d3.select(this).style('opacity', 1);
+      //   const bearID = d.BearID_ud; // Corrected the typo
 
-        vis.svg.selectAll('.circle')
-          .style('opacity', d => (d.BearID_ud === bearID) ? 1 : 0.05);
+      //   vis.svg.selectAll('.circle')
+      //     .style('opacity', d => (d.BearID_ud === bearID) ? 1 : 0.05);
 
-        // vis.svg.selectAll('path')
-        //   .style('opacity', d => (d.BearID_ud === bearID) ? 1 : 0.05);
+      //   // vis.svg.selectAll('path')
+      //   //   .style('opacity', d => (d.BearID_ud === bearID) ? 1 : 0.05);
 
-        vis.tooltip.transition()
-        .duration(10)
-        .style('opacity', 0.9)
-        .style('left', `${event.clientX}px`)
-        .style('top', `${event.clientY - 28}px`);
+      //   vis.tooltip.transition()
+      //   .duration(10)
+      //   .style('opacity', 0.9)
+      //   .style('left', `${event.clientX}px`)
+      //   .style('top', `${event.clientY - 28}px`);
 
-        vis.tooltip.html(`
-          <div style="border-radius: 5px;  border: 2px solid #34629C; text-align: left; background: #D9E8F3; padding: 20px">
-          <strong>Bear ID:</strong> ${bearID}
-          <br>
-          <strong>Locations found from:</strong> ${startDate} to ${endDate}
-          </div>
-          `)
-          .style('left', `${event.pageX}px`)
-          .style('top', `${event.pageY - 28}px`);
-      })
-      .on('mouseout', function () {
-        const isMouseOverTooltip = d3.select(event.relatedTarget).classed('tooltip');
+      //   vis.tooltip.html(`
+      //     <div style="border-radius: 5px;  border: 2px solid #34629C; text-align: left; background: #D9E8F3; padding: 20px">
+      //     <strong>Bear ID:</strong> ${bearID}
+      //     <br>
+      //     <strong>Locations found from:</strong> ${startDate} to ${endDate}
+      //     </div>
+      //     `)
+      //     .style('left', `${event.pageX}px`)
+      //     .style('top', `${event.pageY - 28}px`);
+      // }
+      // )
+      // .on('mouseout', function () {
+      //   const isMouseOverTooltip = d3.select(event.relatedTarget).classed('tooltip');
     
-    if (!isMouseOverTooltip) {
-        // Reset the opacity of circles
-        vis.svg.selectAll('.circle')
-            .style('opacity', 1)
-            .attr("r", d => vis.radiusScale(parseTime(d.DateTimeUTC_ud)));
+    // if (!isMouseOverTooltip) {
+    //     // Reset the opacity of circles
+    //     vis.svg.selectAll('.circle')
+    //         .style('opacity', 1)
+    //         .attr("r", d => vis.radiusScale(parseTime(d.DateTimeUTC_ud)));
 
-        // Reset the opacity of paths (if you want to include this)
-        // vis.svg.selectAll('path').style('opacity', 1);
+    //     // Reset the opacity of paths (if you want to include this)
+    //     // vis.svg.selectAll('path').style('opacity', 1);
 
-        // Hide the tooltip
-        vis.tooltip.transition()
-            .duration(10)
-            .style('opacity', 0);
-    }
-    })
+    //     // Hide the tooltip
+    //     vis.tooltip.transition()
+    //         .duration(10)
+    //         .style('opacity', 0);
+    // }
+    // })
 
 
       .transition()
@@ -313,10 +321,12 @@ class MigrationVis {
       .attr("cx", d => vis.projection([d.longitude_ud, d.latitude_ud])[0])
       .attr("cy", d => vis.projection([d.longitude_ud, d.latitude_ud])[1])
       .attr("r", 0) // Start with radius 0
+      // .attr("stroke", d => vis.colorScaleBear(d.BearID_ud)) // Use color scale for outline color
       .attr("stroke", "black")
-      .attr("stroke-opacity", 0.4)
+      .attr("stroke-opacity", 0.2)
+      .attr("stroke-width", 1.5)
       .attr("fill", d => vis.colorScale(parseTime(d.DateTimeUTC_ud)))
-      .attr("fill-opacity", 0.5)
+      .attr("fill-opacity", 0.6)
       .on('mouseover', function (event, d) {
         d3.select(this).style('opacity', 1);
         const bearID = d.BearID_ud;
