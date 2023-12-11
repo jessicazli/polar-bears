@@ -10,14 +10,90 @@ class MigrationVis {
     this.oceanData = oceanData;
 
     this.initVis();
+    this.initLegend();
+  }
+
+  initLegend() {
+    let vis = this;
+
+    const parseTime = d3.timeParse("%m/%d/%Y %H:%M");
+    const maxDate = d3.max(vis.bearData, d => parseTime(d.DateTimeUTC_ud));
+    const minDate = d3.min(vis.bearData, d => parseTime(d.DateTimeUTC_ud));
+
+    // Append legend SVG container
+    vis.legendSvg = d3
+      .select(`#${vis.parentElement}`)
+      .append('svg')
+      .attr('class', 'legend-container') // Add a class for styling
+      .attr('width', 300) // Adjust the width as needed
+      .attr('height', 50) // Adjust the height as needed
+      .style('position', 'absolute') // Position the legend absolutely
+      .style('bottom', '20px') // Adjust the bottom position
+      .style('right', '500px'); // Adjust the right position
+
+    // Example: Append a rectangle with a gradient as a simple legend
+    const legendWidth = 200;
+    const legendHeight = 20;
+    const defs = vis.legendSvg.append('defs');
+    const linearGradient = defs.append('linearGradient')
+      .attr('id', 'linear-gradient')
+      .attr('x1', '0%')
+      .attr('y1', '0%')
+      .attr('x2', '100%')
+      .attr('y2', '0%');
+
+    linearGradient.selectAll('stop')
+      .data([
+        { offset: '0%', color: vis.colorScale(minDate) },
+        { offset: '100%', color: vis.colorScale(maxDate) }
+      ])
+      .enter().append('stop')
+      .attr('offset', d => d.offset)
+      .attr('stop-color', d => d.color);
+
+    vis.legendSvg.append('rect')
+      .attr('width', legendWidth)
+      .attr('height', legendHeight)
+      .style('fill', 'url(#linear-gradient)');
+
+    // Add legend axis
+    const legendScale = d3.scaleTime()
+      .domain([vis.colorScale.domain()[0], vis.colorScale.domain()[1]])
+      .range([0, legendWidth]);
+
+    const legendAxis = d3.axisBottom(legendScale)
+      .ticks(5);
+
+    vis.legendSvg.append('g')
+      .attr('class', 'legend-axis')
+      .attr('transform', `translate(0, ${legendHeight})`)
+      .call(legendAxis);
+
+    // Add legend labels
+    vis.legendSvg.append('text')
+      .attr('class', 'legend-label')
+      .attr('x', 0)
+      .attr('y', legendHeight + 30)
+      .text('Start Date');
+
+    vis.legendSvg.append('text')
+      .attr('class', 'legend-label')
+      .attr('x', legendWidth)
+      .attr('y', legendHeight + 30)
+      .attr('text-anchor', 'end')
+      .text('End Date');
+
   }
 
   initVis() {
     let vis = this;
 
     vis.margin = { top: 20, right: 0, bottom: 20, left: 0 };
-    vis.width = 600;
+    vis.width = 800;
     vis.height = 500;
+
+    console.log(vis.nameData);
+    console.log(vis.geoData);
 
 
     vis.svg = d3
@@ -76,6 +152,7 @@ class MigrationVis {
     vis.pathOcean = d3.geoPath()
       .projection(vis.projectionOcean);
 
+
     // Append tooltip
     vis.tooltip = d3.select(`#${vis.parentElement}`).append('div')
       .attr('class', 'tooltip')
@@ -85,8 +162,8 @@ class MigrationVis {
     const parseTime = d3.timeParse("%m/%d/%Y %H:%M");
     const maxDate = d3.max(vis.bearData, d => parseTime(d.DateTimeUTC_ud));
     const minDate = d3.min(vis.bearData, d => parseTime(d.DateTimeUTC_ud));
-    const startDate = dateFormatter(new Date(d3.min(vis.displayData, entry => new Date(entry.DateTimeUTC_ud))));
-    const endDate = dateFormatter(new Date(d3.max(vis.displayData, entry => new Date(entry.DateTimeUTC_ud))));
+    // const startDate = dateFormatter(new Date(d3.min(vis.displayData, entry => new Date(entry.DateTimeUTC_ud))));
+    // const endDate = dateFormatter(new Date(d3.max(vis.displayData, entry => new Date(entry.DateTimeUTC_ud))));
 
     // Sort the displayData based on DateTimeUTC_ud
     vis.displayData.sort((a, b) => d3.ascending(parseTime(a.DateTimeUTC_ud), parseTime(b.DateTimeUTC_ud)));
@@ -104,11 +181,11 @@ class MigrationVis {
     // Colorscale for bear IDs
     vis.colorScaleBear = d3.scaleOrdinal(d3.schemeCategory10)
       .domain(vis.bearData.map(d => d.BearID_ud));
-      // .interpolator(d3.interpolateCategory10)
+    // .interpolator(d3.interpolateCategory10)
 
 
 
-        
+
 
     // Bind data and create one path per GeoJSON feature
     vis.svg.selectAll("marinepath")
@@ -132,29 +209,29 @@ class MigrationVis {
       .attr("fill-opacity", 0.6)
       .style("fill", "DodgerBlue");
 
-          // Bind data and create one path per GeoJSON feature
+    // Bind data and create one path per GeoJSON feature
     vis.svg.selectAll("landpath")
-    .data(vis.landData.features)
-    .enter()
-    .append("path")
-    .attr("d", vis.pathLand)
-    // .attr("stroke", "green")
-    // .attr("stroke-width", 1.2)
-    .attr("fill-opacity", 0.8)
-    .style("fill", "BurlyWood");
+      .data(vis.landData.features)
+      .enter()
+      .append("path")
+      .attr("d", vis.pathLand)
+      // .attr("stroke", "green")
+      // .attr("stroke-width", 1.2)
+      .attr("fill-opacity", 0.5)
+      .style("fill", "BurlyWood");
 
-          // Bind data and create one path per GeoJSON feature
+    // Bind data and create one path per GeoJSON feature
     vis.svg.selectAll(".ice-outline")
-    .data(vis.geoData.features)
-    .enter()
-    .append("path")
-    .attr("class", "ice-outline")
-    .attr("d", vis.path)
-    .attr("stroke", "steelblue")
-    .attr("stroke-width", 5)
-    .attr("stroke-opacity", 0.4)
-    .attr("fill-opacity", 0.8)
-    .style("fill", "Ghostwhite");
+      .data(vis.geoData.features)
+      .enter()
+      .append("path")
+      .attr("class", "ice-outline")
+      .attr("d", vis.path)
+      .attr("stroke", "steelblue")
+      .attr("stroke-width", 5)
+      .attr("stroke-opacity", 0.4)
+      .attr("fill-opacity", 0.8)
+      .style("fill", "Ghostwhite");
 
 
     // Append circles with tooltips
@@ -171,102 +248,11 @@ class MigrationVis {
       .attr("stroke-opacity", 0.4)
       .attr("fill", d => vis.colorScale(parseTime(d.DateTimeUTC_ud)))
       .attr("fill-opacity", 0.8)
-      // .on('mouseover', function (event, d) {
-      //   d3.select(this).style('opacity', 1);
-      //   const bearID = d.BearID_ud; // Corrected the typo
-
-      //   vis.svg.selectAll('.circle')
-      //     .style('opacity', d => (d.BearID_ud === bearID) ? 1 : 0.05);
-
-      //   // vis.svg.selectAll('path')
-      //   //   .style('opacity', d => (d.BearID_ud === bearID) ? 1 : 0.05);
-
-      //   vis.tooltip.transition()
-      //   .duration(10)
-      //   .style('opacity', 0.9)
-      //   .style('left', `${event.clientX}px`)
-      //   .style('top', `${event.clientY - 28}px`);
-
-      //   vis.tooltip.html(`
-      //     <div style="border-radius: 5px;  border: 2px solid #34629C; text-align: left; background: #D9E8F3; padding: 20px">
-      //     <strong>Bear ID:</strong> ${bearID}
-      //     <br>
-      //     <strong>Locations found from:</strong> ${startDate} to ${endDate}
-      //     </div>
-      //     `)
-      //     .style('left', `${event.pageX}px`)
-      //     .style('top', `${event.pageY - 28}px`);
-      // }
-      // )
-      // .on('mouseout', function () {
-      //   const isMouseOverTooltip = d3.select(event.relatedTarget).classed('tooltip');
-    
-    // if (!isMouseOverTooltip) {
-    //     // Reset the opacity of circles
-    //     vis.svg.selectAll('.circle')
-    //         .style('opacity', 1)
-    //         .attr("r", d => vis.radiusScale(parseTime(d.DateTimeUTC_ud)));
-
-    //     // Reset the opacity of paths (if you want to include this)
-    //     // vis.svg.selectAll('path').style('opacity', 1);
-
-    //     // Hide the tooltip
-    //     vis.tooltip.transition()
-    //         .duration(10)
-    //         .style('opacity', 0);
-    // }
-    // })
-
-
       .transition()
       .duration(500) // Adjust the duration as needed
       .ease(d3.easeLinear)
       .delay((d, i) => i * 4) // Delay for each bear
       .attr("r", d => vis.radiusScale(parseTime(d.DateTimeUTC_ud)))
-
-    // Append color legend
-    const legendWidth = 200;
-    const legendHeight = 20;
-    const legend = vis.svg.append('g')
-      .attr('class', 'legend')
-      .attr('transform', `translate(${vis.width - legendWidth},${vis.height - legendHeight - 10})`);
-
-    const defs = legend.append('defs');
-
-    const linearGradient = defs.append('linearGradient')
-      .attr('id', 'linear-gradient')
-      .attr('x1', '0%')
-      .attr('y1', '0%')
-      .attr('x2', '100%')
-      .attr('y2', '0%');
-
-    linearGradient.selectAll('stop')
-      .data([
-        { offset: '0%', color: vis.colorScale(minDate) },
-        { offset: '100%', color: vis.colorScale(maxDate) }
-      ])
-      .enter().append('stop')
-      .attr('offset', d => d.offset)
-      .attr('stop-color', d => d.color);
-
-    legend.append('rect')
-      .attr('width', legendWidth)
-      .attr('height', legendHeight)
-      .style('fill', 'url(#linear-gradient)');
-
-    // Add legend axis
-    const legendScale = d3.scaleTime()
-      .domain([minDate, maxDate])
-      .range([0, legendWidth]);
-
-    const legendAxis = d3.axisBottom(legendScale)
-      .tickSize(0)
-      .ticks(5);
-
-    legend.append('g')
-      .attr('class', 'axis')
-      .attr('transform', `translate(0, ${legendHeight})`)
-      .call(legendAxis);
 
     // Create zoom behavior
     vis.zoom = d3.zoom()
@@ -351,17 +337,17 @@ class MigrationVis {
       })
       .on('mouseout', function () {
         const isMouseOverTooltip = d3.select(event.relatedTarget).classed('tooltip');
-    
-        if (!isMouseOverTooltip) {
-            // Reset the opacity of circles
-            vis.svg.selectAll('.circle')
-                .style('opacity', 1)
-                .attr("r", d => vis.radiusScale(parseTime(d.DateTimeUTC_ud)));
 
-            // Hide the tooltip
-            vis.tooltip.transition()
-                .duration(500)
-                .style('opacity', 0);
+        if (!isMouseOverTooltip) {
+          // Reset the opacity of circles
+          vis.svg.selectAll('.circle')
+            .style('opacity', 1)
+            .attr("r", d => vis.radiusScale(parseTime(d.DateTimeUTC_ud)));
+
+          // Hide the tooltip
+          vis.tooltip.transition()
+            .duration(500)
+            .style('opacity', 0);
         }
       })
       .transition()
