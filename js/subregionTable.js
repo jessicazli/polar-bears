@@ -7,7 +7,7 @@ class SubregionTable {
       this.subregionMap = subregionMap
    
       // color - gray, yellow, red, green, orange, med blue, lightblue, pink, purple, darkblue
-      this.colors = ['#DBE1E8', '#F85959', '#FEF192', '#A4E296', '#EDA57F', '#4074B7', '#add8e6', '#F2ABE9', '#ABABF2', '#134078']
+      this.colors = ['#DBE1E8', 'crimson', 'gold', 'forestgreen', '#EDA57F', '#4074B7', '#add8e6', '#F2ABE9', '#ABABF2', '#134078']
       // get filter
       this.selectedSubregionFilter = document.getElementById('subregionFilter').value;
 
@@ -45,17 +45,18 @@ class SubregionTable {
 
       tableObject.populationMax = d3.max(tableObject.popFilteredData, d => d["Bear_Population"])
       tableObject.populationMin = d3.min(tableObject.popFilteredData, d => d["Bear_Population"])
-      tableObject.populationSizeColor = d3.scaleSequential(function(t){
-        return d3.interpolateBuPu(t/2+0.15)})
-        .domain([tableObject.populationMin, tableObject.populationMax])
+      tableObject.populationSizeColor = d3.scaleSequential(t => d3.interpolate(d3.color("orange").copy({opacity: 0.7}), d3.color("indigo").copy({opacity: 0.7}))(t))
+    .domain([tableObject.populationMin, tableObject.populationMax]);
+
+
 
 
       tableObject.seaIceFilteredData = tableObject.subregionData.filter(row => row.Sea_Ice_Change !== 'NA');
       tableObject.seaIceMax = d3.max(tableObject.seaIceFilteredData, d => d["Sea_Ice_Change"])
       tableObject.seaIceMin = d3.min(tableObject.seaIceFilteredData, d => d["Sea_Ice_Change"])
-      tableObject.seaIceChangeColor = d3.scaleSequential(function(t){
-          return d3.interpolatePuRd(t/1.5)})
-        .domain([tableObject.seaIceMax, tableObject.seaIceMin]); 
+      tableObject.seaIceChangeColor = d3.scaleSequential(t => d3.interpolate(d3.color("indigo").copy({opacity: 0.7}), d3.color("orange").copy({opacity: 0.7}))(t))
+    .domain([tableObject.seaIceMin, tableObject.seaIceMax]);
+
 
       // set table order
       tableObject.EcoOrder = ['Divergent', 'Seasonal', 'Archipelago', 'Convergent', 'NA']
