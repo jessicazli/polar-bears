@@ -3,28 +3,25 @@ let dateFormatter = d3.timeFormat("%Y-%m-%d");
 let dateParser = d3.timeParse("%Y-%m-%d");
 
 // Declare chart variables outside the function
-let migrationVisual, arcticMap, iceExtentChart, emissionsChart, tempChangeChart, 
-subregionMap, subregionTable, dietStacked, dietVisual, bearInfo, allHealthVisual,
-yearlyIce;
+let migrationVisual, yearlyIce, emissionsChart, tempChangeChart, subregionMap, 
+subregionTable, dietStacked, dietVisual, bearInfo, allHealthVisual;
 
 let slider = d3.select('#time-slider').node();
 let migrationSlider = document.getElementById('migrationSlider');
 
 let promises = [
     d3.csv("data/CO2_emissions.csv"), // 0
-    d3.csv("data/september_minimum_ice_extent.csv"), // 1
+    d3.csv("data/dailyice.csv"), // 1
     d3.csv("data/temperature_change.csv"), // 2
     d3.csv("data/polarBearDiet.csv"), // 3
     d3.csv("data/polar_bear_health.csv"), // 4
     d3.csv("data/polar_bear_population_2021.csv"), // 5
     d3.json("data/arctic_ice.json"), // 6
     d3.csv("data/migration.csv"), // 7
-    d3.json("data/linegraph_arcticice.json"), // 8
-    d3.json("data/coastline.json"), // 9
-    d3.json("data/land.json"), // 10
-    d3.json("data/name.json"), // 11
-    d3.json("data/ocean.json"), // 12
-    d3.csv("data/dailyice.csv"), // 13
+    d3.json("data/coastline.json"), // 8
+    d3.json("data/land.json"), // 9
+    d3.json("data/name.json"), // 10
+    d3.json("data/ocean.json"), // 11
 ];
 
 Promise.all(promises)
@@ -37,38 +34,24 @@ Promise.all(promises)
 
 function createVis(data) {
     let emissionsData = data[0];
-    let iceExtentData = data[1];
+    let yearlyIceData = data[1];
     let temperatureChangeData = data[2];
     let polarBearDietData = data[3];
     let healthData = data[4];
     let subregionData = data[5];
     let arctic_ice = data[6];
     let migrationData = data[7];
-    let linegraph_arcticice = data[8];
-    let marineData = data[9];
-    let landData = data[10];
-    let nameData = data[11];
-    let oceanData = data[12];
-    let yearlyIceData = data[13];
+    let marineData = data[8];
+    let landData = data[9];
+    let nameData = data[10];
+    let oceanData = data[11];
     
 
     // Migration Map
     migrationVisual = new MigrationVis('migrationDiv', arctic_ice, migrationData, marineData, landData, nameData, oceanData);
 
-    // Artic Ice Map
-    arcticMap = new ArcticMap('arcticmap', linegraph_arcticice, migrationData);
-
     // Yearly Ice Map
     yearlyIce = new YearlyLineChart('yearlyIce', yearlyIceData);
-
-    // Play button event listener
-    // document.getElementById('playButton').addEventListener('click', function () {
-    //     // Call a function to start or restart the animation
-    //     yearlyIce.playAnimation();
-    // });
-
-    // // Ice Extent Chart
-    // iceExtentChart = new LineGraph('icemass', iceExtentData, "Year", "Ice Extent", "Minimum Ice Extent Over Time", '#78aeeb', '#0060cf');
 
     // CO2 Emissions Chart
     emissionsChart = new LineGraph('emissions', emissionsData, "Year", "Emissions", "CO2 Emissions Over Time in Billion Metric Tons", '#f7a42a', '#fc9700');
@@ -168,8 +151,6 @@ function createVis(data) {
         allHealthVisual.resetSelection();
         bearInfo.clearDescription(); 
     });
-    
-
 }
 
 

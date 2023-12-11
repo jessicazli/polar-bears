@@ -29,7 +29,7 @@ class SubregionMap {
     let vis = this;
 
 
-    vis.margin = { top: 50, right: 50, bottom: 50, left: 50 };
+    vis.margin = { top: 30, right: 30, bottom: 30, left: 30 };
     vis.originalWidth = document.getElementById(vis.parentElement).getBoundingClientRect().width - vis.margin.left - vis.margin.right;
     vis.width = vis.originalWidth
     vis.height = 600;

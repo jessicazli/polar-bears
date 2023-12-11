@@ -174,12 +174,12 @@ img {
 
 .table-style {
 	overflow-y: scroll; 
-	height: 70vh; 
-	width:100%;
+	height: 60vh; 
+	width: 70vh;
 	border: thin solid grey; 
 	border-radius: 5px; 
 	text-align: left;
-
+	margin-top: 40px;
 }
 
 th {

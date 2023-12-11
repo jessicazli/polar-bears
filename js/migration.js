@@ -138,9 +138,9 @@ class MigrationVis {
 
 
     // Append tooltip
-    vis.tooltip = d3.select(`#${vis.parentElement}`).append('div')
-      .attr('class', 'tooltip')
-      .attr('id', 'migrationTooltip');
+    // vis.tooltip = d3.select(`#${vis.parentElement}`).append('div')
+    //   .attr('class', 'tooltip')
+    //   .attr('id', 'migrationTooltip');
 
     // Parse timestamps to create a time scale
     const parseTime = d3.timeParse("%m/%d/%Y %H:%M");
@@ -259,12 +259,12 @@ class MigrationVis {
     const endDate = dateFormatter(new Date(d3.max(vis.displayData, entry => new Date(entry.DateTimeUTC_ud))));
 
     // Update projection based on zoom
-    vis.projection
-      .scale(vis.height / 0.3)
-      .translate([vis.width - 100, vis.height + 150]);
+    // vis.projection
+    //   .scale(vis.height / 0.3)
+    //   .translate([vis.width - 100, vis.height + 150]);
 
-    // Update path based on new projection
-    vis.path.projection(vis.projection);
+    // // Update path based on new projection
+    // vis.path.projection(vis.projection);
 
     // Update GeoJSON paths
     vis.svg.selectAll("path")
@@ -311,21 +311,21 @@ class MigrationVis {
           .style('left', `${event.pageX}px`)
           .style('top', `${event.pageY - 28}px`);
       })
-      .on('mouseout', function () {
-        const isMouseOverTooltip = d3.select(event.relatedTarget).classed('tooltip');
+      // .on('mouseout', function () {
+      //   const isMouseOverTooltip = d3.select(event.relatedTarget).classed('tooltip');
 
-        if (!isMouseOverTooltip) {
-          // Reset the opacity of circles
-          vis.svg.selectAll('.circle')
-            .style('opacity', 1)
-            .attr("r", d => vis.radiusScale(parseTime(d.DateTimeUTC_ud)));
+      //   if (!isMouseOverTooltip) {
+      //     // Reset the opacity of circles
+      //     vis.svg.selectAll('.circle')
+      //       .style('opacity', 1)
+      //       .attr("r", d => vis.radiusScale(parseTime(d.DateTimeUTC_ud)));
 
-          // Hide the tooltip
-          vis.tooltip.transition()
-            .duration(500)
-            .style('opacity', 0);
-        }
-      })
+      //     // Hide the tooltip
+      //     vis.tooltip.transition()
+      //       .duration(500)
+      //       .style('opacity', 0);
+      //   }
+      // })
       .transition()
       .duration(500) // Adjust the duration as needed
       .ease(d3.easeLinear)
