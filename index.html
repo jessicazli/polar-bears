@@ -36,41 +36,23 @@
 
     <div id="fullPage">
         <div class="section s1">
+            <img src="images/snow_falling.gif" alt="snow falling" class="snow-falling">
             <div class="container">
-                <div class="row">
-                    <div class="col-md-12">
-                        <h1>A Frigid Fate: The Decline of Polar Bears in a Warming World</h1>
-                        <img src="images/melting.png" alt="polar bear" class="img-fluid" style="height: 30vh; width: 30vh;"> 
+                <div class="row justify-content-start">
+                    <div class="col-5 title">
+                        <h2>A Frigid Fate</h2>
+                        <h1>The Decline of Polar Bears in a Warming World</h1> 
                     </div>
                 </div>
             </div>
+            <img src="images/polar-bear.png" alt="polar bear" class="img-fluid bear">
+            <img src="images/snow.png" alt="snow" class="img-fluid snow">
         </div>
 
         <div class="section s2">
             <div class="container">
                 <div class="row">                       
-                    <h2>Did you know there is a new species in the Arctic?</h2></div>
-                <div class="row">
-                    <!-- Left column with background image -->
-                    <div class="col-md-6">
-                        <img src="/images/arctic_land.jpeg"
-                            alt="Arctic Landscape" style="width: 100%;">
-                    </div>
-                    <div class="col-md-3 d-flex align-items-center justify-content-center">
-                        <button id="revealButton" onclick="revealText()">Reveal Me</button>
-                    </div>
-                    <!-- Right column with text, button -->
-                    <div class="col-md-3 d-flex align-items-center justify-content-center">
-                        <div id="hiddenText" class="reveal-box">
-                            <br>
-                            <h3>PIZZLY BEARS!</h3>
-                            <p class="text-start">What are pizzly bears? </p>
-                            </br>
-                            <p class="text-start">Pizzly bears are a hybrid between polar bears and their southern relatives, the grizzly bears.
-                                This hybrid bear is a product of the environmental crisis associated with climate change. 
-                            </p>
-                        </div>
-                    </div>
+                    <h2>Did you know there is a new species in the Arctic?</h2>
                 </div>
             </div>
         </div>
@@ -405,14 +387,12 @@
     <script>
         new fullpage('#fullPage', {
             licenseKey: 'gplv3-license',
-            // make the page seamless if autoscroll false
-            autoScrolling: true,
-            // lazyLoading: false,
-            navigation: true,
             anchors: ["section1", "section2", "section3", "section4", "section5", "section6", "section7", "section8", "section9", "section10", "section11"],
+            autoScrolling: false,
+            scrollingSpeed: 1000,
+            navigation: true,
             navigationTooltips: ['Home', 'Pizzly', 'Migration', 'Climate Change', 'Regions', 'Regions Analysis', 'Diet', 'Health', 'Explore', 'Thank You', 'About Us'],
             normalScrollElements: '#subregionTable',
-            scrollOverflow: true,
         });
     </script>
 

@@ -1,25 +1,21 @@
-
-
 body {
 	font-family: 'Inter', sans-serif;
-	text-align: center;
-	background-color: #f7fcff;
 }
 
 h1 {
-	font-size: 42px;
-	color: #093563;
-	margin-top: 40px;
-	margin-bottom: 30px;
+	font-size: 68px;
+	color: #FFFFFF;
+	margin-top: 10px;
+	margin-bottom: 10px;
 	font-family: 'Poppins', sans-serif;
 	font-weight: bold;
 }
 
 h2 {
-	color: #1b5491;
-	font-size: 28px;
+	color: #6A87BE;
+	font-size: 40px;
 	margin-top: 10px;
-	margin-bottom: 30px;
+	margin-bottom: 10px;
 	font-family: 'Poppins', sans-serif;
 	font-weight: bold;
 }
@@ -33,20 +29,21 @@ h3 {
 	font-weight: bold;
 
 }
-p{
+
+p {
 	color: #143c69;
 }
+
 h5 {
 	font-size: 13px;
 }
 
-#fp-nav ul li .fp-tooltip {
-	color: #3373b8;
+#fp-nav ul li a span {
+	background: #6A87BE;
 }
 
-.section {
-	margin-top: 40px;
-	margin-bottom: 40px;
+#fp-nav ul li .fp-tooltip {
+	color: #6A87BE;
 }
 
 .col-4 {
@@ -305,4 +302,78 @@ Right column styles
 .line-highlight {
 	stroke-width: 3; /* or any other style changes to make the line stand out */
 	stroke: orange !important; /* color of the highlight */
- } 
+} 
+
+.s1 {
+	background-color: #112A59;
+	position: relative;
+}
+
+.title {
+	position: absolute;
+	top: 15%; 
+	left: 5%;
+}
+
+.snow-falling {
+	width: 100%;
+	height: 100%;
+}
+
+.bear {
+	width: 30vh;
+	height: 30vh;
+	position: absolute;
+    bottom: 12vh; 
+    right: 12vh;
+	z-index: 10;
+}
+
+.snow {
+	position: absolute;
+    bottom: 0; 
+    left: 0;
+	width: 100%;
+	height: 25vh;
+	z-index: 5;
+}
+
+.s2 {
+	background-color: #f7fcff;
+}
+
+.s3 {
+	background-color: #f7fcff;
+}
+
+.s4 {
+	background-color: #f7fcff;
+}
+
+.s5 {
+	background-color: #f7fcff;
+}
+
+.s6 {
+	background-color: #f7fcff;
+}
+
+.s7 {
+	background-color: #f7fcff;
+}
+
+.s8 {
+	background-color: #f7fcff;
+}
+
+.s9 {
+	background-color: #f7fcff;
+}
+
+.s10 {
+	background-color: #f7fcff;
+}
+
+.s11 {
+	background-color: #f7fcff;
+}
