@@ -57,9 +57,9 @@ class SubregionMap {
     vis.ecoregionsColor = d3.scaleOrdinal()
       .domain(["Divergent", "Seasonal", "Archipelago", "Convergent", "NA"])
       .range([
-        d3.color(vis.colors2[4]).copy({ opacity: 0.8 }),
+        d3.color(vis.colors2[4]).copy({ opacity: 0.5 }),
         d3.color(vis.colors2[2]).copy({ opacity: 0.5 }),
-        d3.color(vis.colors2[3]).copy({ opacity: 0.7 }),
+        d3.color(vis.colors2[3]).copy({ opacity: 0.4 }),
         d3.color(vis.colors[5]).copy({ opacity: 0.7 }),
         d3.color(vis.colors[0]).copy({ opacity: 0.7 })
       ]);
