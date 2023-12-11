@@ -20,8 +20,7 @@ let promises = [
     d3.csv("data/migration.csv"), // 7
     d3.json("data/coastline.json"), // 8
     d3.json("data/land.json"), // 9
-    d3.json("data/name.json"), // 10
-    d3.json("data/ocean.json"), // 11
+    d3.json("data/ocean.json"), // 10
 ];
 
 Promise.all(promises)
@@ -43,8 +42,7 @@ function createVis(data) {
     let migrationData = data[7];
     let marineData = data[8];
     let landData = data[9];
-    let nameData = data[10];
-    let oceanData = data[11];
+    let oceanData = data[10];
     
 
     // Migration Map
