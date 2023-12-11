@@ -2,19 +2,14 @@
 let dateFormatter = d3.timeFormat("%Y-%m-%d");
 let dateParser = d3.timeParse("%Y-%m-%d");
 
-function updateAllVisualizations() {
-    myMapVis.wrangleData()
-}
-
 // Declare chart variables outside the function
+let migrationVisual, arcticMap, iceExtentChart, emissionsChart, tempChangeChart, 
+subregionMap, subregionTable, dietStacked, dietVisual, healthVisual, bearInfo, allHealthVisual;
 
-let emissionsChart, iceExtentChart, tempChangeChart, dietVisual, healthVisual, adoptVisual, subregionMap, migrationVisual, arcticMap, allHealthVisual, subregionTable;
 let slider = d3.select('#time-slider').node();
 let migrationSlider = document.getElementById('migrationSlider');
 
-
 let promises = [
-
     d3.csv("data/CO2_emissions.csv"), // 0
     d3.csv("data/september_minimum_ice_extent.csv"), // 1
     d3.csv("data/temperature_change.csv"), // 2
@@ -28,9 +23,6 @@ let promises = [
     d3.json("data/land.json"), // 10
     d3.json("data/name.json"), // 11
     d3.json("data/ocean.json"), // 12
-
-
-
 ];
 
 Promise.all(promises)
@@ -40,7 +32,6 @@ Promise.all(promises)
     .catch(function (err) {
         console.log(err);
     });
-
 
 function createVis(data) {
     let emissionsData = data[0];
@@ -56,41 +47,40 @@ function createVis(data) {
     let landData = data[10];
     let nameData = data[11];
     let oceanData = data[12];
-
-    // console.log(data);
-    // console.log("Emissions Data:", emissionsData);
-    // console.log("Ice Extent Data:", iceExtentData);
-    // console.log("Temperature Change Data:", temperatureChangeData);
-    // console.log("subregion", subregionData)
-
-
-    // Create a line chart for CO2 emissions with red lines and dots
-    emissionsChart = new LineGraph('emissions', emissionsData, "Year", "Emissions", "CO2 Emissions Over Time", '#f7a42a', '#fc9700');
-
-    // Create a line chart for ice extent with blue lines and dots
-    iceExtentChart = new LineGraph('icemass', iceExtentData, "Year", "Ice Extent", "Minimum Ice Extent Over Time", '#78aeeb', '#0060cf');
-
-    // Create a line chart for temperature change with green lines and dots
-    tempChangeChart = new LineGraph('avgtemp', temperatureChangeData, "Year", "Temperature Change", "Global Temperature Change Over Time", '#fc7168', '#de1507');
     
-    healthVisual = new HealthVis('healthDiv', healthData);
 
-    dietVisual = new DietVis('dietDiv', polarBearDietData);
-    
-    adoptVisual = new AdoptBear('adoptDiv', healthData);
-
-    allHealthVisual = new AllHealthVis('allHealthDiv', healthData);
-
+    // Migration Map
     migrationVisual = new MigrationVis('migrationDiv', arctic_ice, migrationData, marineData, landData, nameData, oceanData);
 
-    dietStacked = new DietStacked('dietStacked', polarBearDietData)
-   
-    // create subregionVisual
+    // Artic Ice Map
+    arcticMap = new ArcticMap('arcticmap', linegraph_arcticice, migrationData);
+
+    // Ice Extent Chart
+    iceExtentChart = new LineGraph('icemass', iceExtentData, "Year", "Ice Extent", "Minimum Ice Extent Over Time", '#78aeeb', '#0060cf');
+
+    // CO2 Emissions Chart
+    emissionsChart = new LineGraph('emissions', emissionsData, "Year", "Emissions", "CO2 Emissions Over Time", '#f7a42a', '#fc9700');
+
+    // Temperature Chart
+    tempChangeChart = new LineGraph('avgtemp', temperatureChangeData, "Year", "Temperature Change", "Global Temperature Change Over Time", '#fc7168', '#de1507');
+    
+    // Subregion Map
     subregionMap = new SubregionMap('subregionMap', subregionData);
     subregionTable = new SubregionTable('subregionTable', subregionData, subregionMap);
+    
+    // Diet Charts
+    dietStacked = new DietStacked('dietStacked', polarBearDietData)
+    dietVisual = new DietVis('dietDiv', polarBearDietData);
 
-    // create arcticMap
-    arcticMap = new ArcticMap('arcticmap', linegraph_arcticice, migrationData);
+    // Health Visualization
+    healthVisual = new HealthVis('healthDiv', healthData);
+    
+    // Bear Info
+    bearInfo = new BearInfo('bearInfoDiv', healthData);
+
+    // All Health Visualization
+    allHealthVisual = new AllHealthVis('allHealthDiv', healthData);
+
 
     // Initialize slider
     noUiSlider.create(slider, {
@@ -163,22 +153,22 @@ function createVis(data) {
         console.log("Migration Data:", filteredMigrationData);
     });
 
-    // event listener
-    document.getElementById('adoptButton').addEventListener('click', function() {
-        adoptVisual.updateBear(adoptVisual.selectedSex, adoptVisual.selectedAgeclass);
-        document.getElementById(adoptVisual.parentElement).innerHTML = adoptVisual.description;
+    // Button Event Listeners
+    document.getElementById('bearInfoButton').addEventListener('click', function() {
+        bearInfo.updateBear(bearInfo.selectedSex, bearInfo.selectedAgeclass);
+        document.getElementById(bearInfo.parentElement).innerHTML = bearInfo.description;
     });
 
     document.getElementById('resetButton').addEventListener('click', function() {
         allHealthVisual.resetSelection();
-        adoptVisual.clearDescription(); 
+        bearInfo.clearDescription(); 
     });
     
 
 }
 
-// let selectedCategory = document.getElementById('dietFilter').value;
 
+// Diet Visualization Event Listeners
 function dietCategoryChange() {
     // Get the selected value
     selectedDietCategory = document.getElementById('dietFilter').value;
@@ -186,6 +176,7 @@ function dietCategoryChange() {
     dietVisual.wrangleData(selectedDietCategory);
 }
 
+// Health Visualization Event Listeners
 function healthCategoryChange() {
     let selectedHealthCategory = document.getElementById('healthFilter').value;
 
@@ -206,12 +197,13 @@ function ageclassHealthCategoryChange() {
     healthVisual.updateVis(healthVisual.selectedHealthCategory, healthVisual.selectedSex, selectedAgeclass);
 }
 
+// Bear Info & All Health Visualization Event Listeners
 function sexAllHealthCategoryChange() {
     selectedSex = document.getElementById('sexAllHealthFilter').value;
  
     allHealthVisual.resetSelection();
-    adoptVisual.clearDescription(); 
-    adoptVisual.updateBear(selectedSex, adoptVisual.selectedAgeclass);
+    bearInfo.clearDescription(); 
+    bearInfo.updateBear(selectedSex, bearInfo.selectedAgeclass);
     allHealthVisual.updateVis(selectedSex, allHealthVisual.selectedAgeclass);
 }
 
@@ -219,16 +211,22 @@ function ageclassAllHealthCategoryChange() {
     selectedAgeclass = document.getElementById('ageclassAllHealthFilter').value;
    
     allHealthVisual.resetSelection();
-    adoptVisual.clearDescription(); 
-    adoptVisual.updateBear(adoptVisual.selectedSex, selectedAgeclass);
+    bearInfo.clearDescription(); 
+    bearInfo.updateBear(bearInfo.selectedSex, selectedAgeclass);
     allHealthVisual.updateVis(allHealthVisual.selectedSex, selectedAgeclass);
 }
 
+// Subregion Map & Table Event Listeners
 function changeSubregionFilter() {
     subregionMap.wrangleData();
     subregionTable.wrangleData();
 }
 
+
 function revealText() {
     document.getElementById('hiddenText').style.display = 'block';
+}
+
+function updateAllVisualizations() {
+    myMapVis.wrangleData()
 }
