@@ -29,7 +29,7 @@ class YearlyLineChart {
             .range([0, vis.width]);
 
         vis.y = d3.scaleLinear()
-            .domain([0, 18])
+            .domain([0, 17])
             .range([vis.height, 0]);
 
         vis.z = d3.scaleSequential(d3.extent(vis.data, d => d.Year), t => d3.interpolate(d3.color("orange"), d3.color("indigo"))(1 - t));
@@ -82,31 +82,41 @@ class YearlyLineChart {
 
     async animate() {
         const vis = this;
-
+    
         for (const [year, values] of d3.group(vis.data, d => d.Year)) {
-            await vis.g.append("path")
+            const path = vis.g.append("path")
                 .attr("d", vis.line(values))
                 .attr("stroke", vis.z(year))
                 .attr("stroke-dasharray", "0,1")
                 .transition()
                 .ease(d3.easeLinear)
-                .attrTween("stroke-dasharray", vis.dashTween)
-                .end();
-
+                .duration(200) // Adjust the duration in milliseconds
+                .attrTween("stroke-dasharray", vis.dashTween);
+    
+            await new Promise(resolve => path.on("end", resolve));
+    
             if (!isNaN(values[values.length - 1].Extent)) {
-                vis.g.append("text")
+                const text = vis.g.append("text")
                     .attr("paint-order", "stroke")
                     .attr("stroke", "white")
                     .attr("stroke-width", 3)
                     .attr("fill", vis.z(year))
                     .attr("dx", 4)
                     .attr("dy", "0.32em")
-                    .attr("x", vis.x(new Date(2000, values[values.length - 1].Month - 1, values[values.length - 1].Day)) + 100)
-                    .attr("y", vis.y(values[values.length - 1].Extent))
                     .text(year);
+    
+                const lastDataPoint = values[values.length - 1];
+                const xPos = vis.x(new Date(2000, lastDataPoint.Month - 1, lastDataPoint.Day)) + 2;
+                const yPos = vis.y(lastDataPoint.Extent);
+    
+                text.attr("transform", `translate(${xPos},${yPos})`);
             }
         }
     }
+    
+    
+    
+    
 
     dashTween() {
         const l = this.getTotalLength();
