@@ -75,7 +75,7 @@ class LineGraph {
             .attr('class', 'y-axis-label')
             .attr('transform', 'rotate(-90)')
             .attr('x', -vis.height / 2)
-            .attr('y', -vis.margin.left +30)
+            .attr('y', -vis.margin.left + 30)
             .attr('text-anchor', 'middle')
             .style("font-size", "10px")
             .text(vis.yLabel);

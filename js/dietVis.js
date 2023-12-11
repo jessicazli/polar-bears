@@ -11,7 +11,7 @@ class DietVis {
 
       this.colors=['#AED1E6', '#d1e6f7', '#98c4e7','#26547C', '#112A59']
       console.log(this.data)
-      // Initialize the chart
+      
       this.initVis();
 
 
