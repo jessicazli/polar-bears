@@ -20,7 +20,7 @@ class LineGraph {
         const vis = this;
 
         // Set up the SVG drawing area
-        vis.margin = { top: 40, right: 20, bottom: 40, left: 40 };
+        vis.margin = { top: 40, right: 20, bottom: 40, left: 60 };
         vis.width = 500 - vis.margin.left - vis.margin.right;
         vis.height = 300 - vis.margin.top - vis.margin.bottom;
 
@@ -53,10 +53,34 @@ class LineGraph {
         vis.svg
             .append('text')
             .attr('class', 'chart-title')
+            .style("font-size", "12px")
+            .style("font-weight", "600")
             .attr('x', vis.width / 2)
             .attr('y', -vis.margin.top / 2)
             .attr('text-anchor', 'middle')
             .text(vis.chartTitle);
+
+
+        // Draw x-axis label
+        vis.svg
+            .append('text')
+            .attr('class', 'x-axis-label')
+            .attr('x', vis.width / 2)
+            .attr('y', vis.height + vis.margin.bottom - 5)
+            .attr('text-anchor', 'middle')
+            .style("font-size", "10px")
+            .text(vis.xLabel);
+
+        // Draw y-axis label
+        vis.svg
+            .append('text')
+            .attr('class', 'y-axis-label')
+            .attr('transform', 'rotate(-90)')
+            .attr('x', -vis.height / 2)
+            .attr('y', -vis.margin.left +30)
+            .attr('text-anchor', 'middle')
+            .style("font-size", "10px")
+            .text(vis.yLabel);
 
         // Update the graph
         vis.updateGraph();

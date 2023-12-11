@@ -71,10 +71,10 @@ function createVis(data) {
     // iceExtentChart = new LineGraph('icemass', iceExtentData, "Year", "Ice Extent", "Minimum Ice Extent Over Time", '#78aeeb', '#0060cf');
 
     // CO2 Emissions Chart
-    emissionsChart = new LineGraph('emissions', emissionsData, "Year", "Emissions", "CO2 Emissions Over Time", '#f7a42a', '#fc9700');
+    emissionsChart = new LineGraph('emissions', emissionsData, "Year", "Emissions", "CO2 Emissions Over Time in Billion Metric Tons", '#f7a42a', '#fc9700');
 
     // Temperature Chart
-    tempChangeChart = new LineGraph('avgtemp', temperatureChangeData, "Year", "Temperature Change", "Global Temperature Change Over Time", 'indigo', 'indigo');
+    tempChangeChart = new LineGraph('avgtemp', temperatureChangeData, "Year", "Temperature Change", "Global Avg. Temperature Change Over Time in °C", 'indigo', 'indigo');
     
     // Subregion Map
     subregionMap = new SubregionMap('subregionMap', subregionData);

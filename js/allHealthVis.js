@@ -55,7 +55,15 @@ class AllHealthVis {
             .domain(d3.extent(vis.data, d => d[key]))
             .range([0, vis.width])]));
         vis.y = d3.scalePoint(vis.keys, [0, vis.height]);
-        vis.color = d3.scaleSequential(d3.extent(vis.data, d => d[vis.keys[0]]), d3.interpolateBrBG);
+        vis.color = d3.scaleSequential(d3.extent(vis.data, d => d[vis.keys[0]]), t => d3.color(d3.interpolate("steelblue", "lightsteelblue")(t)).copy({ opacity: 0.5 }));
+
+
+
+
+
+
+        
+
 
         const units = {
             BodyLength: "cm",
