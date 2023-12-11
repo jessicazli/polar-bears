@@ -42,21 +42,8 @@ h3 {
 	color: #6A87BE;
 }
 
-.col-4 {
-    display: flex;
-    justify-content: center; 
-    align-items: center;    
-}
-
 img {
 	width: 60%;
-}
-
-.photo {
-	width: 200px;
-	height: 200px;
-	border: 1px solid #ccc;
-	margin-bottom: 30px;
 }
 
 .legend-text {
@@ -412,4 +399,23 @@ Right column styles
 	padding: 20px;
 	font-size: 14px;
 	height: 48vh;
+}
+
+.about-us-title {
+	text-align: center;
+}
+
+.about-us {
+	width: 50%;
+	margin-top: 10vh;
+	margin-bottom: 2vh;
+}
+
+.name {
+	font-weight: 500;
+	font-size: 20px;
+}
+
+.study {
+	margin-bottom: 0px;
 }
