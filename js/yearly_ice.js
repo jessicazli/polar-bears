@@ -106,7 +106,7 @@ class YearlyLineChart {
                     .text(year);
     
                 const lastDataPoint = values[values.length - 1];
-                const xPos = vis.x(new Date(2000, lastDataPoint.Month - 1, lastDataPoint.Day)) + 2;
+                const xPos = vis.x(new Date(2000, lastDataPoint.Month - 1, lastDataPoint.Day)) -5;
                 const yPos = vis.y(lastDataPoint.Extent);
     
                 text.attr("transform", `translate(${xPos},${yPos})`);
