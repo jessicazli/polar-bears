@@ -233,15 +233,15 @@ class MigrationVis {
       .delay((d, i) => i * 4) // Delay for each bear
       .attr("r", d => vis.radiusScale(parseTime(d.DateTimeUTC_ud)))
 
-    // Create zoom behavior
-    vis.zoom = d3.zoom()
-      .scaleExtent([1, 8]) // Set the minimum and maximum zoom levels
-      .on("zoom", function (event) {
-        vis.svg.attr("transform", event.transform);
-      });
+    // // Create zoom behavior
+    // vis.zoom = d3.zoom()
+    //   .scaleExtent([1, 8]) // Set the minimum and maximum zoom levels
+    //   .on("zoom", function (event) {
+    //     vis.svg.attr("transform", event.transform);
+    //   });
 
-    // Apply zoom behavior to the SVG
-    vis.svg.call(vis.zoom);
+    // // Apply zoom behavior to the SVG
+    // vis.svg.call(vis.zoom);
 
     vis.updateVis();
   }
