@@ -29,7 +29,8 @@ class DietStacked {
       .attr('class', "tooltip")
       .attr('id', 'dietTooltip')
       .style('opacity', 0);
-    vis.colors = ['#EDA57F', '#add8e6', '#4074B7','#F2ABE9', '#ABABF2']
+      
+    vis.colors = ['#AED1E6', '#d1e6f7', '#98c4e7','#26547C', '#112A59']
 
     vis.chartGroup = vis.svg.append('g')
       .attr('class', 'chart-group')
@@ -203,7 +204,7 @@ class DietStacked {
     vis.tooltip
       .style('opacity', 0.9)
       .html(`
-        <div style="border: thin solid lightblue; border-radius: 5px; text-align: left; background: #fff; color: #333; padding: 10px">
+        <div style="border: thin solid lightblue; border-radius: 5px; text-align: left; background: #fff; color: black; padding: 10px">
           <h3>${d.data.year}</h3>
           <p>${key}: ${percent}%</p>
         </div>`)

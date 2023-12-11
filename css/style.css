@@ -30,6 +30,11 @@ h3 {
 	font-size: 14px;
 }
 
+.footer-text {
+	font-size: 12px;
+	font-style: italic;
+}
+
 .s5 p {
 	color: #143c69;
 }
@@ -102,7 +107,7 @@ img {
 	position: absolute;
 	text-align: center;
 	font: 12px sans-serif;
-	color:rgb(169, 200, 233)
+	color:white
 	/*  pointer-events: none;	This line needs to be removed */
 }
 .diet-tooltip h3,h4 {
@@ -419,3 +424,19 @@ Right column styles
 .study {
 	margin-bottom: 0px;
 }
+
+
+/* Add these styles to your CSS file */
+.path, .year-text {
+    opacity: 1; /* Initial opacity for all paths and text elements */
+    transition: opacity 0.2s ease; /* Add a transition for a smoother effect */
+}
+
+.path.highlighted, .year-text.highlighted {
+    opacity: 1 !important; /* Keep highlighted paths and text fully visible */
+}
+
+.path.faded, .year-text.faded {
+    opacity: 0.3; /* Set the opacity for faded paths and text */
+}
+

@@ -9,7 +9,7 @@ class DietVis {
 
       this.selectedDietCategory = 'avg_Beluga_whale'
 
-      this.colors=["#134078", "#3D5573", '#EDA57F', '#add8e6', '#4074B7','#F2ABE9', '#ABABF2']
+      this.colors=['#AED1E6', '#d1e6f7', '#98c4e7','#26547C', '#112A59']
       console.log(this.data)
       // Initialize the chart
       this.initVis();
@@ -75,11 +75,11 @@ class DietVis {
           .style("text-anchor", "middle")
 
       vis.setColors = {
-        avg_Bearded_seal: vis.colors[3],
-        avg_Ringed_seal:  vis.colors[2],
-        avg_Beluga_whale: vis.colors[6],
-        avg_Bowhead_whale: vis.colors[5],
-        avg_Seabird_nestling: vis.colors[4],
+        avg_Bearded_seal: vis.colors[1],
+        avg_Ringed_seal:  vis.colors[0],
+        avg_Beluga_whale: vis.colors[4],
+        avg_Bowhead_whale: vis.colors[3],
+        avg_Seabird_nestling: vis.colors[2],
       };
       // Update the chart
       this.wrangleData(vis.selectedDietCategory);
@@ -179,11 +179,11 @@ class DietVis {
 
     vis.xLabel
       .text("Year")
-      .style("fill", vis.colors[0])
+      .style("fill", vis.colors[4])
 
     vis.yLabel
       .text(getYLabel(dataField))
-      .style("fill", vis.colors[0])
+      .style("fill", vis.colors[4])
       .style("font-size", "0.9em")
 
     console.log(getYLabel(dataField))
@@ -219,13 +219,13 @@ class DietVis {
               vis.tooltip
                   .style('opacity', 0.9)
                   .html(`
-                  <div style="border: thin solid lightblue; border-radius: 5px; text-align: left; background: ${vis.colors[0]}; color: white; padding: 20px">
-                  <h3 style="color: white">${d[0]} </h3>
-                  <p style="color: #dfeaf8;"> <span style="font-weight: bold;color: #dfeaf8;"> Year: </span>${d[0]} 
+                  <div style="border: thin solid lightblue; border-radius: 5px; text-align: left; background: white; color: white; padding: 20px">
+                  <h3 style="color: #112A59">${d[0]} </h3>
+                  <p style="color: black"> <span style="font-weight: bold;color: black;"> Year: </span>${d[0]} 
                   <br>
-                  <span style="font-weight: bold;color: #dfeaf8;"> ${getYLabel(dataField)}: </span> ${d[1][dataField]}
+                  <span style="font-weight: bold;color: black";> ${getYLabel(dataField)}: </span> ${d[1][dataField]}
                   <br>
-                  <span style="font-weight: bold; color: #dfeaf8;"> Number of Polar Bears Captured: </span> ${d[1].num_bears} </p>
+                  <span style="font-weight: bold; color: black";> Number of Polar Bears Captured: </span> ${d[1].num_bears} </p>
                     </div>`)
                   .style('left', event.pageX + 10 + 'px')
                   .style('top', event.pageY - 15 + 'px');
