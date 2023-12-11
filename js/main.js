@@ -4,7 +4,7 @@ let dateParser = d3.timeParse("%Y-%m-%d");
 
 // Declare chart variables outside the function
 let migrationVisual, arcticMap, iceExtentChart, emissionsChart, tempChangeChart, 
-subregionMap, subregionTable, dietStacked, dietVisual, healthVisual, bearInfo, allHealthVisual,
+subregionMap, subregionTable, dietStacked, dietVisual, bearInfo, allHealthVisual,
 yearlyIce;
 
 let slider = d3.select('#time-slider').node();
@@ -83,9 +83,6 @@ function createVis(data) {
     // Diet Charts
     dietStacked = new DietStacked('dietStacked', polarBearDietData)
     dietVisual = new DietVis('dietDiv', polarBearDietData);
-
-    // Health Visualization
-    healthVisual = new HealthVis('healthDiv', healthData);
     
     // Bear Info
     bearInfo = new BearInfo('bearInfoDiv', healthData);
@@ -131,10 +128,6 @@ function createVis(data) {
             max: maxBearYear
         },
     });
-
-
-    // d3.selectAll(".noUi-handle .noUi-tooltip").classed("range-slider-value", true);
-
 
     // Attach an event handler to update the graphs when the slider changes
     slider.noUiSlider.on('change', function (values) {
@@ -186,27 +179,6 @@ function dietCategoryChange() {
     selectedDietCategory = document.getElementById('dietFilter').value;
 
     dietVisual.wrangleData(selectedDietCategory);
-}
-
-// Health Visualization Event Listeners
-function healthCategoryChange() {
-    let selectedHealthCategory = document.getElementById('healthFilter').value;
-
-    healthVisual.selectedHealthCategory = selectedHealthCategory;
-
-    healthVisual.updateVis(selectedHealthCategory, healthVisual.selectedSex, healthVisual.selectedAgeclass);
-}
-
-function sexHealthCategoryChange() {
-    selectedSex = document.getElementById('sexHealthFilter').value;
-
-    healthVisual.updateVis(healthVisual.selectedHealthCategory, selectedSex, healthVisual.selectedAgeclass);
-}
-
-function ageclassHealthCategoryChange() {
-    selectedAgeclass = document.getElementById('ageclassHealthFilter').value;
-
-    healthVisual.updateVis(healthVisual.selectedHealthCategory, healthVisual.selectedSex, selectedAgeclass);
 }
 
 // Bear Info & All Health Visualization Event Listeners

@@ -80,7 +80,6 @@ class MigrationVis {
     console.log(vis.nameData);
     console.log(vis.geoData);
 
-
     vis.svg = d3
       .select(`#${vis.parentElement}`)
       .append('svg')
