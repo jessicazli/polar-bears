@@ -46,7 +46,7 @@ function createVis(data) {
     
 
     // Migration Map
-    migrationVisual = new MigrationVis('migrationDiv', arctic_ice, migrationData, marineData, landData, nameData, oceanData);
+    migrationVisual = new MigrationVis('migrationDiv', arctic_ice, migrationData, marineData, landData, oceanData);
 
     // Yearly Ice Map
     yearlyIce = new YearlyLineChart('yearlyIce', yearlyIceData);
