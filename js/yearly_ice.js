@@ -2,7 +2,6 @@ class YearlyLineChart {
     constructor(parentElement, data) {
         this.parentElement = parentElement;
         this.data = data;
-
         this.initGraph();
     }
 
@@ -10,110 +9,106 @@ class YearlyLineChart {
         const vis = this;
 
         // Set up the SVG drawing area
-        vis.margin = { top: 40, right: 20, bottom: 40, left: 40 };
-        vis.width = 800 - vis.margin.left - vis.margin.right;
-        vis.height = 400 - vis.margin.top - vis.margin.bottom;
+        vis.margin = { top: 20, right: 30, bottom: 30, left: 40 };
+        vis.width = 928 - vis.margin.left - vis.margin.right;
+        vis.height = 720 - vis.margin.top - vis.margin.bottom;
 
         vis.svg = d3
             .select(`#${vis.parentElement}`)
             .append('svg')
             .attr('width', vis.width + vis.margin.left + vis.margin.right)
             .attr('height', vis.height + vis.margin.top + vis.margin.bottom)
+            .attr("viewBox", [0, 0, 928, 720])
+            .attr("style", "max-width: 100%; max-height: 200%;")
             .append('g')
             .attr('transform', `translate(${vis.margin.left},${vis.margin.top})`);
 
-        // Initialize scales and axes
-        vis.xScale = d3.scaleTime().range([0, vis.width]);
-        vis.yScale = d3.scaleLinear().range([vis.height, 0]);
+        // Create the scales.
+        vis.x = d3.scaleLinear()
+            .domain(d3.extent(vis.data, d => d3.timeParse("%Y-%m-%d")(`${d.Year}-01-01`)))
+            .range([0, vis.width]);
 
-        vis.xAxis = d3.axisBottom().scale(vis.xScale);
-        vis.yAxis = d3.axisLeft().scale(vis.yScale);
+        vis.y = d3.scaleLinear()
+            .domain([0, d3.max(vis.data, d => d.Extent)])
+            .range([vis.height, 0]);
 
-        // Draw x-axis
-        vis.svg
-            .append('g')
-            .attr('class', 'x-axis')
-            .attr('transform', `translate(0, ${vis.height})`);
+        vis.z = d3.scaleSequential(d3.extent(vis.data, d => d.Year), t => d3.interpolateSpectral(1 - t));
 
-        // Draw y-axis
-        vis.svg.append('g').attr('class', 'y-axis');
+        vis.line = d3.line()
+            .defined(d => !isNaN(d.Extent))
+            .x(d => vis.x(d3.timeParse("%Y-%m-%d")(`${d.Year}-01-01`)))
+            .y(d => vis.y(d.Extent));
 
-        // Draw chart title
-        vis.svg
-            .append('text')
-            .attr('class', 'chart-title')
-            .attr('x', vis.width / 2)
-            .attr('y', -vis.margin.top / 2)
-            .attr('text-anchor', 'middle')
-            .text('Yearly Ice Extent Over Time');
+        // Create the axes.
+        vis.svg.append("g")
+            .attr("transform", `translate(0,${vis.height})`)
+            .call(d3.axisBottom(vis.x)
+                .ticks(vis.width / 80)
+                .tickSizeOuter(0));
 
-        // Trigger the initial animation
-        vis.updateGraph();
+        vis.svg.append("g")
+            .call(d3.axisLeft(vis.y).ticks(null, "s"))
+            .call(g => g.select(".domain").remove())
+            .call(g => g.selectAll(".tick:not(:first-of-type) line").clone()
+                .attr("x2", vis.width)
+                .attr("stroke", "#ddd"))
+            .call(g => g.select(".tick:last-of-type text").clone()
+                .attr("x", 3)
+                .attr("text-anchor", "start")
+                .attr("font-weight", "bold")
+                .text('Extent'));  // Fix the y-axis label
+
+        // Create the container for lines.
+        vis.g = vis.svg.append("g")
+            .attr("font-family", "sans-serif")
+            .attr("font-size", 10)
+            .attr("fill", "none")
+            .attr("stroke-width", 1.5)
+            .attr("stroke-miterlimit", 1);
+
+        // Start the animation and return the chart.
+        requestAnimationFrame(vis.animate.bind(vis));
     }
 
-    updateGraph() {
+    async animate() {
         const vis = this;
 
-        // Parse date strings in the data
-        vis.data.forEach(d => {
-            d.Date = new Date(`${d.Year}-${d.Month}-${d.Day}`);
-        });
+        for (const [key, values] of d3.group(vis.data, d => d.Year)) {
+            await vis.g.append("path")
+                .attr("d", vis.line(values))
+                .attr("stroke", vis.z(key))
+                .attr("stroke-dasharray", "0,1")
+                .transition()
+                .ease(d3.easeLinear)
+                .attrTween("stroke-dasharray", vis.dashTween)
+                .end();
 
-        // Set the xScale domain based on the data
-        vis.xScale.domain(d3.extent(vis.data, d => d.Date));
-        
-        // Set the yScale domain based on the data
-        vis.yScale.domain([0, d3.max(vis.data, d => d.Extent)]);
+            if (!isNaN(values[values.length - 1].Extent)) {
+                vis.g.append("text")
+                    .attr("paint-order", "stroke")
+                    .attr("stroke", "white")
+                    .attr("stroke-width", 3)
+                    .attr("fill", vis.z(key))
+                    .attr("dx", 4)
+                    .attr("dy", "0.32em")
+                    .attr("x", vis.x(d3.timeParse("%Y-%m-%d")(`${values[values.length - 1].Year}-01-01`)))
+                    .attr("y", vis.y(values[values.length - 1].Extent))
+                    .text(key);
+            }
+        }
+    }
 
-        // Update x-axis with transition
-        vis.svg.select('.x-axis')
-            .transition()
-            .duration(500)
-            .call(vis.xAxis
-                .ticks(d3.timeMonth.every(1))
-                .tickFormat(d3.timeFormat('%B')));
-
-        // Update y-axis with transition
-        vis.svg.select('.y-axis')
-            .transition()
-            .duration(500)
-            .call(vis.yAxis);
-
-        // Draw lines connecting circles
-        const line = d3.line()
-            .x(d => vis.xScale(d.Date))
-            .y(d => vis.yScale(d.Extent));
-
-        // Remove existing lines
-        vis.svg.selectAll('.line')
-            .attr('opacity', 0)
-            .remove();
-
-        // Append new line with transition
-        const linePath = vis.svg
-            .append('path')
-            .datum(vis.data)
-            .attr('class', 'line')
-            .attr('fill', 'none')
-            .attr('stroke-width', 3)
-            .attr('stroke-linejoin', 'round')
-            .attr('opacity', 0.5)
-            .attr('stroke', '#78aeeb')
-            .attr('d', line);  // Initial position of the line
-
-        // Get the total length of the line
-        const totalLength = linePath.node().getTotalLength();
-
-        // Set the initial position of the line to be at the starting point (offscreen to the left)
-        linePath.attr('stroke-dasharray', `${totalLength} ${totalLength}`)
-            .attr('stroke-dashoffset', totalLength)
-            .transition()
-            .duration(800)
-            .ease(d3.easeLinear)
-            .attr('stroke-dashoffset', 0);  // Final position of the line
+    dashTween() {
+        const l = this.getTotalLength();
+        const i = d3.interpolateString("0," + l, l + "," + l);
+        return t => i(t);
     }
 }
 
-// Usage
-const yearlyLineChart = new YearlyLineChart('yourParentElement', yourData);
-yearlyLineChart.updateGraph();  // Trigger the animation
+// // Usage
+// const yourData = [
+//     { Year: 1978, Month: 10, Day: 26, Extent: 10.231, Missing: 0 },
+//     // ... add more data entries
+// ];
+
+// const yearlyIce = new YearlyLineChart('yearlyIce', yourData);
