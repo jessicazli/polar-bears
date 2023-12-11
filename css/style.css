@@ -21,11 +21,11 @@ h2 {
 }
 
 h3 {
-	color: #1b5491;
-	font-size: 18px;
-	/* margin-top: 10px; */
-	margin-bottom: 30px;
-	font-family: 'Inter', sans-serif;
+	color: #112A59;
+	font-size: 32px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	font-family: 'Poppins', sans-serif;
 	font-weight: bold;
 
 }
@@ -144,10 +144,6 @@ img {
   fill: #134078; /* Color for axis text */
 	font-size: 1.3em;
 }
-
-
-
-
 
 
 #time-slider {
@@ -376,4 +372,8 @@ Right column styles
 
 .s11 {
 	background-color: #f7fcff;
+}
+
+#migrationDiv {
+	position: relative;
 }

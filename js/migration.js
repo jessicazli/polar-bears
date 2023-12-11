@@ -28,8 +28,8 @@ class MigrationVis {
       .attr('width', 300) // Adjust the width as needed
       .attr('height', 50) // Adjust the height as needed
       .style('position', 'absolute') // Position the legend absolutely
-      .style('bottom', '20px') // Adjust the bottom position
-      .style('right', '500px'); // Adjust the right position
+      .style('top', '10px') // Adjust distance from the top
+      .style('left', '10px'); // Adjust distance from the left
 
     // Example: Append a rectangle with a gradient as a simple legend
     const legendWidth = 200;
@@ -68,29 +68,14 @@ class MigrationVis {
       .attr('class', 'legend-axis')
       .attr('transform', `translate(0, ${legendHeight})`)
       .call(legendAxis);
-
-    // Add legend labels
-    vis.legendSvg.append('text')
-      .attr('class', 'legend-label')
-      .attr('x', 0)
-      .attr('y', legendHeight + 30)
-      .text('Start Date');
-
-    vis.legendSvg.append('text')
-      .attr('class', 'legend-label')
-      .attr('x', legendWidth)
-      .attr('y', legendHeight + 30)
-      .attr('text-anchor', 'end')
-      .text('End Date');
-
   }
 
   initVis() {
     let vis = this;
 
     vis.margin = { top: 20, right: 0, bottom: 20, left: 0 };
-    vis.width = 800;
-    vis.height = 500;
+    vis.width = 600;
+    vis.height = 400;
 
     console.log(vis.nameData);
     console.log(vis.geoData);
@@ -171,7 +156,7 @@ class MigrationVis {
     // Create a time scale for circle sizes
     vis.radiusScale = d3.scaleTime()
       .domain([minDate, maxDate])
-      .range([5, 4]); // Adjust the range for the desired size variation
+      .range([4, 3]); // Adjust the range for the desired size variation
 
     // Create a sequential color scale for time
     vis.colorScale = d3.scaleSequential()
@@ -182,10 +167,6 @@ class MigrationVis {
     vis.colorScaleBear = d3.scaleOrdinal(d3.schemeCategory10)
       .domain(vis.bearData.map(d => d.BearID_ud));
     // .interpolator(d3.interpolateCategory10)
-
-
-
-
 
     // Bind data and create one path per GeoJSON feature
     vis.svg.selectAll("marinepath")
@@ -233,7 +214,6 @@ class MigrationVis {
       .attr("fill-opacity", 0.8)
       .style("fill", "Ghostwhite");
 
-
     // Append circles with tooltips
     vis.svg.selectAll(".circle")
       .data(vis.displayData)
@@ -263,9 +243,6 @@ class MigrationVis {
 
     // Apply zoom behavior to the SVG
     vis.svg.call(vis.zoom);
-
-
-
 
     vis.updateVis();
   }
@@ -359,7 +336,6 @@ class MigrationVis {
     // Remove circles that are no longer needed
     circles.exit().remove();
   }
-
 
   updateData(newData) {
     this.displayData = newData;
