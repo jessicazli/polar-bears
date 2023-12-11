@@ -29,6 +29,7 @@ class LineGraph {
             .append('svg')
             .attr('width', vis.width + vis.margin.left + vis.margin.right)
             .attr('height', vis.height + vis.margin.top + vis.margin.bottom)
+            // .attr("style", "max-width: 100%; max-height: 100%;")
             .append('g')
             .attr('transform', `translate(${vis.margin.left},${vis.margin.top})`);
 
