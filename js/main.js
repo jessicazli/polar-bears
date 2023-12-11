@@ -4,7 +4,8 @@ let dateParser = d3.timeParse("%Y-%m-%d");
 
 // Declare chart variables outside the function
 let migrationVisual, arcticMap, iceExtentChart, emissionsChart, tempChangeChart, 
-subregionMap, subregionTable, dietStacked, dietVisual, healthVisual, bearInfo, allHealthVisual;
+subregionMap, subregionTable, dietStacked, dietVisual, healthVisual, bearInfo, allHealthVisual,
+yearlyIce;
 
 let slider = d3.select('#time-slider').node();
 let migrationSlider = document.getElementById('migrationSlider');
@@ -23,6 +24,7 @@ let promises = [
     d3.json("data/land.json"), // 10
     d3.json("data/name.json"), // 11
     d3.json("data/ocean.json"), // 12
+    d3.csv("data/dailyice.csv"), // 13
 ];
 
 Promise.all(promises)
@@ -47,6 +49,7 @@ function createVis(data) {
     let landData = data[10];
     let nameData = data[11];
     let oceanData = data[12];
+    let yearlyIceData = data[13];
     
 
     // Migration Map
@@ -54,6 +57,9 @@ function createVis(data) {
 
     // Artic Ice Map
     arcticMap = new ArcticMap('arcticmap', linegraph_arcticice, migrationData);
+
+    // Yearly Ice Map
+    yearlyIce = new YearlyLineChart('yearlyIce', yearlyIceData);
 
     // Ice Extent Chart
     iceExtentChart = new LineGraph('icemass', iceExtentData, "Year", "Ice Extent", "Minimum Ice Extent Over Time", '#78aeeb', '#0060cf');
