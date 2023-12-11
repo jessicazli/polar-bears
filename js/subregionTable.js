@@ -48,10 +48,10 @@ class SubregionTable {
     tableObject.ecoregionsColor = d3.scaleOrdinal()
     .domain(["Divergent", "Seasonal", "Archipelago", "Convergent", "NA"])
     .range([
-        d3.color(tableObject.colors[5]).copy({opacity: 0.5}),
-        d3.color(tableObject.colors2[1]).copy({opacity: 0.5}),
-        d3.color(tableObject.colors2[3]).copy({opacity: 0.7}),
-        d3.color(tableObject.colors2[4]).copy({opacity: 0.7}),
+        d3.color(tableObject.colors2[4]).copy({opacity: 0.5}),
+        d3.color(tableObject.colors2[2]).copy({opacity: 0.5}),
+        d3.color(tableObject.colors2[3]).copy({opacity: 0.8}),
+        d3.color(tableObject.colors[5]).copy({opacity: 0.7}),
         d3.color(tableObject.colors[0]).copy({opacity: 0.7})
     ]);
 
