@@ -292,7 +292,7 @@ th {
 
 .stripe {
 	position: absolute;
-	top: 50vh; 
+	bottom: 0; 
 	width: 100%;
 }	
 
