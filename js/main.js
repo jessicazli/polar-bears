@@ -61,6 +61,12 @@ function createVis(data) {
     // Yearly Ice Map
     yearlyIce = new YearlyLineChart('yearlyIce', yearlyIceData);
 
+    // Play button event listener
+    // document.getElementById('playButton').addEventListener('click', function () {
+    //     // Call a function to start or restart the animation
+    //     yearlyIce.playAnimation();
+    // });
+
     // // Ice Extent Chart
     // iceExtentChart = new LineGraph('icemass', iceExtentData, "Year", "Ice Extent", "Minimum Ice Extent Over Time", '#78aeeb', '#0060cf');
 

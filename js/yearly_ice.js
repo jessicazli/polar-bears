@@ -39,6 +39,8 @@ class YearlyLineChart {
             .x((d, i) => vis.x(i))  // x position based on index (month)
             .y(d => vis.y(d.Extent));
 
+        vis.parseDate = d3.timeParse("%Y-%m-%d");
+
         // Create the axes.
         vis.svg.append("g")
             .attr("transform", `translate(0,${vis.height})`)
@@ -63,15 +65,24 @@ class YearlyLineChart {
                 .attr("x", 3)
                 .attr("text-anchor", "start")
                 .attr("font-weight", "bold")
-                .text('Extent'));  // Fix the y-axis label
+                .text('Ice Extent km^2'));  // Fix the y-axis label
 
         // Create the container for lines.
         vis.g = vis.svg.append("g")
             .attr("font-family", "sans-serif")
-            .attr("font-size", 10)
+            .attr("font-size", 13)
             .attr("fill", "none")
             .attr("stroke-width", 1.5)
             .attr("stroke-miterlimit", 1);
+
+        // Add a title
+        vis.svg.append("text")
+            .attr("x", vis.width / 2)
+            .attr("y", -vis.margin.top / 2)
+            .attr("text-anchor", "middle")
+            .style("font-size", "18px")
+            .style("font-weight", "bold")
+            .text("Arctic Sea Ice Extent 1978-2023");
 
         // Start the animation and return the chart.
         requestAnimationFrame(vis.animate.bind(vis));
@@ -80,10 +91,10 @@ class YearlyLineChart {
     async animate() {
         const vis = this;
 
-        for (const [key, values] of d3.group(vis.data, d => d.Year)) {
+        for (const [year, values] of d3.group(vis.data, d => d.Year)) {
             await vis.g.append("path")
                 .attr("d", vis.line(values))
-                .attr("stroke", vis.z(key))
+                .attr("stroke", vis.z(year))
                 .attr("stroke-dasharray", "0,1")
                 .transition()
                 .ease(d3.easeLinear)
@@ -95,12 +106,12 @@ class YearlyLineChart {
                     .attr("paint-order", "stroke")
                     .attr("stroke", "white")
                     .attr("stroke-width", 3)
-                    .attr("fill", vis.z(key))
+                    .attr("fill", vis.z(year))
                     .attr("dx", 4)
                     .attr("dy", "0.32em")
-                    .attr("x", () => vis.x(11) + vis.width - 100)  // Display label at the end of x-axis (December)
+                    .attr("x", vis.x(11) + vis.width - 100)  // Display label at the end of x-axis (December)
                     .attr("y", vis.y(values[values.length - 1].Extent))
-                    .text(key);
+                    .text(year);
             }
         }
     }
