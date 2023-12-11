@@ -176,7 +176,7 @@ class MigrationVis {
     // Create a sequential color scale for time
     vis.colorScale = d3.scaleSequential()
       .domain([minDate, maxDate])
-      .interpolator(d3.interpolateYlGnBu); // You can adjust the color scheme if needed
+      .interpolator(d3.interpolate(d3.color("orange"), d3.color("indigo"))); // You can adjust the color scheme if needed
 
     // Colorscale for bear IDs
     vis.colorScaleBear = d3.scaleOrdinal(d3.schemeCategory10)

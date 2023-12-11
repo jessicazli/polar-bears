@@ -32,7 +32,11 @@ class YearlyLineChart {
             .domain([0, 18])
             .range([vis.height, 0]);
 
-        vis.z = d3.scaleSequential(d3.extent(vis.data, d => d.Year), t => d3.interpolateSpectral(1 - t));
+            vis.z = d3.scaleSequential(d3.extent(vis.data, d => d.Year), t => d3.interpolate(d3.color("orange"), d3.color("indigo"))(1 - t));
+
+            
+            
+
 
         vis.line = d3.line()
             .defined(d => !isNaN(d.Extent))
