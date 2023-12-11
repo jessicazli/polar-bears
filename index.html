@@ -310,32 +310,16 @@
                 </div>
                 <div class="row">
                     <div class="col">
-                        <!-- <div class="row align-items-center justify-content-start m-4">
-                            <div class="col-auto">Sex:</div>
-                            <div class="col-auto">
-                                <button type="button" class="btn btn-outline-dark">Female</button>
-                                <button type="button" class="btn btn-outline-dark">Male</button>
-                                <button type="button" class="btn btn-outline-dark">All</button>
-                            </div>
-                        </div>
-                        <div class="row align-items-center justify-content-start m-4">
-                            <div class="col-auto">Ageclass:</div>
-                            <div class="col-auto">
-                                <button type="button" class="btn btn-outline-dark">Adult</button>
-                                <button type="button" class="btn btn-outline-dark">Subadult</button>
-                                <button type="button" class="btn btn-outline-dark">All</button>
-                            </div>
-                        </div> -->
                         <div class="row justify-content-start m-4">
                             <div class="col-auto"> 
-                                <button type="button" id="adoptButton" class="btn btn-primary">Explore a Polar Bear!</button>
+                                <button type="button" id="bearInfoButton" class="btn btn-primary">Explore a Polar Bear!</button>
                             </div>
                             <div class="col-auto"> 
                                 <button type="button" id="resetButton" class="btn btn-primary">Reset</button>
                             </div>
                         </div>
                         <div class="row justify-content-start m-6">
-                            <div id="adoptDiv"></div>
+                            <div id="bearInfoDiv"></div>
                         </div>
                     </div>
                     <div class="col">
@@ -426,22 +410,22 @@
             // lazyLoading: false,
             navigation: true,
             anchors: ["section1", "section2", "section3", "section4", "section5", "section6", "section7", "section8", "section9", "section10", "section11"],
-            navigationTooltips: ['Home', 'Pizzly', 'Migration', 'Climate Change', 'Regions', 'Regions Analysis', 'Diet', 'Health', 'Adopt a Bear', 'Thank You', 'About Us'],
+            navigationTooltips: ['Home', 'Pizzly', 'Migration', 'Climate Change', 'Regions', 'Regions Analysis', 'Diet', 'Health', 'Explore', 'Thank You', 'About Us'],
             normalScrollElements: '#subregionTable',
             scrollOverflow: true,
         });
     </script>
 
     <!-- Visualization objects -->
-    <script src="js/linegraph.js"></script>
-    <script src="js/dietVis.js"></script>
-    <script src="js/healthVis.js"></script>
-    <script src="js/adopt.js"></script>
     <script src="js/migration.js"></script>
-    <script src="js/subregionMap.js"></script>
     <script src="js/arcticmap.js"></script>
+    <script src="js/linegraph.js"></script>
+    <script src="js/subregionMap.js"></script>
     <script src="js/subregionTable.js"></script>
+    <script src="js/dietVis.js"></script>
     <script src="js/dietStacked.js"></script>
+    <script src="js/healthVis.js"></script>
+    <script src="js/bearInfo.js"></script>
     <script src="js/allHealthVis.js"></script>
 
   

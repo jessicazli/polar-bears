@@ -1,6 +1,6 @@
-// adopt.js 
+// bearInfo.js 
 
-class AdoptBear {
+class BearInfo {
     constructor(parentElement, data) {
         this.parentElement = parentElement;
         this.data = this.filterData(data);
@@ -67,7 +67,6 @@ class AdoptBear {
         this.description = description;
 
         allHealthVisual.highlightBear(bear.BearID);
-
     }
 
     clearDescription() {
