@@ -165,7 +165,7 @@ function createVis(data) {
 
     // event listener
     document.getElementById('adoptButton').addEventListener('click', function() {
-        adoptVisual.updateBear();
+        adoptVisual.updateBear(adoptVisual.selectedSex, adoptVisual.selectedAgeclass);
         document.getElementById(adoptVisual.parentElement).innerHTML = adoptVisual.description;
     });
 
@@ -209,12 +209,18 @@ function ageclassHealthCategoryChange() {
 function sexAllHealthCategoryChange() {
     selectedSex = document.getElementById('sexAllHealthFilter').value;
  
+    allHealthVisual.resetSelection();
+    adoptVisual.clearDescription(); 
+    adoptVisual.updateBear(selectedSex, adoptVisual.selectedAgeclass);
     allHealthVisual.updateVis(selectedSex, allHealthVisual.selectedAgeclass);
 }
 
 function ageclassAllHealthCategoryChange() {
     selectedAgeclass = document.getElementById('ageclassAllHealthFilter').value;
    
+    allHealthVisual.resetSelection();
+    adoptVisual.clearDescription(); 
+    adoptVisual.updateBear(adoptVisual.selectedSex, selectedAgeclass);
     allHealthVisual.updateVis(allHealthVisual.selectedSex, selectedAgeclass);
 }
 

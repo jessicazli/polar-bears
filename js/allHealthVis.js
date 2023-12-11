@@ -32,7 +32,7 @@ class AllHealthVis {
                 OxidativeBarrier: +row.OxidativeBarrier
             }));
     };
-
+    
     initVis() {
 
         let vis = this;
@@ -51,28 +51,11 @@ class AllHealthVis {
             .attr('transform', `translate(${vis.margin.left},${vis.margin.top})`);
 
         // Scales and Axes
-         vis.x = new Map(vis.keys.map(key => [key, d3.scaleLinear()
+        vis.x = new Map(vis.keys.map(key => [key, d3.scaleLinear()
             .domain(d3.extent(vis.data, d => d[key]))
             .range([0, vis.width])]));
-
         vis.y = d3.scalePoint(vis.keys, [0, vis.height]);
-
-        // Color scale
         vis.color = d3.scaleSequential(d3.extent(vis.data, d => d[vis.keys[0]]), d3.interpolateBrBG);
-
-        // Lines
-        vis.line = d3.line()
-            .defined(([, value]) => value != null)
-            .x(([key, value]) => vis.x.get(key)(value))
-            .y(([key]) => vis.y(key));
-
-        vis.path = vis.svg.append("g")
-            .selectAll("path")
-            .data(vis.data)
-            .join("path")
-                .attr("class", d => `line line-${d.BearID}`)
-                .attr("stroke", d => vis.color(d[vis.keys[0]]))
-                .attr("d", d => vis.line(Array.from(vis.x, ([key]) => [key, d[key]])));
 
         const units = {
             BodyLength: "cm",
@@ -105,7 +88,10 @@ class AllHealthVis {
                     .attr("stroke-linejoin", "round")
                     .attr("stroke", "white"));
 
-        // Brush Behavior
+        // Create groups for paths
+        vis.pathsGroup = vis.svg.append("g").attr("class", "paths");
+
+        // Initialize the brush
         vis.brush = d3.brushX()
             .extent([
                 [0, -(50 / 2)],
@@ -124,7 +110,7 @@ class AllHealthVis {
                 selections.set(key, selection.map(vis.x.get(key).invert));
             }
         
-            vis.path.each(function(d) {
+            vis.pathsGroup.selectAll("path.line").each(function(d) {
                 const element = d3.select(this);
                 const isHighlighted = element.classed("line-highlight");
                 const isActive = isHighlighted || Array.from(selections).every(([currentKey, [min, max]]) => {
@@ -141,6 +127,7 @@ class AllHealthVis {
             vis.svg.selectAll(".line-highlight").raise();
         }
 
+        // Call updateVis to render the initial visualization
         vis.updateVis(this.selectedSex, this.selectedAgeclass);
     }
 
@@ -159,8 +146,26 @@ class AllHealthVis {
         // Filter data based on the selected options
         console.log("selectedSex: " + selectedSex);
         console.log("selectedAgeclass: " + selectedAgeclass);
-        
 
+        vis.line = d3.line()
+            .defined(([, value]) => value != null)
+            .x(([key, value]) => vis.x.get(key)(value))
+            .y(([key]) => vis.y(key));
+
+        let lines = vis.pathsGroup.selectAll("path.line")
+            .data(filteredData, d => d.BearID);
+
+        lines.enter()
+            .append("path")
+            .merge(lines)
+            .attr("class", d => `line line-${d.BearID}`)
+            .attr("stroke", d => vis.color(d[vis.keys[0]]))
+            .attr("fill", "none")  // This ensures that the path is not filled
+            .attr("d", d => vis.line(Array.from(vis.x, ([key]) => [key, d[key]])));
+
+        lines.exit().remove();
+
+        vis.axes.raise();
     }
 
     highlightBear(bearID) {

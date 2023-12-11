@@ -5,7 +5,8 @@ class AdoptBear {
         this.parentElement = parentElement;
         this.data = this.filterData(data);
 
-        this.initBear();
+        this.selectedSex = 'all';
+        this.selectedAgeclass = 'all';
     }
 
     filterData(data) {
@@ -15,16 +16,23 @@ class AdoptBear {
                             && row.Lysis != "" && row.OxidativeBarrier != "");
     };
 
-    initBear() {
-
-    }
-
-    updateBear() {
+    updateBear(selectedSex, selectedAgeclass) {
         let vis = this;
 
-        let randomNum = Math.floor(Math.random() * vis.data.length)
+        vis.selectedSex = selectedSex;
+        vis.selectedAgeclass = selectedAgeclass;
 
-        let bear = vis.data[randomNum]
+        console.log(selectedSex, selectedAgeclass);
+
+        let filteredData = vis.data.filter(d => {
+            const sexFilter = selectedSex === 'all' || d.Sex === selectedSex;
+            const ageFilter = selectedAgeclass === 'all' || d.Ageclass === selectedAgeclass;
+            return sexFilter && ageFilter;
+        });
+
+        let randomNum = Math.floor(Math.random() * filteredData.length)
+
+        let bear = filteredData[randomNum]
 
         let description = `<strong>Polar Bear #: ${bear.BearID}</strong><br>`;
 
