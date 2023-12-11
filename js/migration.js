@@ -101,6 +101,11 @@ class MigrationVis {
       .domain([minDate, maxDate])
       .interpolator(d3.interpolateYlGnBu); // You can adjust the color scheme if needed
 
+    // Colorscale for bear IDs
+    vis.colorScaleBear = d3.scaleOrdinal(d3.schemeCategory10)
+      .domain(vis.bearData.map(d => d.BearID_ud));
+      // .interpolator(d3.interpolateCategory10)
+
 
 
         
@@ -146,7 +151,8 @@ class MigrationVis {
     .attr("class", "ice-outline")
     .attr("d", vis.path)
     .attr("stroke", "steelblue")
-    .attr("stroke-width", 0.5)
+    .attr("stroke-width", 5)
+    .attr("stroke-opacity", 0.4)
     .attr("fill-opacity", 0.8)
     .style("fill", "Ghostwhite");
 
@@ -160,10 +166,11 @@ class MigrationVis {
       .attr("cx", d => vis.projection([d.longitude_ud, d.latitude_ud])[0])
       .attr("cy", d => vis.projection([d.longitude_ud, d.latitude_ud])[1])
       .attr("r", 0) // Start with radius 0
-      .attr("stroke", "black")
+      // .attr("stroke", d => vis.colorScaleBear(d.BearID_ud)) // Use color scale for outline color
+
       .attr("stroke-opacity", 0.4)
       .attr("fill", d => vis.colorScale(parseTime(d.DateTimeUTC_ud)))
-      .attr("fill-opacity", 0.5)
+      .attr("fill-opacity", 0.8)
       // .on('mouseover', function (event, d) {
       //   d3.select(this).style('opacity', 1);
       //   const bearID = d.BearID_ud; // Corrected the typo
@@ -314,10 +321,12 @@ class MigrationVis {
       .attr("cx", d => vis.projection([d.longitude_ud, d.latitude_ud])[0])
       .attr("cy", d => vis.projection([d.longitude_ud, d.latitude_ud])[1])
       .attr("r", 0) // Start with radius 0
+      // .attr("stroke", d => vis.colorScaleBear(d.BearID_ud)) // Use color scale for outline color
       .attr("stroke", "black")
-      .attr("stroke-opacity", 0.4)
+      .attr("stroke-opacity", 0.2)
+      .attr("stroke-width", 1.5)
       .attr("fill", d => vis.colorScale(parseTime(d.DateTimeUTC_ud)))
-      .attr("fill-opacity", 0.5)
+      .attr("fill-opacity", 0.6)
       .on('mouseover', function (event, d) {
         d3.select(this).style('opacity', 1);
         const bearID = d.BearID_ud;
