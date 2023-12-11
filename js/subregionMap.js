@@ -9,6 +9,7 @@ class SubregionMap {
     this.selectedSubregionFilter = document.getElementById('subregionFilter').value;
     // color - gray, red, myorange, green, orange, med blue, lightblue, pink, purple, darkblue, blue2
     this.colors = ['#DBE1E8', 'crimson', 'orange', 'forestgreen', '#EDA57F', '#4074B7', '#b5cfff', '#F2ABE9', '#367bf7', '#134078', '#25b4c4']
+    this.colors2=['#AED1E6', '#d1e6f7', '#98c4e7','#26547C', '#112A59']
 
     this.subregionData.forEach(d => {
       d.Bear_Population = +d.Bear_Population;
@@ -64,11 +65,11 @@ class SubregionMap {
     vis.ecoregionsColor = d3.scaleOrdinal()
     .domain(["Divergent", "Seasonal", "Archipelago", "Convergent", "NA"])
     .range([
-        d3.color(vis.colors[6]).copy({opacity: 0.7}),
-        d3.color(vis.colors[10]).copy({opacity: 0.9}),
-        d3.color(vis.colors[8]).copy({opacity: 0.9}),
-        d3.color(vis.colors[2]).copy({opacity: 0.7}),
-        d3.color(vis.colors[0]).copy({opacity: 0.9})
+      d3.color(vis.colors[5]).copy({opacity: 0.5}),
+      d3.color(vis.colors2[2]).copy({opacity: 0.5}),
+      d3.color(vis.colors2[3]).copy({opacity: 0.7}),
+      d3.color(vis.colors2[4]).copy({opacity: 0.7}),
+      d3.color(vis.colors[0]).copy({opacity: 0.7})
     ]);
 
 
