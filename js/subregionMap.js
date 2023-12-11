@@ -17,11 +17,9 @@ class SubregionMap {
     })
 
     console.log(this.subregionData)
-    // Initialize the chart
+
     this.initVis();
 
-    // // Call updateChart on window resize
-    // window.addEventListener('resize', this.updateChart.bind(this));
   }
 
   initVis() {
@@ -35,16 +33,10 @@ class SubregionMap {
     vis.height = 600;
 
     // Create SVG container
-
     vis.svg = d3.select("#" + vis.parentElement).append("svg")
       .attr('width', vis.width + vis.margin.left + vis.margin.right)
       .attr('height', vis.height + vis.margin.top + vis.margin.bottom)
-      // .attr('viewBox', `0 0 ${vis.width} ${vis.height}`)
-      // .attr('preserveAspectRatio', 'xMidYMid meet')
       .append('g')
-    // .attr('transform', `translate(${vis.margin.left},${vis.margin.top})`);
-
-
 
     // tooltip
     vis.tooltip = d3.select("body").append('div')
@@ -75,14 +67,10 @@ class SubregionMap {
 
     vis.popFilteredData = vis.subregionData.filter(row => row.Bear_Population !== 'NA');
 
-
     vis.populationMax = d3.max(vis.popFilteredData, d => d["Bear_Population"])
     vis.populationMin = d3.min(vis.popFilteredData, d => d["Bear_Population"])
     vis.populationSizeColor = d3.scaleSequential(t => d3.interpolate(d3.color("indigo").copy({opacity: 0.7}), d3.color("orange").copy({opacity: 0.7}))(t))
       .domain([vis.populationMin, vis.populationMax]);
-
-
-
 
     vis.seaIceFilteredData = vis.subregionData.filter(row => row.Sea_Ice_Change !== 'NA');
 
@@ -124,15 +112,15 @@ class SubregionMap {
     // Append the image to the image group
     imageGroup
       .append('image')
-      .attr('xlink:href', '/images/map2.png')
-
-
-
+      .attr('xlink:href', '/images/map.png')
+      .attr('width', '90%')
+      .attr('transform', 'translate(35,20)')
+  
     // Create a group for the paths
     let pathGroup = vis.svg
       .append('g')
       .attr('class', 'path-group')
-      .attr('transform', 'translate(45,65)');
+      .attr('transform', 'translate(105,95)');
 
 
 
@@ -202,7 +190,7 @@ class SubregionMap {
           .attr('alignment-baseline', 'middle')
           .attr('font-size', 10)
           .attr('fill', vis.colors[9])
-          .attr('transform', 'translate(45,65)');
+          .attr('transform', 'translate(105,95)');
       });
     subregionPaths.exit().remove();
 
@@ -278,8 +266,6 @@ class SubregionMap {
       .attr('height', 180)
       .attr('fill', 'url(#label-gradient)')
       .attr('transform', 'translate(20, 560) rotate(-90)')
-    // .attr('transform', 'rotate(20)'); // Rotate by 0 degrees
-
 
     gradientLegend.append('text')
       .attr('x', 10)
@@ -287,22 +273,11 @@ class SubregionMap {
       .text(min)
       .attr("fill", vis.colors[9])
 
-
     gradientLegend.append('text')
       .attr('x', 190)
       .attr('y', 580)
       .text(domain)
       .attr("fill", vis.colors[9])
-
-
-    // Legend title
-    // gradientLegend.append('text')
-    //   .attr('x', -8)
-    //   .attr('y', -10)
-    //   .attr('text-anchor', 'middle')
-    //   .text(title)
-
-
   }
 
   createOrdinalLegend(colorScale, domain, title) {
@@ -332,14 +307,6 @@ class SubregionMap {
       .attr('dy', '0.35em')
       .text(d => d)
       .attr("fill", vis.colors[9]);
-
-    // Legend title
-    // ordinalLegend.append('text')
-    //   .attr('x', 0)
-    //   .attr('y', -10)
-    //   .attr('text-anchor', 'start')
-    //   .text(title)
-    //   .attr('transform', `translate(${vis.width - 300}, ${vis.height - 5})`);
   }
 
 
@@ -358,7 +325,4 @@ class SubregionMap {
         .attr("opacity", 0.85)
     }
   }
-
-
-
 }
