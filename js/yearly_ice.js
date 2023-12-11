@@ -85,24 +85,33 @@ class YearlyLineChart {
 
         for (const [year, values] of d3.group(vis.data, d => d.Year)) {
             const path = vis.g.append("path")
-                .attr("class", "path")
-                .attr("d", vis.line(values))
-                .attr("stroke", vis.z(year))
-                .attr("stroke-dasharray", "0,1")
-                .on("mouseover", function () {
-                    vis.highlightLine(this, year);
-                    vis.showTooltip(this, year);
-                    d3.select(this).attr("stroke", "darkorange");
-                })
-                .on("mouseout", function () {
-                    vis.unhighlightLine(this);
-                    vis.hideTooltip();
-                    d3.select(this).attr("stroke", vis.z(year));
-                })
-                .transition()
-                .ease(d3.easeLinear)
-                .duration(200)
-                .attrTween("stroke-dasharray", vis.dashTween);
+            .attr("class", "path")
+            .attr("d", vis.line(values))
+            .attr("stroke", vis.z(year))
+            .attr("stroke-dasharray", "0,1")
+            .on("mouseover", function () {
+            // Clear existing highlighting and fading
+            vis.g.selectAll(".path, .year-text").classed("highlighted faded", false);
+
+            // Highlight the current line and year text
+            vis.highlightLine(this, year);
+
+            // Show tooltip
+            vis.showTooltip(this, year);
+
+            // Change line color
+            d3.select(this).attr("stroke", "darkorange");
+        })
+
+        .on("mouseout", function () {
+            vis.unhighlightLine(this);
+            vis.hideTooltip();
+            d3.select(this).attr("stroke", vis.z(year));
+        })
+        .transition()
+        .ease(d3.easeLinear)
+        .duration(200)
+        .attrTween("stroke-dasharray", vis.dashTween);
 
             await new Promise(resolve => path.on("end", resolve));
 
