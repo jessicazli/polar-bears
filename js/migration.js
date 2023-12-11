@@ -1,12 +1,11 @@
 class MigrationVis {
-  constructor(parentElement, geoData, bearData, marineData, landData, nameData, oceanData) {
+  constructor(parentElement, geoData, bearData, marineData, landData, oceanData) {
     this.parentElement = parentElement;
     this.geoData = geoData;
     this.bearData = bearData;
     this.displayData = bearData;
     this.marineData = marineData;
     this.landData = landData;
-    this.nameData = nameData;
     this.oceanData = oceanData;
 
     this.initVis();
@@ -76,9 +75,6 @@ class MigrationVis {
     vis.margin = { top: 20, right: 0, bottom: 20, left: 0 };
     vis.width = 600;
     vis.height = 400;
-
-    console.log(vis.nameData);
-    console.log(vis.geoData);
 
     vis.svg = d3
       .select(`#${vis.parentElement}`)
