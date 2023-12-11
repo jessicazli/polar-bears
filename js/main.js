@@ -61,14 +61,14 @@ function createVis(data) {
     // Yearly Ice Map
     yearlyIce = new YearlyLineChart('yearlyIce', yearlyIceData);
 
-    // Ice Extent Chart
-    iceExtentChart = new LineGraph('icemass', iceExtentData, "Year", "Ice Extent", "Minimum Ice Extent Over Time", '#78aeeb', '#0060cf');
+    // // Ice Extent Chart
+    // iceExtentChart = new LineGraph('icemass', iceExtentData, "Year", "Ice Extent", "Minimum Ice Extent Over Time", '#78aeeb', '#0060cf');
 
     // CO2 Emissions Chart
     emissionsChart = new LineGraph('emissions', emissionsData, "Year", "Emissions", "CO2 Emissions Over Time", '#f7a42a', '#fc9700');
 
     // Temperature Chart
-    tempChangeChart = new LineGraph('avgtemp', temperatureChangeData, "Year", "Temperature Change", "Global Temperature Change Over Time", '#fc7168', '#de1507');
+    tempChangeChart = new LineGraph('avgtemp', temperatureChangeData, "Year", "Temperature Change", "Global Temperature Change Over Time", 'indigo', 'indigo');
     
     // Subregion Map
     subregionMap = new SubregionMap('subregionMap', subregionData);
@@ -137,11 +137,11 @@ function createVis(data) {
 
         // Filter data based on the selected range and update graphs
         const filteredEmissionsData = emissionsData.filter(d => d.Year >= startYear && d.Year <= endYear);
-        const filteredIceExtentData = iceExtentData.filter(d => d.Year >= startYear && d.Year <= endYear);
+        // const filteredIceExtentData = iceExtentData.filter(d => d.Year >= startYear && d.Year <= endYear);
         const filteredTemperatureChangeData = temperatureChangeData.filter(d => d.Year >= startYear && d.Year <= endYear);
 
         emissionsChart.updateData(filteredEmissionsData);
-        iceExtentChart.updateData(filteredIceExtentData);
+        // iceExtentChart.updateData(filteredIceExtentData);
         tempChangeChart.updateData(filteredTemperatureChangeData);
     });
 

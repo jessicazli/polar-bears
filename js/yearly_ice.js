@@ -11,7 +11,7 @@ class YearlyLineChart {
         // Set up the SVG drawing area
         vis.margin = { top: 20, right: 30, bottom: 30, left: 40 };
         vis.width = 928 - vis.margin.left - vis.margin.right;
-        vis.height = 1000 - vis.margin.top - vis.margin.bottom;
+        vis.height = 800 - vis.margin.top - vis.margin.bottom;
 
         vis.svg = d3
             .select(`#${vis.parentElement}`)
@@ -32,11 +32,7 @@ class YearlyLineChart {
             .domain([0, 18])
             .range([vis.height, 0]);
 
-            vis.z = d3.scaleSequential(d3.extent(vis.data, d => d.Year), t => d3.interpolate(d3.color("orange"), d3.color("indigo"))(1 - t));
-
-            
-            
-
+        vis.z = d3.scaleSequential(d3.extent(vis.data, d => d.Year), t => d3.interpolate(d3.color("orange"), d3.color("indigo"))(1 - t));
 
         vis.line = d3.line()
             .defined(d => !isNaN(d.Extent))
@@ -115,11 +111,3 @@ class YearlyLineChart {
         return t => i(t);
     }
 }
-
-// // Usage
-// const yourData = [
-//     { Year: 1978, Month: 10, Day: 26, Extent: 10.231, Missing: 0 },
-//     // ... add more data entries
-// ];
-
-// const yearlyIce = new YearlyLineChart('yearlyIce', yourData);
