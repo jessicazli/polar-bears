@@ -24,8 +24,8 @@ class YearlyLineChart {
             .attr('transform', `translate(${vis.margin.left},${vis.margin.top})`);
 
         // Create the scales.
-        vis.x = d3.scaleLinear()
-            .domain([0, 364])  // Assuming 365 days in a year
+        vis.x = d3.scaleTime()
+            .domain([new Date(2000, 0, 1), new Date(2000, 11, 31)])  // Assuming 365 days in a year
             .range([0, vis.width]);
 
         vis.y = d3.scaleLinear()
@@ -36,23 +36,15 @@ class YearlyLineChart {
 
         vis.line = d3.line()
             .defined(d => !isNaN(d.Extent))
-            .x((d, i) => vis.x(i))  // x position based on index (month)
+            .x(d => vis.x(new Date(2000, d.Month - 1, d.Day)))  // x position based on date
             .y(d => vis.y(d.Extent));
-
-        vis.parseDate = d3.timeParse("%Y-%m-%d");
 
         // Create the axes.
         vis.svg.append("g")
             .attr("transform", `translate(0,${vis.height})`)
             .call(d3.axisBottom(vis.x)
-                .tickValues(d3.range(0, 365, 31))  // Set explicit tick values for each month
-                .tickFormat((d, i) => {
-                    // Format ticks as month names
-                    const startDate = new Date(2000, 0, 1); // January 1, 2000
-                    const currentDate = new Date(startDate);
-                    currentDate.setDate(startDate.getDate() + Math.round(d));
-                    return d3.timeFormat("%B")(currentDate);
-                })
+                .ticks(d3.timeMonth.every(1))  // Set explicit tick values for each month
+                .tickFormat(d3.timeFormat("%B"))
             );
 
         vis.svg.append("g")
@@ -65,7 +57,7 @@ class YearlyLineChart {
                 .attr("x", 3)
                 .attr("text-anchor", "start")
                 .attr("font-weight", "bold")
-                .text('Ice Extent km^2'));  // Fix the y-axis label
+                .text('Ice Extent km^2'));
 
         // Create the container for lines.
         vis.g = vis.svg.append("g")
@@ -109,7 +101,7 @@ class YearlyLineChart {
                     .attr("fill", vis.z(year))
                     .attr("dx", 4)
                     .attr("dy", "0.32em")
-                    .attr("x", vis.x(11) + vis.width - 100)  // Display label at the end of x-axis (December)
+                    .attr("x", vis.x(new Date(2000, values[values.length - 1].Month - 1, values[values.length - 1].Day)) + 100)
                     .attr("y", vis.y(values[values.length - 1].Extent))
                     .text(year);
             }
