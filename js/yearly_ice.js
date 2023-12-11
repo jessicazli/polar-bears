@@ -11,7 +11,7 @@ class YearlyLineChart {
         // Set up the SVG drawing area
         vis.margin = { top: 20, right: 30, bottom: 30, left: 40 };
         vis.width = 928 - vis.margin.left - vis.margin.right;
-        vis.height = 720 - vis.margin.top - vis.margin.bottom;
+        vis.height = 1000 - vis.margin.top - vis.margin.bottom;
 
         vis.svg = d3
             .select(`#${vis.parentElement}`)
@@ -19,32 +19,39 @@ class YearlyLineChart {
             .attr('width', vis.width + vis.margin.left + vis.margin.right)
             .attr('height', vis.height + vis.margin.top + vis.margin.bottom)
             .attr("viewBox", [0, 0, 928, 720])
-            .attr("style", "max-width: 100%; max-height: 200%;")
+            .attr("style", "max-width: 100%; max-height: 100%;")
             .append('g')
             .attr('transform', `translate(${vis.margin.left},${vis.margin.top})`);
 
         // Create the scales.
         vis.x = d3.scaleLinear()
-            .domain(d3.extent(vis.data, d => d3.timeParse("%Y-%m-%d")(`${d.Year}-01-01`)))
+            .domain([0, 364])  // Assuming 365 days in a year
             .range([0, vis.width]);
 
         vis.y = d3.scaleLinear()
-            .domain([0, d3.max(vis.data, d => d.Extent)])
+            .domain([0, 18])
             .range([vis.height, 0]);
 
         vis.z = d3.scaleSequential(d3.extent(vis.data, d => d.Year), t => d3.interpolateSpectral(1 - t));
 
         vis.line = d3.line()
             .defined(d => !isNaN(d.Extent))
-            .x(d => vis.x(d3.timeParse("%Y-%m-%d")(`${d.Year}-01-01`)))
+            .x((d, i) => vis.x(i))  // x position based on index (month)
             .y(d => vis.y(d.Extent));
 
         // Create the axes.
         vis.svg.append("g")
             .attr("transform", `translate(0,${vis.height})`)
             .call(d3.axisBottom(vis.x)
-                .ticks(vis.width / 80)
-                .tickSizeOuter(0));
+                .tickValues(d3.range(0, 365, 31))  // Set explicit tick values for each month
+                .tickFormat((d, i) => {
+                    // Format ticks as month names
+                    const startDate = new Date(2000, 0, 1); // January 1, 2000
+                    const currentDate = new Date(startDate);
+                    currentDate.setDate(startDate.getDate() + Math.round(d));
+                    return d3.timeFormat("%B")(currentDate);
+                })
+            );
 
         vis.svg.append("g")
             .call(d3.axisLeft(vis.y).ticks(null, "s"))
@@ -91,7 +98,7 @@ class YearlyLineChart {
                     .attr("fill", vis.z(key))
                     .attr("dx", 4)
                     .attr("dy", "0.32em")
-                    .attr("x", vis.x(d3.timeParse("%Y-%m-%d")(`${values[values.length - 1].Year}-01-01`)))
+                    .attr("x", () => vis.x(11) + vis.width - 100)  // Display label at the end of x-axis (December)
                     .attr("y", vis.y(values[values.length - 1].Extent))
                     .text(key);
             }
