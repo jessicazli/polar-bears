@@ -24,33 +24,27 @@ class YearlyLineChart {
             .attr('transform', `translate(${vis.margin.left},${vis.margin.top})`);
 
         // Create the scales.
-        vis.x = d3.scaleLinear()
-            .domain([0, 364])  // Assuming 365 days in a year
+        vis.x = d3.scaleTime()
+            .domain([new Date(2000, 0, 1), new Date(2000, 11, 31)])  // Assuming 365 days in a year
             .range([0, vis.width]);
 
         vis.y = d3.scaleLinear()
-            .domain([0, 18])
+            .domain([0, 17])
             .range([vis.height, 0]);
 
         vis.z = d3.scaleSequential(d3.extent(vis.data, d => d.Year), t => d3.interpolate(d3.color("orange"), d3.color("indigo"))(1 - t));
 
         vis.line = d3.line()
             .defined(d => !isNaN(d.Extent))
-            .x((d, i) => vis.x(i))  // x position based on index (month)
+            .x(d => vis.x(new Date(2000, d.Month - 1, d.Day)))  // x position based on date
             .y(d => vis.y(d.Extent));
 
         // Create the axes.
         vis.svg.append("g")
             .attr("transform", `translate(0,${vis.height})`)
             .call(d3.axisBottom(vis.x)
-                .tickValues(d3.range(0, 365, 31))  // Set explicit tick values for each month
-                .tickFormat((d, i) => {
-                    // Format ticks as month names
-                    const startDate = new Date(2000, 0, 1); // January 1, 2000
-                    const currentDate = new Date(startDate);
-                    currentDate.setDate(startDate.getDate() + Math.round(d));
-                    return d3.timeFormat("%B")(currentDate);
-                })
+                .ticks(d3.timeMonth.every(1))  // Set explicit tick values for each month
+                .tickFormat(d3.timeFormat("%B"))
             );
 
         vis.svg.append("g")
@@ -63,15 +57,24 @@ class YearlyLineChart {
                 .attr("x", 3)
                 .attr("text-anchor", "start")
                 .attr("font-weight", "bold")
-                .text('Extent'));  // Fix the y-axis label
+                .text('Ice Extent km^2'));
 
         // Create the container for lines.
         vis.g = vis.svg.append("g")
             .attr("font-family", "sans-serif")
-            .attr("font-size", 10)
+            .attr("font-size", 13)
             .attr("fill", "none")
             .attr("stroke-width", 1.5)
             .attr("stroke-miterlimit", 1);
+
+        // Add a title
+        vis.svg.append("text")
+            .attr("x", vis.width / 2)
+            .attr("y", -vis.margin.top / 2)
+            .attr("text-anchor", "middle")
+            .style("font-size", "18px")
+            .style("font-weight", "bold")
+            .text("Arctic Sea Ice Extent 1978-2023");
 
         // Start the animation and return the chart.
         requestAnimationFrame(vis.animate.bind(vis));
@@ -79,31 +82,41 @@ class YearlyLineChart {
 
     async animate() {
         const vis = this;
-
-        for (const [key, values] of d3.group(vis.data, d => d.Year)) {
-            await vis.g.append("path")
+    
+        for (const [year, values] of d3.group(vis.data, d => d.Year)) {
+            const path = vis.g.append("path")
                 .attr("d", vis.line(values))
-                .attr("stroke", vis.z(key))
+                .attr("stroke", vis.z(year))
                 .attr("stroke-dasharray", "0,1")
                 .transition()
                 .ease(d3.easeLinear)
-                .attrTween("stroke-dasharray", vis.dashTween)
-                .end();
-
+                .duration(200) // Adjust the duration in milliseconds
+                .attrTween("stroke-dasharray", vis.dashTween);
+    
+            await new Promise(resolve => path.on("end", resolve));
+    
             if (!isNaN(values[values.length - 1].Extent)) {
-                vis.g.append("text")
+                const text = vis.g.append("text")
                     .attr("paint-order", "stroke")
                     .attr("stroke", "white")
                     .attr("stroke-width", 3)
-                    .attr("fill", vis.z(key))
+                    .attr("fill", vis.z(year))
                     .attr("dx", 4)
                     .attr("dy", "0.32em")
-                    .attr("x", () => vis.x(11) + vis.width - 100)  // Display label at the end of x-axis (December)
-                    .attr("y", vis.y(values[values.length - 1].Extent))
-                    .text(key);
+                    .text(year);
+    
+                const lastDataPoint = values[values.length - 1];
+                const xPos = vis.x(new Date(2000, lastDataPoint.Month - 1, lastDataPoint.Day)) -5;
+                const yPos = vis.y(lastDataPoint.Extent);
+    
+                text.attr("transform", `translate(${xPos},${yPos})`);
             }
         }
     }
+    
+    
+    
+    
 
     dashTween() {
         const l = this.getTotalLength();
