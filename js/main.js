@@ -208,8 +208,8 @@ function sexAllHealthCategoryChange() {
     selectedSex = document.getElementById('sexAllHealthFilter').value;
  
     allHealthVisual.resetSelection();
-    bearInfo.clearDescription(); 
     bearInfo.updateBear(selectedSex, bearInfo.selectedAgeclass);
+    bearInfo.clearDescription(); 
     allHealthVisual.updateVis(selectedSex, allHealthVisual.selectedAgeclass);
 }
 
@@ -217,8 +217,8 @@ function ageclassAllHealthCategoryChange() {
     selectedAgeclass = document.getElementById('ageclassAllHealthFilter').value;
    
     allHealthVisual.resetSelection();
-    bearInfo.clearDescription(); 
     bearInfo.updateBear(bearInfo.selectedSex, selectedAgeclass);
+    bearInfo.clearDescription(); 
     allHealthVisual.updateVis(allHealthVisual.selectedSex, selectedAgeclass);
 }
 

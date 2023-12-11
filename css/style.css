@@ -1,20 +1,18 @@
 body {
-	font-family: 'Inter', sans-serif;
+	font-family:'Poppins', sans-serif;
 }
 
 h1 {
 	font-size: 68px;
 	color: #FFFFFF;
-	margin-top: 10px;
 	margin-bottom: 10px;
-	font-family: 'Poppins', sans-serif;
+	font-family:'Poppins', sans-serif;
 	font-weight: bold;
 }
 
 h2 {
-	color: #6A87BE;
+	color: #98C4E7;
 	font-size: 40px;
-	margin-top: 10px;
 	margin-bottom: 10px;
 	font-family: 'Poppins', sans-serif;
 	font-weight: bold;
@@ -23,19 +21,13 @@ h2 {
 h3 {
 	color: #112A59;
 	font-size: 32px;
-	margin-top: 10px;
 	margin-bottom: 10px;
 	font-family: 'Poppins', sans-serif;
 	font-weight: bold;
-
 }
 
 p {
 	color: #143c69;
-}
-
-h5 {
-	font-size: 13px;
 }
 
 #fp-nav ul li a span {
@@ -289,15 +281,9 @@ Right column styles
 	padding: 20px; /* Add padding inside the box */
 }
 
-.whale {
-	width: 60%;
-	height: 60%;
-
-}
-
 .line-highlight {
 	stroke-width: 3; /* or any other style changes to make the line stand out */
-	stroke: orange !important; /* color of the highlight */
+	stroke: #112A59 !important; /* color of the highlight */
 } 
 
 .s1 {
@@ -335,45 +321,70 @@ Right column styles
 }
 
 .s2 {
-	background-color: #f7fcff;
+	background-color: #FFFFFF;
+	position: relative;
+}
+
+.ice {
+	position: absolute;
+    top: 0; 
+	width: 100%;
 }
 
 .s3 {
-	background-color: #f7fcff;
+	background-color: #F7FBFF;
 }
 
 .s4 {
-	background-color: #f7fcff;
+	background-color: #F7FBFF;
 }
 
 .s5 {
-	background-color: #f7fcff;
+	background-color: #F7FBFF;
 }
 
 .s6 {
-	background-color: #f7fcff;
+	background-color: #F7FBFF;
 }
 
 .s7 {
-	background-color: #f7fcff;
+	background-color: #F7FBFF;
 }
 
 .s8 {
-	background-color: #f7fcff;
+	background-color: #F7FBFF;
 }
 
 .s9 {
-	background-color: #f7fcff;
+	background-color: #F7FBFF;
 }
 
 .s10 {
-	background-color: #f7fcff;
+	background-color: #FFFFFF;
 }
 
 .s11 {
-	background-color: #f7fcff;
+	background-color: #F7FBFF;
 }
 
 #migrationDiv {
 	position: relative;
+}
+
+#bearInfoButton {
+	background-color: #112A59;
+	border: 1px solid #112A59;
+}
+
+#resetButton {
+	background-color: #FFFFFF;
+	border: 1px solid #112A59;
+	color: #112A59;
+}	
+
+.bear-info-active {
+	border: 2px solid #112A59;
+	border-radius: 10px;
+	padding: 20px;
+	font-size: 14px;
 }
