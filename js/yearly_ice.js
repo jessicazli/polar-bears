@@ -90,19 +90,19 @@ class YearlyLineChart {
     .attr("stroke", vis.z(year))
     .attr("stroke-dasharray", "0,1")
     .on("mouseover", function () {
-        // Clear existing highlighting and fading
-        vis.g.selectAll(".path, .year-text").classed("highlighted faded", false);
+    // Clear existing highlighting and fading
+    vis.g.selectAll(".path, .year-text").classed("highlighted faded", false);
+
+    // Highlight the current line and year text
+    vis.highlightLine(this, year);
+
+    // Show tooltip
+    vis.showTooltip(this, year);
     
-        // Highlight the current line and year text
-        vis.highlightLine(this, year);
-    
-        // Show tooltip
-        vis.showTooltip(this, year);
-        
-        // Change line color
-        d3.select(this).attr("stroke", "darkorange");
-    })
-    
+    // Change line color
+    d3.select(this).attr("stroke", "darkorange");
+})
+
     .on("mouseout", function () {
         vis.unhighlightLine(this);
         vis.hideTooltip();
