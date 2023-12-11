@@ -39,7 +39,7 @@ class AllHealthVis {
 
         // Define dimensions and margins
         vis.margin = { top: 30, right: 10, bottom: 30, left: 10 };
-        vis.width = 800 - vis.margin.left - vis.margin.right;
+        vis.width = 700 - vis.margin.left - vis.margin.right;
         vis.height = vis.keys.length * 60; // Adjust as needed
 
         // Create SVG area
