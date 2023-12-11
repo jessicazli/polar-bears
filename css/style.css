@@ -356,6 +356,14 @@ th {
 
 .s9 {
 	background-color: #F7FBFF;
+	position: relative;
+}
+
+.snow2 {
+	position: absolute;
+	bottom: 0; 
+	width: 100%;
+	z-index: 5;
 }
 
 .s10 {
