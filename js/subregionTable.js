@@ -8,7 +8,7 @@ class SubregionTable {
 
     // color - gray, myorange, red, green, orange, med blue, lightblue, pink, purple, darkblue, blue2
     this.colors = ['#DBE1E8', 'crimson', 'orange', 'forestgreen', '#EDA57F', '#4074B7', '#b5cfff', '#F2ABE9', '#367bf7', '#134078', '#25b4c4']
-    this.colors2 = ['#AED1E6', '#d1e6f7', '#98c4e7', '#26547C', '#112A59']
+    this.colors2 = ['#AED1E6', '#d1e6f7', '#98c4e7', '#26547C', 'skyblue']
     // get filter
     this.selectedSubregionFilter = document.getElementById('subregionFilter').value;
 
@@ -48,7 +48,7 @@ class SubregionTable {
     tableObject.ecoregionsColor = d3.scaleOrdinal()
       .domain(["Divergent", "Seasonal", "Archipelago", "Convergent", "NA"])
       .range([
-        d3.color(tableObject.colors2[4]).copy({ opacity: 0.5 }),
+        d3.color(tableObject.colors2[4]).copy({ opacity: 0.9 }),
         d3.color(tableObject.colors2[2]).copy({ opacity: 0.5 }),
         d3.color(tableObject.colors2[3]).copy({ opacity: 0.8 }),
         d3.color(tableObject.colors[5]).copy({ opacity: 0.7 }),
@@ -69,7 +69,7 @@ class SubregionTable {
     tableObject.seaIceFilteredData = tableObject.subregionData.filter(row => row.Sea_Ice_Change !== 'NA');
     tableObject.seaIceMax = d3.max(tableObject.seaIceFilteredData, d => d["Sea_Ice_Change"])
     tableObject.seaIceMin = d3.min(tableObject.seaIceFilteredData, d => d["Sea_Ice_Change"])
-    tableObject.seaIceChangeColor = d3.scaleSequential(t => d3.interpolate(d3.color("indigo").copy({ opacity: 0.7 }), d3.color("orange").copy({ opacity: 0.7 }))(t))
+    tableObject.seaIceChangeColor = d3.scaleSequential(t => d3.interpolate(d3.color("blue").copy({ opacity: 0.7 }), d3.color("pink").copy({ opacity: 0.7 }))(t))
       .domain([tableObject.seaIceMin, tableObject.seaIceMax]);
 
 
