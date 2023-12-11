@@ -26,7 +26,11 @@ h3 {
 	font-weight: bold;
 }
 
-p {
+.small-text {
+	font-size: 14px;
+}
+
+.s5 p {
 	color: #143c69;
 }
 
@@ -365,6 +369,24 @@ Right column styles
 
 .s11 {
 	background-color: #F7FBFF;
+	position: relative;
+}
+
+.blue-wave-top {
+	position: absolute;
+	bottom: 0; 
+	width: 100%;
+}
+
+.s12 {
+	background-color: #F7FBFF;
+	position: relative;
+}
+
+.blue-wave-bottom {
+	position: absolute;
+	top: 0; 
+	width: 100%;
 }
 
 #migrationDiv {
@@ -374,17 +396,20 @@ Right column styles
 #bearInfoButton {
 	background-color: #112A59;
 	border: 1px solid #112A59;
+	font-size: 14px;
 }
 
 #resetButton {
 	background-color: #FFFFFF;
 	border: 1px solid #112A59;
 	color: #112A59;
-}	
+	font-size: 14px;
+}
 
 .bear-info-active {
 	border: 2px solid #112A59;
 	border-radius: 10px;
 	padding: 20px;
 	font-size: 14px;
+	height: 48vh;
 }
