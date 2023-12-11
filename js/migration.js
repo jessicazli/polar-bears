@@ -289,28 +289,28 @@ class MigrationVis {
       .attr("stroke-width", 1.5)
       .attr("fill", d => vis.colorScale(parseTime(d.DateTimeUTC_ud)))
       .attr("fill-opacity", 0.6)
-      .on('mouseover', function (event, d) {
-        d3.select(this).style('opacity', 1);
-        const bearID = d.BearID_ud;
+      // .on('mouseover', function (event, d) {
+      //   d3.select(this).style('opacity', 1);
+      //   const bearID = d.BearID_ud;
 
-        vis.svg.selectAll('.circle')
-          .style('opacity', d => (d.BearID_ud === bearID) ? 1 : 0.02)
-          .attr("r", d => vis.radiusScale(parseTime(d.DateTimeUTC_ud)));
+      //   vis.svg.selectAll('.circle')
+      //     .style('opacity', d => (d.BearID_ud === bearID) ? 1 : 0.02)
+      //     .attr("r", d => vis.radiusScale(parseTime(d.DateTimeUTC_ud)));
 
-        vis.tooltip.transition()
-          .duration(100)
-          .style('opacity', 0.9);
+      //   vis.tooltip.transition()
+      //     .duration(100)
+      //     .style('opacity', 0.9);
 
-        vis.tooltip.html(`
-        <div style="border-radius: 5px;  border: 2px solid #34629C; text-align: left; background: #D9E8F3; padding: 20px">
-        <strong>Bear ID:</strong> ${bearID}
-        <br>
-        <strong>Locations found from:</strong> ${startDate} to ${endDate}
-        </div>
-        `)
-          .style('left', `${event.pageX}px`)
-          .style('top', `${event.pageY - 28}px`);
-      })
+      //   vis.tooltip.html(`
+      //   <div style="border-radius: 5px;  border: 2px solid #34629C; text-align: left; background: #D9E8F3; padding: 20px">
+      //   <strong>Bear ID:</strong> ${bearID}
+      //   <br>
+      //   <strong>Locations found from:</strong> ${startDate} to ${endDate}
+      //   </div>
+      //   `)
+      //     .style('left', `${event.pageX}px`)
+      //     .style('top', `${event.pageY - 28}px`);
+      // })
       // .on('mouseout', function () {
       //   const isMouseOverTooltip = d3.select(event.relatedTarget).classed('tooltip');
 

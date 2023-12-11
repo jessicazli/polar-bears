@@ -9,7 +9,7 @@ class SubregionMap {
     this.selectedSubregionFilter = document.getElementById('subregionFilter').value;
     // color - gray, red, myorange, green, orange, med blue, lightblue, pink, purple, darkblue, blue2
     this.colors = ['#DBE1E8', 'crimson', 'orange', 'forestgreen', '#EDA57F', '#4074B7', '#b5cfff', '#F2ABE9', '#367bf7', '#134078', '#25b4c4']
-    this.colors2=['#AED1E6', '#d1e6f7', '#98c4e7','#26547C', '#112A59']
+    this.colors2 = ['#AED1E6', '#d1e6f7', '#98c4e7', '#26547C', '#112A59']
 
     this.subregionData.forEach(d => {
       d.Bear_Population = +d.Bear_Population;
@@ -45,38 +45,38 @@ class SubregionMap {
 
     // colors
     vis.popChangeColors = d3.scaleOrdinal()
-    .domain(['Likely increased', 'Likely decreased', 'Likely stable', 'NA'])
-    .range([
-        d3.color(vis.colors[2]).copy({opacity: 0.5}),
-        d3.color(vis.colors[1]).copy({opacity: 0.5}),
-        d3.color(vis.colors[3]).copy({opacity: 0.5}),
-        d3.color(vis.colors[0]).copy({opacity: 0.7})
-    ]);
+      .domain(['Likely increased', 'Likely decreased', 'Likely stable', 'NA'])
+      .range([
+        d3.color(vis.colors[2]).copy({ opacity: 0.5 }),
+        d3.color(vis.colors[1]).copy({ opacity: 0.5 }),
+        d3.color(vis.colors[3]).copy({ opacity: 0.5 }),
+        d3.color(vis.colors[0]).copy({ opacity: 0.7 })
+      ]);
 
 
     vis.ecoregionsColor = d3.scaleOrdinal()
-    .domain(["Divergent", "Seasonal", "Archipelago", "Convergent", "NA"])
-    .range([
-      d3.color(vis.colors2[4]).copy({opacity: 0.8}),
-      d3.color(vis.colors2[2]).copy({opacity: 0.5}),
-      d3.color(vis.colors2[3]).copy({opacity: 0.7}),
-      d3.color(vis.colors[5]).copy({opacity: 0.7}),
-      d3.color(vis.colors[0]).copy({opacity: 0.7})
-    ]);
+      .domain(["Divergent", "Seasonal", "Archipelago", "Convergent", "NA"])
+      .range([
+        d3.color(vis.colors2[4]).copy({ opacity: 0.8 }),
+        d3.color(vis.colors2[2]).copy({ opacity: 0.5 }),
+        d3.color(vis.colors2[3]).copy({ opacity: 0.7 }),
+        d3.color(vis.colors[5]).copy({ opacity: 0.7 }),
+        d3.color(vis.colors[0]).copy({ opacity: 0.7 })
+      ]);
 
 
     vis.popFilteredData = vis.subregionData.filter(row => row.Bear_Population !== 'NA');
 
     vis.populationMax = d3.max(vis.popFilteredData, d => d["Bear_Population"])
     vis.populationMin = d3.min(vis.popFilteredData, d => d["Bear_Population"])
-    vis.populationSizeColor = d3.scaleSequential(t => d3.interpolate(d3.color("indigo").copy({opacity: 0.7}), d3.color("orange").copy({opacity: 0.7}))(t))
+    vis.populationSizeColor = d3.scaleSequential(t => d3.interpolate(d3.color("indigo").copy({ opacity: 0.7 }), d3.color("orange").copy({ opacity: 0.7 }))(t))
       .domain([vis.populationMin, vis.populationMax]);
 
     vis.seaIceFilteredData = vis.subregionData.filter(row => row.Sea_Ice_Change !== 'NA');
 
     vis.seaIceMax = d3.max(vis.seaIceFilteredData, d => d["Sea_Ice_Change"])
     vis.seaIceMin = d3.min(vis.seaIceFilteredData, d => d["Sea_Ice_Change"])
-    vis.seaIceChangeColor = d3.scaleSequential(t => d3.interpolate(d3.color("indigo").copy({opacity: 0.7}), d3.color("orange").copy({opacity: 0.7}))(t))
+    vis.seaIceChangeColor = d3.scaleSequential(t => d3.interpolate(d3.color("indigo").copy({ opacity: 0.7 }), d3.color("orange").copy({ opacity: 0.7 }))(t))
 
       .domain([vis.seaIceMax, vis.seaIceMin]);
 
@@ -115,7 +115,7 @@ class SubregionMap {
       .attr('xlink:href', '/images/map.png')
       .attr('width', '90%')
       .attr('transform', 'translate(35,20)')
-  
+
     // Create a group for the paths
     let pathGroup = vis.svg
       .append('g')
