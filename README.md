@@ -3,6 +3,8 @@ Final Project for CS 171 @ Harvard
 
 Website: https://jessicazli.github.io/polar-bears/
 
+Video: https://drive.google.com/file/d/1x3kh76IuCglAevh3cHstwp1lPi5KFHGf/view?usp=sharing
+
 Besides accessing it through our website, you can also do the following steps to launch the site locally:
 1. Download and open VSCode.
 2. Download extension: Live Server
