@@ -426,6 +426,6 @@ th {
 }
 
 .path.faded, .year-text.faded {
-    opacity: 0.3; /* Set the opacity for faded paths and text */
+    opacity: 0.08; /* Set the opacity for faded paths and text */
 }
 
