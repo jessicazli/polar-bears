@@ -59,13 +59,6 @@ img {
 	font-size: 14px;
 }
 
-/*
-.brush {
-	fill: #ccc;
-	fill-opacity: .5;
-	pointer-events: none;
-}*/
-
 .axis line,
 .axis path {
   fill: none;
@@ -111,12 +104,13 @@ img {
 	position: absolute;
 	text-align: center;
 	font: 12px sans-serif;
-	color:white
-	/*  pointer-events: none;	This line needs to be removed */
+	color:white;
 }
+
 .diet-tooltip h3,h4 {
 	text-align: left;
 }
+
 .diet-tooltip h4 {
 	font: 14px sans-serif;
 }
@@ -125,42 +119,41 @@ img {
 	font: 9px;
 }
 
-.diet-axis path,
-.diet-axis line {
+.diet-axis path, .diet-axis line {
   fill: none;
-  stroke: #134078; /* Color for axis lines */
-  shape-rendering: crispEdges; /* Optional: Makes the lines crisp */
+  stroke: #134078; 
+  shape-rendering: crispEdges; 
 }
 
 .diet-axis text {
-  fill: #134078; /* Color for axis text */
+  fill: #134078; 
 	font-size: 1.3em;
 }
 
 
 #time-slider {
-    width: 300px; /* Adjust the width as needed */
-    margin: 20px auto; /* Center the slider and add some margin */
+    width: 300px;
+    margin: 20px auto; 
 }
 
 #migrationSlider {
-    width: 400px; /* Adjust the width as needed */
-    margin: 20px auto; /* Center the slider and add some margin */
+    width: 400px; 
+    margin: 20px auto; 
 }
 
 .range-slider-value {
-    background-color: #3373b8; /* Change the background color */
-    color: #fff; /* Change the text color */
-    border-radius: 5px; /* Add border-radius for rounded corners */
-    padding: 5px 10px; /* Adjust padding as needed */
-    font-size: 16px; /* Adjust the font size */
+    background-color: #3373b8; 
+    color: #fff;
+    border-radius: 5px; 
+    padding: 5px 10px; 
+    font-size: 16px; 
     display: inline-block;
     vertical-align: top;
-    margin-top: -5px; /* Adjust margin-top to align with the slider */
+    margin-top: -5px; 
 }
   
 .noUi-connect {
-    background: rgb(169, 200, 233); /* Adjust the color as needed */
+    background: rgb(169, 200, 233);
 }
 
 
@@ -239,8 +232,8 @@ th {
 }
 
 .line-highlight {
-	stroke-width: 3; /* or any other style changes to make the line stand out */
-	stroke: #112A59 !important; /* color of the highlight */
+	stroke-width: 3; 
+	stroke: #112A59 !important; 
 } 
 
 .s1 {
@@ -418,18 +411,16 @@ th {
 	margin-bottom: 0px;
 }
 
-
-/* Add these styles to your CSS file */
 .path, .year-text {
-    opacity: 1; /* Initial opacity for all paths and text elements */
-    transition: opacity 0.2s ease; /* Add a transition for a smoother effect */
+    opacity: 1; 
+    transition: opacity 0.2s ease; 
 }
 
 .path.highlighted, .year-text.highlighted {
-    opacity: 1 !important; /* Keep highlighted paths and text fully visible */
+    opacity: 1 !important; 
 }
 
 .path.faded, .year-text.faded {
-    opacity: 0.08; /* Set the opacity for faded paths and text */
+    opacity: 0.08; 
 }
 
