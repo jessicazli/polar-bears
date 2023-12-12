@@ -114,13 +114,13 @@ class SubregionMap {
       .append('image')
       .attr('xlink:href', 'images/map.png')
       .attr('width', '90%')
-      .attr('transform', 'translate(35,20)')
+      .attr('transform', 'translate(35,0)')
 
     // Create a group for the paths
     let pathGroup = vis.svg
       .append('g')
       .attr('class', 'path-group')
-      .attr('transform', 'translate(105,95)');
+      .attr('transform', 'translate(105,75)');
 
 
 
