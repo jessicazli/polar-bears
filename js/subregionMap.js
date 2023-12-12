@@ -112,7 +112,7 @@ class SubregionMap {
     // Append the image to the image group
     imageGroup
       .append('image')
-      .attr('xlink:href', '/images/map.png')
+      .attr('xlink:href', 'images/map.png')
       .attr('width', '90%')
       .attr('transform', 'translate(35,20)')
 

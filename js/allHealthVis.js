@@ -55,7 +55,7 @@ class AllHealthVis {
             .domain(d3.extent(vis.data, d => d[key]))
             .range([0, vis.width])]));
         vis.y = d3.scalePoint(vis.keys, [0, vis.height]);
-        vis.color = d3.scaleSequential(d3.extent(vis.data, d => d[vis.keys[0]]), t => d3.color(d3.interpolate("steelblue", "lightsteelblue")(t)).copy({ opacity: 0.5 }));
+        vis.color = d3.scaleSequential(d3.extent(vis.data, d => d[vis.keys[0]]), t => d3.color(d3.interpolate("steelblue", "lightsteelblue")(t)));
 
 
 
@@ -168,7 +168,7 @@ class AllHealthVis {
             .merge(lines)
             .attr("class", d => `line line-${d.BearID}`)
             .attr("stroke", d => vis.color(d[vis.keys[0]]))
-            .attr("fill", "none")  // This ensures that the path is not filled
+            .attr("fill", "none")  
             .attr("d", d => vis.line(Array.from(vis.x, ([key]) => [key, d[key]])));
 
         lines.exit().remove();
