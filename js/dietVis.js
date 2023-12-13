@@ -184,7 +184,7 @@ class DietVis {
     vis.yLabel
       .text(getYLabel(dataField))
       .style("fill", vis.colors[4])
-      .style("font-size", "0.9em")
+      .style("font-size", "0.7em")
 
     console.log(getYLabel(dataField))
 
@@ -223,7 +223,7 @@ class DietVis {
                   <h3 style="color: #112A59">${d[0]} </h3>
                   <p style="color: black"> <span style="font-weight: bold;color: black;"> Year: </span>${d[0]} 
                   <br>
-                  <span style="font-weight: bold;color: black";> ${getYLabel(dataField)}: </span> ${d[1][dataField]}
+                  <span style="font-weight: bold;color: black"> ${getYLabel(dataField)}: </span> ${d[1][dataField]}
                   <br>
                   <span style="font-weight: bold; color: black";> Number of Polar Bears Captured: </span> ${d[1].num_bears} </p>
                     </div>`)

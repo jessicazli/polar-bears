@@ -83,6 +83,7 @@ class DietStacked {
         .style("text-anchor", "middle")
         .text("Breakdown by Diet Type (%)")
         .style("fill","#134078")
+        .style("font-size"," 0.8em")
     // Call updateVis to render the initial chart
     vis.wrangleData();
   }
