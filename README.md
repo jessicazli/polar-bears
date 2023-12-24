@@ -14,7 +14,7 @@ Besides accessing it through our website, you can also do the following steps to
 
 
 Libraries Used:
-1. Fullpage.js (css/fullpage)
+1. Fullpage.js (css/fullpage & js/fullpage)
 2. NoUiSlider (included in main.js)
 
 All other code is ours.
