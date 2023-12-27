@@ -120,7 +120,7 @@ class SubregionMap {
     let pathGroup = vis.svg
       .append('g')
       .attr('class', 'path-group')
-      .attr('transform', 'translate(105,75)');
+      .attr('transform', 'translate(115,85)');
 
 
 
@@ -190,7 +190,7 @@ class SubregionMap {
           .attr('alignment-baseline', 'middle')
           .attr('font-size', 10)
           .attr('fill', vis.colors[9])
-          .attr('transform', 'translate(105,95)');
+          .attr('transform', 'translate(120,85)');
       });
     subregionPaths.exit().remove();
 
