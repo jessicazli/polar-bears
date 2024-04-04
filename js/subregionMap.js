@@ -190,7 +190,7 @@ class SubregionMap {
           .attr('alignment-baseline', 'middle')
           .attr('font-size', 10)
           .attr('fill', vis.colors[9])
-          .attr('transform', 'translate(120,85)');
+          .attr('transform', 'translate(100,85)');
       });
     subregionPaths.exit().remove();
 
